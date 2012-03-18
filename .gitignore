@@ -1,0 +1,6 @@
+*.log
+Zproject
+*.cfg
+makefile
+
+
