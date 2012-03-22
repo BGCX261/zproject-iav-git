@@ -21,15 +21,16 @@ Zproyect::~Zproyect(void)
 //-------------------------------------------------------------------------------------
 void Zproyect::createScene(void)
 {
+	srand(5352);
 
 	// Create the camera for map navigation:
-	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 100, 100));
+	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 30, 30));
 	cameraNode->attachObject(mCamera);
 
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
 	mDirection = Ogre::Vector3::ZERO;
-	mMove = 200;
+	mMove = 10;
 
 	Ogre::Entity* terrain = mSceneMgr->createEntity("Terrain", "Plane.mesh");
 
@@ -43,14 +44,35 @@ void Zproyect::createScene(void)
 	// Create a light
 	Ogre::Light* l = mSceneMgr->createLight("MainLight");
 	l->setPosition(20,80,50);
+
+	zombies = new Zombie*[10];
+	for (int i = 0; i < 10; i++) {
+		zombies[i] = new Zombie(Ogre::String("Cube.001.mesh"), i, 0, 4);	
+	}
+	 
+	aux = 0;
+
 }
 
 bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
+	aux += evt.timeSinceLastFrame;
 	bool ret = BaseApplication::frameRenderingQueued(evt);
 
 	cameraNode->translate(mDirection * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 
+	for (int i = 0; i < 10; i++) {
+		if (aux >= 1) {
+			
+			int x = rand() % 3 - 1;
+			int z = rand() % 3 - 1;
+			zombies[i]->move(x, z);
+		}
+		zombies[i]->update(evt);
+	}
+		if (aux >= 1) {
+			aux = 0;
+		}
 	return ret;
 }
 

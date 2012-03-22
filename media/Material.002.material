@@ -1,15 +1,15 @@
 
-// blender material: Material.001
-material Material.001 
+// blender material: Material.002
+material Material.002 
 {
     receive_shadows on
-    technique b2ogre_1332407798.728481
+    technique b2ogre_1332410298.066584
     {
-        pass b2ogre_1332407798.728559
+        pass b2ogre_1332410298.066658
         {
-            ambient 0.14239567518234253 0.0699811652302742 0.04614538326859474 1.0
-            diffuse 0.11391654184336275 0.05598493301845986 0.03691630716497163 1.0
-            specular 0.0 0.0 0.0 1.0 12.5
+            ambient 0.027741072699427605 0.08713650703430176 0.008776086382567883 1.0
+            diffuse 0.02219285849024144 0.06970920666618952 0.007020869210673408 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
             emissive 0.0 0.0 0.0 1.0
             alpha_to_coverage off
             colour_write on

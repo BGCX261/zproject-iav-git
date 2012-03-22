@@ -59,20 +59,13 @@ bool BaseApplication::configure(void)
 void BaseApplication::chooseSceneManager(void)
 {
 	// Get the SceneManager, in this case a generic one
-	mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC);
+	mSceneMgr = mRoot->createSceneManager(Ogre::ST_GENERIC, "ingameManager");
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::createCamera(void)
 {
 	// Create the camera
 	mCamera = mSceneMgr->createCamera("PlayerCam");
-
-	// Position it at 500 in Z direction
-	mCamera->setPosition(Ogre::Vector3(0,100,100));
-	// Look back along -Z
-	mCamera->lookAt(Ogre::Vector3(0,0,0));
-	mCamera->setNearClipDistance(5);
-
 }
 //-------------------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)
