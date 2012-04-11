@@ -1,0 +1,16 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Project definition and design principles}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Game definition}{3}{subsection.1.1}
+\contentsline {paragraph}{\indent \textnormal {The game we are proposing is an RTS game in which you will be managing a large horde of units in order to break down a enemy fortress.}}{3}{section*.2}
+\contentsline {paragraph}{\indent \textnormal {The main feature of this game is that you won't be able to directly control your units, in case of that, you will give them orders and the units should behave according to them but with a high free will grade.}}{3}{section*.3}
+\contentsline {paragraph}{\indent \textnormal {The horde will be separated into groups of units that you will be able to select. Using the mouse and the graphic interface provided, you will give these ``intentional'' orders to your troops, an example can be ``approach to that position'' or ``became aggressive''}}{3}{section*.4}
+\contentsline {subsection}{\numberline {1.2}Motivation}{3}{subsection.1.2}
+\contentsline {paragraph}{\indent \textnormal {We have chosen this kind of game because we think that the AI integration possibilities are huge. AI principles can be integrated in many of the game components, for example, in the game engine, AI techniques can be used in order to define and implement the units free will, also it can be combined with an agent-based approach. AI could also be applied to make opponents for the game, we should define their strategies, decision, etc...}}{3}{section*.5}
+\contentsline {subsection}{\numberline {1.3}Platform}{3}{subsection.1.3}
+\contentsline {paragraph}{\indent \textnormal {The game will be developed in the 3D engine Ogre, and it should be multi-platform (both windows and linux). The models and artwork will be designed in blender and gimp. So this game is fully free software made.}}{3}{section*.6}
+\contentsline {section}{\numberline {2}Game design and architecture}{4}{section.2}
+\contentsline {section}{\numberline {3}Artificial intelligence principles I: Computational Theory}{5}{section.3}
+\contentsline {section}{\numberline {4}Artificial intelligence principles II: Representation and algorithms}{6}{section.4}
+\contentsline {subsection}{\numberline {4.1}Application of search techniques}{6}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Application of rule based systems}{6}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Application of CBR}{6}{subsection.4.3}

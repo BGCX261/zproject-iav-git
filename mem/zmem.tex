@@ -1,0 +1,78 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{times}
+
+\usepackage[pdftex]{graphicx}
+\usepackage{epstopdf}
+
+\usepackage[english]{babel}
+
+\usepackage{anysize}
+\marginsize{2cm}{2cm}{1.5cm}{2cm}
+
+\usepackage{tabularx}
+\usepackage{amsmath, amssymb, latexsym}
+\usepackage[colorlinks=true, urlcolor=blue, citecolor=red]{hyperref}
+\usepackage{datetime}
+
+
+\newcommand{\titulo}[2]{ \begin{titlepage}\begin{center}\vspace*{\fill}\textsc{\Huge #1}\\[5cm]\textsc{\Large \underline{#2}}\\[5cm]\emph{Realizado por:}\\ \textsc{Jacinto Arias Martínez}\\ \textsc{Adrián Sánchez López}\vspace*{\fill}\vfill\monthname[\the\month],\, \the\year\end{center}\end{titlepage}}
+
+\newcommand{\p}[1]{\paragraph{\indent\textnormal{#1}}}
+
+
+
+\begin{document}
+
+ \titulo{ARTIFICIAL INTELLIGENCE IN VIDEOGAMES}{Practice project}
+
+    \begin{abstract}
+    
+    \end{abstract}
+
+  \newpage
+
+  \vspace*{3cm}
+  \tableofcontents
+  \vspace*{\fill}
+
+\newpage
+\section{Project definition and design principles}
+
+  \subsection{Game definition}
+
+    \p{The game we are proposing is an RTS game in which you will be managing a large horde of units in order to break down a enemy fortress.}
+
+    \p{The main feature of this game is that you won't be able to directly control your units, in case of that, you will give them orders and the units should behave according to them but with a high free will grade.}
+
+    \p{The horde will be separated into groups of units that you will be able to select. Using the mouse and the graphic interface provided, you will give these ``intentional'' orders to your troops, an example can be ``approach to that position'' or ``became aggressive''}
+
+
+  \subsection{Motivation}
+
+    \p{We have chosen this kind of game because we think that the AI integration possibilities are huge. AI principles can be integrated in many of the game components, for example, in the game engine, AI techniques can be used in order to define and implement the units free will, also it can be combined with an agent-based approach. AI could also be applied to make opponents for the game, we should define their strategies, decision, etc...}
+
+
+  \subsection{Platform}
+
+    \p{The game will be developed in the 3D engine  Ogre, and it should be multi-platform (both windows and linux). The models and artwork will be designed in blender and gimp. So this game is fully free software made.}
+    
+\newpage
+\section{Game design and architecture}
+
+
+\newpage
+\section{Artificial intelligence principles I: Computational Theory}
+
+\newpage
+\section{Artificial intelligence principles II: Representation and algorithms}
+
+  \subsection{Application of search techniques}
+
+  \subsection{Application of rule based systems}
+
+  \subsection{Application of CBR}
+
+
+\end{document}          
