@@ -1,0 +1,10 @@
+\frametitle {Describir el contenido de las tablas}Gracias a las descripciones incorporadas, un lector de pantallas podría describir la tabla de la siguiente forma:
+\scriptsize{\begin{verbatim}
+  Titulo: Tazas de cafe consumidas por cada politico
+  Summary: Esta tabla muestra, para algunos politicos
+   cuales son sus preferencias a la hora de tomar
+   el cafe, que tipo prefiere, cuantas tazas toman
+   y con que cantidad de azucar.
+  Nombre: A.P. Rubalcaba, Tazas: 6, Tipo: Cortado, Azucar: Si
+  Nombre: M. Rajoy, Tazas: 4, Tipo: Descaf, Azucar: Si
+ \end{verbatim}}
