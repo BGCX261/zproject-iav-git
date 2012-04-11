@@ -6,9 +6,16 @@
 Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp)
 {
 	Ogre::SceneManager* mSceneMgr = Ogre::Root::getSingleton().getSceneManager("ingameManager");
-
+	
+	// Zombie Entity
 	entity = mSceneMgr->createEntity(model);
-	node = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(initX, 0, initZ));
+	// bounding box
+	Ogre::AxisAlignedBox box = entity->getBoundingBox();
+	// Zombie Node
+	node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	// Node Position (relative to bounding box Left-Bottom)
+	node->setPosition(initX, -box.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y, initZ);
+	// attach to node
 	node->attachObject(entity);
 
 	speed = sp;

@@ -24,19 +24,31 @@ void Zproyect::createScene(void)
 	srand(5352);
 
 	// Create the camera for map navigation:
-	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 30, 30));
+	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 20, 30));
 	cameraNode->attachObject(mCamera);
 
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
 	mDirection = Ogre::Vector3::ZERO;
 	mMove = 10;
-
+	
+	/*
 	Ogre::Entity* terrain = mSceneMgr->createEntity("Terrain", "Plane.mesh");
-
 	Ogre::SceneNode* terrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	terrainNode->attachObject(terrain);
-	terrainNode->scale(Ogre::Vector3(10,10,10));
+	terrainNode->scale(Ogre::Vector3(10,10,10));*/
+	
+	// Create a plane for terrain (with texture)
+	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+    Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        plane, 100, 100, 1, 1, true, 1, 4, 4, Ogre::Vector3::UNIT_Z); 
+    Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
+    mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+    entGround->setMaterialName("GroundMat");
+    entGround->setCastShadows(false);
+
+	// SkyBox with skydom
+	mSceneMgr->setSkyDome(true, "CloudySky", 5, 8);
 
 	// Set ambient light
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
