@@ -21,16 +21,17 @@ Zproyect::~Zproyect(void)
 //-------------------------------------------------------------------------------------
 void Zproyect::createScene(void)
 {
+
 	srand(5352);
 
 	// Create the camera for map navigation:
 	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 20, 30));
 	cameraNode->attachObject(mCamera);
+	cameraMan = new CameraMan(cameraNode, Ogre::Vector3::ZERO ,10);
 
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
-	mDirection = Ogre::Vector3::ZERO;
-	mMove = 10;
+
 	
 	/*
 	Ogre::Entity* terrain = mSceneMgr->createEntity("Terrain", "Plane.mesh");
@@ -40,15 +41,19 @@ void Zproyect::createScene(void)
 	
 	// Create a plane for terrain (with texture)
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-    Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        plane, 100, 100, 1, 1, true, 1, 4, 4, Ogre::Vector3::UNIT_Z); 
-    Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
-    mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
-    entGround->setMaterialName("GroundMat");
-    entGround->setCastShadows(false);
+    	Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        	plane, 100, 100, 1, 1, true, 1, 4, 4, Ogre::Vector3::UNIT_Z);
+
+    	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
+    	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+
+    	entGround->setMaterialName("GroundMat");
+    	entGround->setCastShadows(false);
+
 
 	// SkyBox with skydom
 	mSceneMgr->setSkyDome(true, "CloudySky", 5, 8);
+
 
 	// Set ambient light
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
@@ -71,7 +76,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	aux += evt.timeSinceLastFrame;
 	bool ret = BaseApplication::frameRenderingQueued(evt);
 
-	cameraNode->translate(mDirection * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
+	cameraMan->update(evt);
 
 	for (int i = 0; i < 10; i++) {
 		if (aux >= 1) {
@@ -92,38 +97,8 @@ bool Zproyect::keyPressed( const OIS::KeyEvent &arg )
 {
 	bool ret = BaseApplication::keyPressed(arg);
 
-	switch (arg.key)
-    	{
-	case OIS::KC_UP:
-	case OIS::KC_W:
-	    mDirection.z = -mMove;
-	    break;
- 
-	case OIS::KC_DOWN:
-	case OIS::KC_S:
-	    mDirection.z = mMove;
-	    break;
- 
-	case OIS::KC_LEFT:
-	case OIS::KC_A:
-	    mDirection.x = -mMove;
-	    break;
- 
-	case OIS::KC_RIGHT:
-	case OIS::KC_D:
-	    mDirection.x = mMove;
-	    break;
- 
-	case OIS::KC_PGDOWN:
-	case OIS::KC_E:
-	    mDirection.y = -mMove;
-	    break;
- 
-	case OIS::KC_PGUP:
-	case OIS::KC_Q:
-	    mDirection.y = mMove;
-	    break;
-    }
+	cameraMan->keyPressed(arg);
+
 	return ret;
 }
 
@@ -131,41 +106,8 @@ bool Zproyect::keyReleased( const OIS::KeyEvent &arg )
 {
 	bool ret = BaseApplication::keyReleased(arg);
 
-	switch (arg.key)
-	{
-	case OIS::KC_UP:
-	case OIS::KC_W:
-	    mDirection.z = 0;
-	    break;
-	 
-	case OIS::KC_DOWN:
-	case OIS::KC_S:
-	    mDirection.z = 0;
-	    break;
-	 
-	case OIS::KC_LEFT:
-	case OIS::KC_A:
-	    mDirection.x = 0;
-	    break;
-	 
-	case OIS::KC_RIGHT:
-	case OIS::KC_D:
-	    mDirection.x = 0;
-	    break;
-	 
-	case OIS::KC_PGDOWN:
-	case OIS::KC_E:
-	    mDirection.y = 0;
-	    break;
-	 
-	case OIS::KC_PGUP:
-	case OIS::KC_Q:
-	    mDirection.y = 0;
-	    break;
-	 
-	default:
-	    break;
-	}
+	cameraMan->keyReleased(arg);
+
 	return ret;
 }
 
