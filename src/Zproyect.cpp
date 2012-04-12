@@ -22,7 +22,6 @@ Zproyect::~Zproyect(void)
 void Zproyect::createScene(void)
 {
 
-	srand(5352);
 
 	// Create the camera for map navigation:
 	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 20, 30));
@@ -32,7 +31,6 @@ void Zproyect::createScene(void)
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
 
-	
 	/*
 	Ogre::Entity* terrain = mSceneMgr->createEntity("Terrain", "Plane.mesh");
 	Ogre::SceneNode* terrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -66,30 +64,31 @@ void Zproyect::createScene(void)
 	for (int i = 0; i < 10; i++) {
 		zombies[i] = new Zombie(Ogre::String("Cube.001.mesh"), i, 0, 4);	
 	}
-	 
-	aux = 0;
+	zombiesMovementModel = new UnitMovModelRandom(5124);
 
 }
 
 bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-	aux += evt.timeSinceLastFrame;
 	bool ret = BaseApplication::frameRenderingQueued(evt);
+
+	zombiesMovementModel->preProcess(evt.timeSinceLastFrame);
 
 	cameraMan->update(evt);
 
+	// We now move all the units, according to the movement model:
 	for (int i = 0; i < 10; i++) {
-		if (aux >= 1) {
-			
-			int x = rand() % 3 - 1;
-			int z = rand() % 3 - 1;
+
+		double x, z;
+		if (zombiesMovementModel->calculateMove(&x, &z))
 			zombies[i]->move(x, z);
-		}
+
 		zombies[i]->update(evt);
 	}
-		if (aux >= 1) {
-			aux = 0;
-		}
+
+
+	zombiesMovementModel->postProcess();
+
 	return ret;
 }
 

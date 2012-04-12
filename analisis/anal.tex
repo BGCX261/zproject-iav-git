@@ -221,14 +221,36 @@
      \item \textbf{Use the terrain properties:} We've said that you can find different types of terrains in the game, and you should take benefit of them. For example,  in most of map you will find ``islands'', which are places that cannot be reached by ground units; if you develop transports to move your workers and troops to this islands you can expand there in order to make a difficult expansion to find or to attack. Also your should take profit of the high terrain, because ground units can't climb to it unless there is a ramp, and neither they can see what is up there, so you can place long range units to kill the enemy units without been counter-attacked and also you can block the ramps to make your enemy get stuck in a bottle neck.
     \end{itemize}
 
-  \subsection{Use units properly}
+  \subsubsection{Follow an optimal construction plan}
+   
+    \p{You shouldn't definitely not train or build every type of unit. In case of that, you should make a construction plan from the beginning of the game and you should evolve this if the situation require it. Following this construction plan will optimize either your resources and your strategy, saving you a lot of time and rushing your enemy. The construction plan should be used in order to implement your strategy.}
+
+  \subsubsection{Use units properly}
 
      \p{We've said that every unit in the game is stronger in order to kill some kind of unit, and in the opposite side is weaker to another unit. That's true, but in the practice it becomes more complex, it is because you are able to combine different types of units in your army, and they will both have a different potential. Also, some units have special abilities which can change the course of a battle.}
 
-     \begin{itemize}
-      \item \textbf{Know all units strong points and weaknesses:} So when you spy your enemy you will be able to decide which units are the most correct to train. In table \ref{tab:units} you can see the features of most units.
-     \end{itemize}
+     \p{Knowing all units strong points and weaknesses, so when you spy your enemy you will be able to decide which units are the most correct to train. Advanced human players know all of this by themselves and can determine if one type of unit is optimal in order to face others; an AI should be able to recognize this, and also it will be useful to store all the units different stats in order to calculate possible relations between units types by itself.}
 
+  \subsubsection{Micro management: attacking and moving}
+
+    \p{By default, a unit will attack the nearest enemy unit and will in the most straight that it could found. When you are facing a group of enemies, or you are moving large groups of them this is not by far the best approach to do that. Professional players prefer to direct command their troops to move or attack to specific places or units and they optimize so much their gameplay. It's true that a good micro management should win a battle which started in the same conditions.}
+
+    \p{In order to optimize the movement, the professional players achieve a large numbers of mouse clicks per second in order to smooth the paths that the units follow and avoid the collision between them. This way, the different groups of units should be faster and have a better manoeuvrability.}
+
+    \p{To take advantage of micro controlling on battles, the professional player order their units to focus fire on the strongest units to take them down faster and minimizing the fire that they could inflict to their troops.}
+
+\subsection{Analysis of the different techniques: Identifying problems}
+
+  \subsubsection{Heuristic search}
+
+    \p{Heuristic search search could be applied in two ways:}
+
+    \begin{itemize}
+     \item It's a good approach to found paths for the micro-controlling of the different units. By executing really short searches in the near space the units should be able to navigate the map without colliding each other and smoothing the curves when avoiding obstacles.
+     \item On the other hand, we can find heuristic search useful in order to make plans for the macro-controlling of the AI opponent. For example, we can search thought the space of different construction plans in order to adjust the current to the game status, where we can know about the enemy army or the different topology of the terrain.
+    \end{itemize}
+
+  \p{Heuristic search is not a good approach for direct controlling or more complex decisions because the combinatorial of the states will explode and be computationally unaffordable.}
 
 \newpage
 \section{Artificial intelligence principles II: Representation and algorithms}
@@ -257,5 +279,21 @@
 
       \p{An API for programming AI in Starcraft is public available.}
 
+\subsection{Heuristic search}
 
+  \p{As said before, we can think about this technique in two ways.}
+
+  \subsubsection{Input and output spaces}
+
+    \p{If we are talking about micro management, and we want to make plans to move our units, our input spaces will be the coordinates of the units, and the topology of the map. The output will show the optimal path for the next movement. This search will be executed many times, as the movement of the units appears to be a continuous space.}
+
+    \p{If we are talking about macro management, the input space will be our current army, economical data and other factors achieved during the exploration (terrain features and enemies information). The output space will be a construction plan for the next stage of the game.}
+
+
+  \subsubsection{States}
+
+  \subsubsection{Initial state – Final state}
+\subsubsection{Operators}
+\subsubsection{Function of heuristic evaluation}
+\subsubsection{Search Techniques}
 \end{document}          
