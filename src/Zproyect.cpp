@@ -30,16 +30,10 @@ void Zproyect::createScene(void)
 
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
-
-	/*
-	Ogre::Entity* terrain = mSceneMgr->createEntity("Terrain", "Plane.mesh");
-	Ogre::SceneNode* terrainNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	terrainNode->attachObject(terrain);
-	terrainNode->scale(Ogre::Vector3(10,10,10));*/
-	
+		
 	// Create a plane for terrain (with texture)
-	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-    	Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+	plane.redefine(Ogre::Vector3::UNIT_Y, Ogre::Vector3(0,0,0) );
+		Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         	plane, 100, 100, 1, 1, true, 1, 4, 4, Ogre::Vector3::UNIT_Z);
 
     	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
@@ -65,6 +59,15 @@ void Zproyect::createScene(void)
 		zombies[i] = new Zombie(Ogre::String("Cube.001.mesh"), i, 0, 4);	
 	}
 	zombiesMovementModel = new UnitMovModelRandom(5124);
+
+// --------- Pruebas --------------------------------
+
+	// banderita de seleccion con Ray
+	Ogre::Entity* banderaEntity = mSceneMgr->createEntity("Banderita", "banderita.mesh");
+	banderaNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	banderaNode->attachObject(banderaEntity);
+	banderaNode->roll(Ogre::Degree(-90));		// Giros para recoloar la bandera
+	banderaNode->pitch(Ogre::Degree(90));
 
 }
 
@@ -106,6 +109,23 @@ bool Zproyect::keyReleased( const OIS::KeyEvent &arg )
 	bool ret = BaseApplication::keyReleased(arg);
 
 	cameraMan->keyReleased(arg);
+
+	return ret;
+}
+
+bool Zproyect::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+{
+	bool ret = BaseApplication::mousePressed(arg,id);
+
+	// Rayo atraves del viewport
+	Ogre::Ray mouseRay = mCamera->getCameraToViewportRay((float)arg.state.X.abs/arg.state.width, (float)arg.state.Y.abs/arg.state.height );
+	
+	// Calcular interseccion con plano y obtener el punto 3D
+	std::pair<bool, Ogre::Real> resultRay =  mouseRay.intersects( plane );	
+	Ogre::Vector3 pointRay = mouseRay.getPoint(resultRay.second);
+	// Colocar banderita en el punto
+	banderaNode->setPosition(pointRay.x,4,pointRay.z);
+	
 
 	return ret;
 }

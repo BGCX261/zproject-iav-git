@@ -38,11 +38,19 @@ protected:
 	virtual bool keyPressed( const OIS::KeyEvent &arg );
 	virtual bool keyReleased( const OIS::KeyEvent &arg );
 
+	virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
+
 	Ogre::SceneNode* cameraNode;
 	CameraMan* cameraMan;
 
 	Zombie** zombies;
 	UnitMovModelRandom* zombiesMovementModel;
+
+	// Nodo para la banderita de seleccion
+	Ogre::SceneNode* banderaNode;
+	// plano para acceder a el globalmente
+	Ogre::Plane plane;
+
 };
 
 #endif // #ifndef __Zproyect_h_
