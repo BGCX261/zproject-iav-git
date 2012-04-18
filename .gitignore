@@ -9,3 +9,11 @@ makefile
 *.toc
 *.syntex.gz
 *.backup
+
+*.vcxproj
+*.filters
+*.user
+/bin
+/obj
+*.netrc
+*.lnk
