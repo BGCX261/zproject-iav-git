@@ -51,6 +51,11 @@ protected:
 	// plano para acceder a el globalmente
 	Ogre::Plane plane;
 
+	// Variables para la animacion del robot (en Pruebas)
+	Ogre::SceneNode* robotNode;
+	Ogre::AnimationState *robotAnimState_idle, *robotAnimState_shoot;
+	bool playRobotShoot, playRobotIdle;
+
 };
 
 #endif // #ifndef __Zproyect_h_

@@ -21,12 +21,10 @@ Zproyect::~Zproyect(void)
 //-------------------------------------------------------------------------------------
 void Zproyect::createScene(void)
 {
-
-
 	// Create the camera for map navigation:
-	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 20, 30));
+	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 35, 50));
 	cameraNode->attachObject(mCamera);
-	cameraMan = new CameraMan(cameraNode, Ogre::Vector3::ZERO ,10);
+	cameraMan = new CameraMan(cameraNode, Ogre::Vector3::ZERO ,15);
 
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
@@ -34,7 +32,7 @@ void Zproyect::createScene(void)
 	// Create a plane for terrain (with texture)
 	plane.redefine(Ogre::Vector3::UNIT_Y, Ogre::Vector3(0,0,0) );
 		Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        	plane, 100, 100, 1, 1, true, 1, 4, 4, Ogre::Vector3::UNIT_Z);
+        	plane, 300, 300, 1, 1, true, 1, 12, 12, Ogre::Vector3::UNIT_Z);
 
     	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
     	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
@@ -58,17 +56,46 @@ void Zproyect::createScene(void)
 	for (int i = 0; i < 10; i++) {
 		zombies[i] = new Zombie(Ogre::String("Cube.001.mesh"), i, 0, 4);	
 	}
-	zombiesMovementModel = new UnitMovModelRandom(5124);
+	zombiesMovementModel = new UnitMovModelRandom(5184);
 
-// --------- Pruebas --------------------------------
+	// --------------------- Pruebas --------------------------------
 
-	// banderita de seleccion con Ray
+	// Banderita selection with Ray
 	Ogre::Entity* banderaEntity = mSceneMgr->createEntity("Banderita", "banderita.mesh");
-	banderaNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	banderaNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("BanderitaNode",Ogre::Vector3(0,-20,0));
 	banderaNode->attachObject(banderaEntity);
-	banderaNode->roll(Ogre::Degree(-90));		// Giros para recoloar la bandera
+	banderaNode->roll(Ogre::Degree(-90));		// Redefine Banderita position (fuck Blender-Ogre exporter)
 	banderaNode->pitch(Ogre::Degree(90));
 
+	// Bunker
+	Ogre::Entity* bunkerEntity = mSceneMgr->createEntity("Bunker", "bunker.mesh");
+	Ogre::AxisAlignedBox bunkerBox = bunkerEntity->getBoundingBox();	// bounding box
+	Ogre::SceneNode* bunkerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	bunkerNode->scale(5,5,6);
+	bunkerNode->yaw(Ogre::Degree(90) );
+	// Node Position (relative to bunker bounding box Left-Bottom)
+	bunkerNode->setPosition(10, -bunkerBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y*5, -40);
+	bunkerNode->attachObject(bunkerEntity);
+
+	// Robot on Bunker
+	Ogre::Entity* robotEntity = mSceneMgr->createEntity("Robot", "robot.mesh");
+	robotNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("robotNode",Ogre::Vector3(10,1,-33));
+	robotNode->attachObject(robotEntity);
+	//robotEntity->setMaterialName("robot");
+	robotNode->scale(0.1,0.1,0.1);
+	robotNode->yaw(Ogre::Degree(-90));
+
+	// Robot Animations
+	robotAnimState_idle = robotEntity->getAnimationState("Idle");
+	robotAnimState_shoot = robotEntity->getAnimationState("Shoot");
+
+	robotAnimState_idle->setEnabled(true);
+	robotAnimState_idle->setLoop(true);
+
+	robotAnimState_shoot->setEnabled(true);	playRobotShoot=false;
+	robotAnimState_shoot->setLoop(false);
+
+	//------------------------------------------------------------------------------------------
 }
 
 bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -87,10 +114,30 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 			zombies[i]->move(x, z);
 
 		zombies[i]->update(evt);
+
+		// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
+		if( (zombies[i]->node->getPosition().distance( robotNode->getPosition() ) <= 25 )&&( zombies[i]->isLive() ) ){
+			playRobotShoot=true;
+			zombies[i]->kill();
+		}
 	}
 
-
 	zombiesMovementModel->postProcess();
+
+	// ---------------------------------------------------------------------------------------------
+	// play robot animation (encapsular esto)
+	if(playRobotShoot) {
+		robotAnimState_shoot->addTime(evt.timeSinceLastFrame*0.7);		// shot animation
+		// Stop animation
+		if (robotAnimState_shoot->getTimePosition() >= robotAnimState_shoot->getLength()){
+			robotAnimState_shoot->setTimePosition(0);		// reset animation time
+			playRobotShoot=false;							// stop animation
+		}
+	}else{
+		robotAnimState_idle->addTime(evt.timeSinceLastFrame);			// idle animation
+	}
+	
+
 
 	return ret;
 }
@@ -100,7 +147,7 @@ bool Zproyect::keyPressed( const OIS::KeyEvent &arg )
 	bool ret = BaseApplication::keyPressed(arg);
 
 	cameraMan->keyPressed(arg);
-
+	
 	return ret;
 }
 
@@ -117,14 +164,18 @@ bool Zproyect::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 	bool ret = BaseApplication::mousePressed(arg,id);
 
-	// Rayo atraves del viewport
-	Ogre::Ray mouseRay = mCamera->getCameraToViewportRay((float)arg.state.X.abs/arg.state.width, (float)arg.state.Y.abs/arg.state.height );
+	// si boton izquierdo mouse
+	if (arg.state.buttonDown(OIS::MB_Left))
+	{
+		// Rayo atraves del viewport
+		Ogre::Ray mouseRay = mCamera->getCameraToViewportRay((float)arg.state.X.abs/arg.state.width, (float)arg.state.Y.abs/arg.state.height );
 	
-	// Calcular interseccion con plano y obtener el punto 3D
-	std::pair<bool, Ogre::Real> resultRay =  mouseRay.intersects( plane );	
-	Ogre::Vector3 pointRay = mouseRay.getPoint(resultRay.second);
-	// Colocar banderita en el punto
-	banderaNode->setPosition(pointRay.x,4,pointRay.z);
+		// Calcular interseccion con plano y obtener el punto 3D
+		std::pair<bool, Ogre::Real> resultRay =  mouseRay.intersects( plane );	
+		Ogre::Vector3 pointRay = mouseRay.getPoint(resultRay.second);
+		// Colocar banderita en el punto
+		banderaNode->setPosition(pointRay.x,4,pointRay.z);
+	}
 	
 
 	return ret;

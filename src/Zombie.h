@@ -13,13 +13,17 @@ public:
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
 	void update(const Ogre::FrameEvent& evt);
 
+	void kill(void);			// kill it
+	bool isLive(void);
+
+	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 
 protected:
-	Ogre::SceneNode* node;
-	Ogre::Entity* entity;
 
+	Ogre::Entity* entity;
 	Ogre::Vector3 translateVector;
 	Ogre::Real speed;
+	bool live;		// live/dead zombie
 };
 
 #endif // #ifndef __Zombie_h_

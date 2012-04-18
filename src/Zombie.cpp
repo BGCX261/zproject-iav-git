@@ -20,6 +20,9 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 
 	speed = sp;
 	translateVector = Ogre::Vector3(0, 0, 0);
+
+	// start ALIVE !
+	live = true;
 }
 
 //-------------------------------------------------------------------------------------
@@ -37,7 +40,21 @@ void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 //-------------------------------------------------------------------------------------
 void Zombie::update(const Ogre::FrameEvent& evt)
 {
-	node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_WORLD);
+	if(live){
+		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_WORLD);
+	} else{
+		node->yaw(Ogre::Degree(1));			// simulate the dead turning
+	}
+}
+
+// Kill the zombie
+void Zombie::kill(){
+	live = false;
+}
+
+// Check if zombie is live or dead
+bool Zombie::isLive(){
+	return live;
 }
 
 
