@@ -2,9 +2,8 @@
 
 #include "UnitMovModel.h"
 
-UnitMovModelRandom::UnitMovModelRandom(int seed)
+UnitMovModelRandom::UnitMovModelRandom()
 {
-	srand(seed);
 	aux = 0;
 }
 
@@ -24,14 +23,20 @@ void UnitMovModelRandom::postProcess()
 }
 
 //-------------------------------------------------
-bool UnitMovModelRandom::calculateMove(double* x, double* z)
+bool UnitMovModelRandom::calculateMove(Zombie **zom, int i, double* x, double* z)
 {
 	bool change = false;
-
+	
 	if (aux >= 1)
 	{
-		*x = rand() % 3 - 1;
-		*z = rand() % 3 - 1;
+		// Get the center a calculate a point of a circumference:
+		Ogre::Vector3 pos = zom[i]->node->getPosition();
+		
+		double angle = rand() % 360;
+		angle = Ogre::Math::DegreesToRadians(angle);
+
+		*x = pos.x + 1 * Ogre::Math::Cos(angle);
+		*z = pos.z + 1 * Ogre::Math::Sin(angle);
 
 		change = true;
 	}

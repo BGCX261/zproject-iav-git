@@ -21,6 +21,8 @@ Zproyect::~Zproyect(void)
 //-------------------------------------------------------------------------------------
 void Zproyect::createScene(void)
 {
+	srand(time(0));
+
 	// Create the camera for map navigation:
 	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 35, 50));
 	cameraNode->attachObject(mCamera);
@@ -52,11 +54,14 @@ void Zproyect::createScene(void)
 	Ogre::Light* l = mSceneMgr->createLight("MainLight");
 	l->setPosition(20,80,50);
 
-	zombies = new Zombie*[10];
-	for (int i = 0; i < 10; i++) {
+
+	// Create the zombies
+	nZombies = 1;
+	zombies = new Zombie*[nZombies];
+	for (int i = 0; i < nZombies; i++) {
 		zombies[i] = new Zombie(Ogre::String("Cube.001.mesh"), i, 0, 4);	
 	}
-	zombiesMovementModel = new UnitMovModelRandom(5184);
+	zombiesMovementModel = new UnitMovModelRandom();
 
 	// --------------------- Pruebas --------------------------------
 
@@ -73,6 +78,7 @@ void Zproyect::createScene(void)
 	Ogre::SceneNode* bunkerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	bunkerNode->scale(5,5,6);
 	bunkerNode->yaw(Ogre::Degree(90) );
+
 	// Node Position (relative to bunker bounding box Left-Bottom)
 	bunkerNode->setPosition(10, -bunkerBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y*5, -40);
 	bunkerNode->attachObject(bunkerEntity);
@@ -81,6 +87,7 @@ void Zproyect::createScene(void)
 	Ogre::Entity* robotEntity = mSceneMgr->createEntity("Robot", "robot.mesh");
 	robotNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("robotNode",Ogre::Vector3(10,1,-33));
 	robotNode->attachObject(robotEntity);
+
 	//robotEntity->setMaterialName("robot");
 	robotNode->scale(0.1,0.1,0.1);
 	robotNode->yaw(Ogre::Degree(-90));
@@ -107,10 +114,10 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	cameraMan->update(evt);
 
 	// We now move all the units, according to the movement model:
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < nZombies; i++) {
 
 		double x, z;
-		if (zombiesMovementModel->calculateMove(&x, &z))
+		if (zombiesMovementModel->calculateMove(zombies, i, &x, &z))
 			zombies[i]->move(x, z);
 
 		zombies[i]->update(evt);

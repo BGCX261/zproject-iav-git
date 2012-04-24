@@ -2,11 +2,12 @@
 #define __UnitMovModel_h_
 
 #include <OGRE/Ogre.h>
+#include "Zombie.h"
 
 class UnitMovModel
 {
    public:
-	virtual bool calculateMove(double* x, double* z)  = 0;
+	virtual bool calculateMove(Zombie **zom, int i, double* x, double* z)  = 0;
 };
 //-------------------------------------------------------
 
@@ -15,8 +16,8 @@ class UnitMovModelRandom : public UnitMovModel
 	private:
 		double aux;
 	public:
-		UnitMovModelRandom(int seed);
-		bool calculateMove(double* x, double* z);
+		UnitMovModelRandom();
+		bool calculateMove(Zombie **zom, int i, double* x, double* z);
 		void preProcess(double time);
 		void postProcess();
 };

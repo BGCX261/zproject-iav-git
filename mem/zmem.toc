@@ -8,18 +8,33 @@
 \contentsline {paragraph}{\indent \textnormal {We have chosen this kind of game because we think that the AI integration possibilities are huge. AI principles can be integrated in many of the game components, for example, in the game engine, AI techniques can be used in order to define and implement the units free will, also it can be combined with an agent-based approach. AI could also be applied to make opponents for the game, we should define their strategies, decision, etc...}}{3}{section*.5}
 \contentsline {subsection}{\numberline {1.3}Platform}{3}{subsection.1.3}
 \contentsline {paragraph}{\indent \textnormal {The game will be developed in the 3D engine Ogre, and it should be multi-platform (both windows and linux). The models and artwork will be designed in blender and gimp. So this game is fully free software made.}}{3}{section*.6}
-\contentsline {section}{\numberline {2}Game design and architecture}{4}{section.2}
-\contentsline {subsection}{\numberline {2.1}Software engineering and game engine implementation issues}{4}{subsection.2.1}
-\contentsline {paragraph}{\indent \textnormal {As this subject is not focused on videogames programming, this section will cover the basis of the implementation in order to identify and follow the different elements of the game engine. We are going the provide the fewer diagrams and models needed to understand the structure and the function of this application.}}{4}{section*.7}
-\contentsline {subsection}{\numberline {2.2}AI techniques integration}{4}{subsection.2.2}
-\contentsline {paragraph}{\indent \textnormal {In this section we will talk about the structure of the game engine and how we should integrate the different techniques in order to provide not only a videogame but also a modular platform in which we can test the different approaches seen in class and study its behaviours.}}{4}{section*.8}
-\contentsline {paragraph}{\indent \textnormal {On the one hand and as the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a platform for testing AI techniques we are going to let an empty place in which we can plug in the AI techniques as different modules implementing an specific model; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}}{4}{section*.9}
-\contentsline {subsubsection}{\numberline {2.2.1}Movement models}{4}{subsubsection.2.2.1}
-\contentsline {subsubsection}{\numberline {2.2.2}Behaving and action models}{4}{subsubsection.2.2.2}
-\contentsline {subsubsection}{\numberline {2.2.3}Strategy and meta-game models}{4}{subsubsection.2.2.3}
-\contentsline {section}{\numberline {3}Artificial intelligence principles I: Computational Theory}{5}{section.3}
-\contentsline {paragraph}{\indent \textnormal {}}{5}{section*.10}
-\contentsline {section}{\numberline {4}Artificial intelligence principles II: Representation and algorithms}{6}{section.4}
-\contentsline {subsection}{\numberline {4.1}Application of search techniques}{6}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Application of rule based systems}{6}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Application of CBR}{6}{subsection.4.3}
+\contentsline {section}{\numberline {2}Artificial intelligence principles I: Computational Theory}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Game elements}{4}{subsection.2.1}
+\contentsline {paragraph}{\indent \textnormal {In this game your goal is to conquer the centre of the map.}}{4}{section*.7}
+\contentsline {paragraph}{\indent \textnormal {There are three main elements on the game:}}{4}{section*.8}
+\contentsline {paragraph}{\indent \textnormal {You can also find obstacles and other passive elements alog the map.}}{4}{section*.9}
+\contentsline {subsection}{\numberline {2.2}Knowledge extraction}{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Artificial intelligence applications}{4}{subsection.2.3}
+\contentsline {paragraph}{\indent \textnormal {In this section we will identify some of the problems that can be solved using artificial intelligence solutions.}}{4}{section*.10}
+\contentsline {paragraph}{\indent \textnormal {The most inmediate problem to solve is the behaviour of the units. With most of the techniques we should solve problems like units movement, path finding, collision avoidance or unit tracking.}}{4}{section*.11}
+\contentsline {paragraph}{\indent \textnormal {Other aspect of the game that can be involved in AI developing can be the opponent strategy. We can implements such methods in order to give the opponent more intelligence making the game most interesting. For example we can apply these techniques for choosing the army or placing in on the map.}}{4}{section*.12}
+\contentsline {subsubsection}{\numberline {2.3.1}Movement problems}{4}{subsubsection.2.3.1}
+\contentsline {paragraph}{\indent \textnormal {When speaking about movement we have to difference between zombies and enemies, because their movement models are not the same.}}{4}{section*.13}
+\contentsline {paragraph}{\indent \textnormal {The zombies model is based in two parameters, firs of all we have the destination point which is the zombies goal to reach, on the other hand we have the hunger of the zombies group. If the zombies are hungry they would tend to wander around while reaching the point, if the hunger level gets low the zombies will appear to come closer to the point obeying the player's order directly.}}{4}{section*.14}
+\contentsline {paragraph}{\indent \textnormal {When programming the zombies movement we should take those parameters in consideration and apply an straight movement and a movement pattern for randomness when wandering. These movement pattern should be applied by using AI techniques, with different techniques we could achieve richer patterns going from a random pattern to behaviours like birds flocks, particle swarm or something different.}}{4}{section*.15}
+\contentsline {paragraph}{\indent \textnormal {A rules based system, a neural network or CBR can be implemented to achieve this.}}{4}{section*.16}
+\contentsline {subsubsection}{\numberline {2.3.2}Path finding and collision avoidance}{4}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Units tracing}{4}{subsubsection.2.3.3}
+\contentsline {section}{\numberline {3}Artificial intelligence principles II: Representation and algorithms}{5}{section.3}
+\contentsline {subsection}{\numberline {3.1}Application of search techniques}{5}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Application of rule based systems}{5}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Application of CBR}{5}{subsection.3.3}
+\contentsline {section}{\numberline {4}Artificial intelligence principles III: Implementation}{6}{section.4}
+\contentsline {subsection}{\numberline {4.1}Software engineering and game engine implementation issues}{6}{subsection.4.1}
+\contentsline {paragraph}{\indent \textnormal {As this subject is not focused on videogames programming, this section will cover the basis of the implementation in order to identify and follow the different elements of the game engine. We are going the provide the fewer diagrams and models needed to understand the structure and the function of this application.}}{6}{section*.17}
+\contentsline {subsection}{\numberline {4.2}AI techniques integration}{6}{subsection.4.2}
+\contentsline {paragraph}{\indent \textnormal {In this section we will talk about the structure of the game engine and how we should integrate the different techniques in order to provide not only a videogame but also a modular platform in which we can test the different approaches seen in class and study its behaviours.}}{6}{section*.18}
+\contentsline {paragraph}{\indent \textnormal {On the one hand and as the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a platform for testing AI techniques we are going to let an empty place in which we can plug in the AI techniques as different modules implementing an specific model; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}}{6}{section*.19}
+\contentsline {subsubsection}{\numberline {4.2.1}Movement models}{6}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Behaving and action models}{6}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}Strategy and meta-game models}{6}{subsubsection.4.2.3}

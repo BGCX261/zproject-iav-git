@@ -64,11 +64,44 @@
 
   \subsection{Game elements}
 
+    \p{In this game your goal is to conquer the centre of the map.}
+
+    \p{There are three main elements on the game:}
+
+    \begin{itemize}
+     \item \textbf{Zombies:} This is the interactive element of the game. You will control groups of approximately ten zombies that will start spread over the map. You can order the zombies to move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the centre of the map they should attack the enemy, but beware because they can shoot and kill the zombies.
+     \item \textbf{Food:} Spread along the map you can also find food, food is necessary for the zombies to get strong and obey your orders. If a group of zombies find food they will eat it.
+     \item \textbf{Enemies:} In the centre of the map you will find a bunch of enemies. They will be patrolling all the time and trying to kill your zombies if they come close enough. Your goal is to kill every enemy on the map.
+    \end{itemize}
+
+  \p{You can also find obstacles and other passive elements alog the map.}
+
+
   \subsection{Knowledge extraction}
 
   \subsection{Artificial intelligence applications}
 
-\newpage
+  \p{In this section we will identify some of the problems that can be solved using artificial intelligence solutions.}
+
+  \p{The most inmediate problem to solve is the behaviour of the units. With most of the techniques we should solve problems like units movement, path finding, collision avoidance or unit tracking.}
+
+  \p{Other aspect of the game that can be involved in AI developing can be the opponent strategy. We can implements such methods in order to give the opponent more intelligence making the game most interesting. For example we can apply these techniques for choosing the army or placing in on the map.}
+
+  \subsubsection{Movement problems}
+    
+    \p{When speaking about movement we have to difference between zombies and enemies, because their movement models are not the same.}
+
+    \p{The zombies model is based in two parameters, firs of all we have the destination point which is the zombies goal to reach, on the other hand we have the hunger of the zombies group. If the zombies are hungry they would tend to wander around while reaching the point, if the hunger level gets low the zombies will appear to come closer to the point obeying the player's order directly.}
+
+    \p{When programming the zombies movement we should take those parameters in consideration and apply an straight movement and a movement pattern for randomness when wandering. These movement pattern should be applied by using AI techniques, with different techniques we could achieve richer patterns going from a random pattern to behaviours like birds flocks, particle swarm or something different.}
+
+    \p{A rules based system, a neural network or CBR can be implemented to achieve this.}
+
+   \subsubsection{Path finding and collision avoidance}
+
+   \subsubsection{Units tracing}
+
+  \newpage
 \section{Artificial intelligence principles II: Representation and algorithms}
 
   \subsection{Application of search techniques}

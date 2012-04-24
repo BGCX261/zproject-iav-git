@@ -33,8 +33,8 @@ Zombie::~Zombie(void)
 //-------------------------------------------------------------------------------------
 void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 {
-	translateVector.x = axisX * speed;
-	translateVector.z = axisZ * speed;
+	translateVector.x = (axisX - node->getPosition().x) * speed;
+	translateVector.z = (axisZ - node->getPosition().z) * speed;
 }
 
 //-------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 	if(live){
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_WORLD);
 	} else{
-		node->yaw(Ogre::Degree(1));			// simulate the dead turning
+		node->yaw(Ogre::Degree(1)); // simulate the dead turning
 	}
 }
 

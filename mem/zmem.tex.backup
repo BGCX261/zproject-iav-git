@@ -58,8 +58,27 @@
 
     \p{The game will be developed in the 3D engine  Ogre, and it should be multi-platform (both windows and linux). The models and artwork will be designed in blender and gimp. So this game is fully free software made.}
     
+
 \newpage
-\section{Game design and architecture}
+\section{Artificial intelligence principles I: Computational Theory}
+
+  \subsection{Game elements}
+
+  \subsection{Knowledge extraction}
+
+  \subsection{Artificial intelligence applications}
+
+\newpage
+\section{Artificial intelligence principles II: Representation and algorithms}
+
+  \subsection{Application of search techniques}
+
+  \subsection{Application of rule based systems}
+
+  \subsection{Application of CBR}
+
+\newpage
+\section{Artificial intelligence principles III: Implementation}
 
   \subsection{Software engineering and game engine implementation issues}
 
@@ -72,28 +91,12 @@
 
   \p{In this section we will talk about the structure of the game engine and how we should integrate the different techniques in order to provide not only a videogame but also a modular platform in which we can test the different approaches seen in class and study its behaviours.}
 
-  \p{On the one hand and s the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a rich platform for testing AI techniques we are going to let such modules in which we can plug in the AI techniques as different modules; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}
+  \p{On the one hand and as the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a platform for testing AI techniques we are going to let an empty place in which we can plug in the AI techniques as different modules implementing an specific model; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}
   
   \subsubsection{Movement models}
 
   \subsubsection{Behaving and action models}
 
   \subsubsection{Strategy and meta-game models}
-
-\newpage
-\section{Artificial intelligence principles I: Computational Theory}
-
-  \p{}
-
-
-\newpage
-\section{Artificial intelligence principles II: Representation and algorithms}
-
-  \subsection{Application of search techniques}
-
-  \subsection{Application of rule based systems}
-
-  \subsection{Application of CBR}
-
 
 \end{document}          
