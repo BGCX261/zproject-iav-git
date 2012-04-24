@@ -7,7 +7,7 @@
 class UnitMovModel
 {
    public:
-	virtual bool calculateMove(Zombie **zom, int i, double* x, double* z)  = 0;
+	virtual bool calculateMove(Zombie **zom, int i, Ogre::Vector3 flag, double* x, double* z)  = 0;
 };
 //-------------------------------------------------------
 
@@ -17,7 +17,7 @@ class UnitMovModelRandom : public UnitMovModel
 		double aux;
 	public:
 		UnitMovModelRandom();
-		bool calculateMove(Zombie **zom, int i, double* x, double* z);
+		bool calculateMove(Zombie **zom, int i, Ogre::Vector3 flag, double* x, double* z);
 		void preProcess(double time);
 		void postProcess();
 };

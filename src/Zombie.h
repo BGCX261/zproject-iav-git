@@ -17,12 +17,16 @@ public:
 	bool isLive(void);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
+	double hunger;
 
 protected:
 
 	Ogre::Entity* entity;
+
 	Ogre::Vector3 translateVector;
+	Ogre::Degree bearing;
 	Ogre::Real speed;
+
 	bool live;		// live/dead zombie
 };
 
