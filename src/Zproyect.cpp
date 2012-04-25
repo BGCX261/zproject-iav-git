@@ -59,7 +59,7 @@ void Zproyect::createScene(void)
 	nZombies = 10;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
-		zombies[i] = new Zombie(Ogre::String("Cube.mesh"), rand() % nZombies, rand() % nZombies, 4);	
+		zombies[i] = new Zombie(Ogre::String("Cube.mesh"), rand() % nZombies, rand() % nZombies, 4, 0.5);	
 	}
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock();

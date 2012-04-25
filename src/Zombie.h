@@ -7,7 +7,7 @@
 class Zombie
 {
 public:
-	Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp);
+	Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr);
 	virtual ~Zombie(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
@@ -26,8 +26,12 @@ protected:
 	Ogre::Entity* entity;
 
 	Ogre::Vector3 translateVector;
-	Ogre::Degree bearing;
+
+	Ogre::Radian angleTurn;
+	bool turning;
+
 	Ogre::Real speed;
+	Ogre::Real speedTurn;
 
 	bool live;		// live/dead zombie
 };

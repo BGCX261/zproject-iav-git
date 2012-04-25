@@ -3,7 +3,7 @@
 #include "Zombie.h"
 
 //-------------------------------------------------------------------------------------
-Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp)
+Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr)
 {
 	Ogre::SceneManager* mSceneMgr = Ogre::Root::getSingleton().getSceneManager("ingameManager");
 	
@@ -19,12 +19,14 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 	node->attachObject(entity);
 
 	speed = sp;
+	speedTurn = sptr;
+	angleTurn = 0;
 	translateVector = Ogre::Vector3(0, 0, 0);
-	translateVector = Ogre::Vector3(0, 0, 0);
+	
 
 	// start ALIVE !
 	live = true;
-	hunger = 0.75;
+	hunger = 0.6;
 }
 
 //-------------------------------------------------------------------------------------
@@ -35,9 +37,8 @@ Zombie::~Zombie(void)
 //-------------------------------------------------------------------------------------
 void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 {
-	Ogre::Radian angle = Ogre::Math::ATan2(axisZ - node->getPosition().z, axisX - node->getPosition().x);
-
-	node->setOrientation(Ogre::Quaternion(-angle, Ogre::Vector3::UNIT_Y));
+	angleTurn = - Ogre::Math::ATan2(axisZ - node->getPosition().z, axisX - node->getPosition().x);
+	turning = true;
 
 	translateVector.x = speed;
 	
@@ -49,6 +50,37 @@ void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 void Zombie::update(const Ogre::FrameEvent& evt)
 {
 	if(live){
+
+		Ogre::Radian actualBearing = node->getOrientation().getYaw();;
+
+	    	// If we are still turning we have to update the orientation:
+	    	if (turning)
+		{
+			// Avoid to rotate using the longest path:
+			if(Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) > Ogre::Math::PI)
+			{
+		    		if(angleTurn > actualBearing)
+				{
+		        		actualBearing += Ogre::Radian(Ogre::Math::PI * 2);
+		    		}else
+				{
+		       			actualBearing -= Ogre::Radian(Ogre::Math::PI * 2);
+		    		}
+			}
+		
+			// If we are about to complete the turning we force it to be sure it reaches th exact amount:
+			if (Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) < 0.08726) {
+			    actualBearing = angleTurn;
+			    turning = false;
+			}
+		
+			// Update the actual orientation:
+			actualBearing = actualBearing + (angleTurn - actualBearing) / (speedTurn / evt.timeSinceLastFrame);
+			    
+			// Apply the turn on the node:
+			node->setOrientation(Ogre::Quaternion(actualBearing, Ogre::Vector3(0, 1, 0)));
+		}
+
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 	} else{
 		node->yaw(Ogre::Degree(1)); // simulate the dead turning
