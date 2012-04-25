@@ -46,7 +46,7 @@
 
     \p{The main feature of this game is that you won't be able to directly control your units, in case of that, you will give them orders and the units should behave according to them but with a high free will grade.}
 
-    \p{The horde will be separated into groups of units that you will be able to select. Using the mouse and the graphic interface provided, you will give these ``intentional'' orders to your troops, an example can be ``approach to that position'' or ``became aggressive''}
+    \p{The horde will be separated into groups of units that you will be able to select. Using the mouse and the graphic interface provided, you will give these orders to your troops, an example can be ``approach to that position'' or ``became aggressive''.}
 
 
   \subsection{Motivation}
@@ -69,21 +69,23 @@
     \p{There are three main elements on the game:}
 
     \begin{itemize}
-     \item \textbf{Zombies:} This is the interactive element of the game. You will controll groups of aproximatelly ten zombies that will start spread over the map. You can order the zombies to move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the centre of the map they should attack the enemy, but beware because they can shoot and kill the zombies.
+     \item \textbf{Zombies:} This is the interactive element of the game. You will control groups of approximately ten zombies that will start spread over the map. You can order the zombies to move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the centre of the map they should attack the enemy, but beware because they can shoot and kill the zombies.
      \item \textbf{Food:} Spread along the map you can also find food, food is necessary for the zombies to get strong and obey your orders. If a group of zombies find food they will eat it.
      \item \textbf{Enemies:} In the centre of the map you will find a bunch of enemies. They will be patrolling all the time and trying to kill your zombies if they come close enough. Your goal is to kill every enemy on the map.
     \end{itemize}
 
-  \p{You can also find obstacles and other passive elements alog the map.}
+  \p{You can also find obstacles and other passive elements along the map.}
 
 
   \subsection{Knowledge extraction}
+
+    \p{In further develop of the game we will be able to fill out this section.}
 
   \subsection{Artificial intelligence applications}
 
   \p{In this section we will identify some of the problems that can be solved using artificial intelligence solutions.}
 
-  \p{The most inmediate problem to solve is the behaviour of the units. With most of the techniques we should solve problems like units movement, path finding, collision avoidance or unit tracking.}
+  \p{The most immediate problem to solve is the behaviour of the units. With most of the techniques we should solve problems like units movement, path finding, collision avoidance or unit tracking.}
 
   \p{Other aspect of the game that can be involved in AI developing can be the opponent strategy. We can implements such methods in order to give the opponent more intelligence making the game most interesting. For example we can apply these techniques for choosing the army or placing in on the map.}
 
@@ -99,16 +101,80 @@
 
    \subsubsection{Path finding and collision avoidance}
 
-   \subsubsection{Units tracing}
+    \p{This problem is mostly a feature of the game engine. With the integration of a physics module which will simulate the collisions of solid models there should be physical interaction between the elements of the game. For example, a unit will not be able to pass through a tree or a wall or also through another unit; also, it will have to adapt its movement to the terrain topology.}
+
+    \p{For that reason, when a element is commanded to move through the map the game engine should find for him a valid path in order to keep the movement realistic and avoiding that element (normally and avatar) to get stuck in somewhere.}
+
+    \p{Normally, those path finding problems can be solved applying heuristic search techniques like the A star algorithm.}
+
+   \subsubsection{Opponent strategy}
+
+    \p{At first, the game is being designed as a single player one. For that reason an AI should be designed and programmed in order to control the opponent.}
+
+    \p{This AI system should variate in complexity, different models and behaviours can be programmed in order to give the game a different approach. For example, a simple rule based system can be implemented in order to do that conferring the an ``arcade'' approach. However, we can also integrate an combination of different AI techniques even including learning, to make a robust opponent for a different kind of game with also a really good academic interest.}
+
+    \p{Independently of the selected system, the problems that should be solved by it are the same:}
+
+    \begin{itemize}
+     \item Moving and positioning the units.
+     \item Look for, select and attack enemies.
+    \end{itemize}
+  
+    \p{Those problems can be solved using a very simple system or using a high-level complicated strategy.}
+
 
   \newpage
 \section{Artificial intelligence principles II: Representation and algorithms}
 
   \subsection{Application of search techniques}
 
+    \subsubsection{Path finding}
+    \p{As we said above, we can apply those techniques in order to find correct paths for the units to move. In order to solve the problem we will use the popular A star algorithm, and for that we have defined the next representation scheme:}
+
+    \begin{itemize}
+     \item \textbf{Input space:} As an input the algorithm will receive the game's map divided in regions and represented as a non directed graph where each node will be either a passable or an impassable region, the actual location of the unit to move and the final location where the unit want to reach. The arcs of the graph will be weighted with the distance between regions and only the nodes which represents adjacent region will be connected.
+     \item \textbf{Output space:} As an output the algorithm will return a valid path of the graph, directly interpretable by the game engine.
+     \item \textbf{States:} An stated will be conformed by a node on the graph. Only the nodes that are passable can be considered as valid states. 
+     \item \textbf{Initial state – Final state:} The initial state corresponds to the node which represents the region of the map where the unit is located.
+     \item \textbf{Operators:} Ramification through states should be done by moving directly to the neighbours of the current node.
+     \item \textbf{Function of heuristic evaluation:} The heuristic function will just be the cost of the path of going directly from the origin to the destination without considering the condition of the regions. The distances will be precalculated for the algorithm.
+    \end{itemize}
+
   \subsection{Application of rule based systems}
+  
+    \subsubsection{Movement model: Simulation of a birds flock}
+
+      \p{As we said, we can use a RBS in order to provide a model of movement for our units. In this case it will be a simple one with a really small set of rules but when applied to a group of units it is fully functional and provides emergent behaviours so this could also be seen as an \textbf{artificial life} system.}
+
+      \p{For the implementation which will be explained later we have defined the next representation scheme:}
+
+      \begin{itemize}
+      \item \textbf{Input space:} As an input space we provide as antecedents the unit actual location, and the other units actual location.
+      \item \textbf{Output space:} As an output space the system returns a destination location where the unit will go as the movement module expect.
+      \item \textbf{Input and output representation:} The locations are represented as 2D points in a cartesian system, so we can make some calculations on them.
+      \item \textbf{Statements base:} Nearest unit distance.
+      \item \textbf{Set of rules (knowledge injected):} The set of rules consists of three of them, enough to provide an approximation for the birds flock behaviour. The rules are the following, ordered by highest priority:
+	  \begin{itemize}
+	    \item \textit{If you are far away from other birds, head toward the nearest bird.}
+	    \item \textit{If you are about to crash into another bird, turn around.}
+	    \item \textit{Otherwise, fly in the same direction as the bird next to you.}
+
+	  \end{itemize}
+      \item \textbf{Considerations for the inference engine:} As this will be a really short inference cycle, the inference engine will be emulated using sequential conditional and the statement base using numerical variables.
+      \item \textbf{¿Learning?:} As this system is based on purely injected knowledge it will be difficult to include any learning. Perhaps the distance parameters of that appears on the rules should be later optimized.
+      \end{itemize}
+
+
+
+
 
   \subsection{Application of CBR}
+
+    \p{Not yet formalized...}
+
+    \p{The idea is to use them in order to define some strategies for the opponent, giving more flexibility than a RBS.}
+
+
 
 \newpage
 \section{Artificial intelligence principles III: Implementation}
@@ -118,6 +184,9 @@
     \p{As this subject is not focused on videogames programming, this section will cover the basis of the implementation in order to identify and follow the different elements of the game engine. We are going the provide the fewer diagrams and models needed to understand the structure and the function of this application.}
 
 
+  \subsection{Programing with Ogre3D}
+
+  \subsection{Artwork in Blender and Gimp}
 
 
   \subsection{AI techniques integration}
@@ -126,10 +195,14 @@
 
   \p{On the one hand and as the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a platform for testing AI techniques we are going to let an empty place in which we can plug in the AI techniques as different modules implementing an specific model; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}
   
-  \subsubsection{Movement models}
+  \subsubsection{Movement module and models}
+    
+    \p{The movement models for the units will affect to their free will movements during the game. Providing richer model will make the make more interesting as our avatar should behave in a more complex way and also resulting on situations of emergency.}
 
-  \subsubsection{Behaving and action models}
+    \p{The movement module itself should catch some of the parameters from the units and environment and provide a function \textit{calculateMove()} that, for a given avatar, will calculate the next move.}
 
-  \subsubsection{Strategy and meta-game models}
+  \subsubsection{Behaving and action module and models}
+
+  \subsubsection{Strategy and meta-game module and models}
 
 \end{document}          
