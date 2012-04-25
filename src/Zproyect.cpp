@@ -56,12 +56,13 @@ void Zproyect::createScene(void)
 
 
 	// Create the zombies
-	nZombies = 100;
+	nZombies = 10;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
-		zombies[i] = new Zombie(Ogre::String("Cube.mesh"), i, 0, 4);	
+		zombies[i] = new Zombie(Ogre::String("Cube.mesh"), rand() % nZombies, rand() % nZombies, 4);	
 	}
-	zombiesMovementModel = new UnitMovModelRandom();
+	//zombiesMovementModel = new UnitMovModelRandom();
+	zombiesMovementModel = new UnitMovModelRBSFlock();
 
 	// --------------------- Pruebas --------------------------------
 
@@ -117,7 +118,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	for (int i = 0; i < nZombies; i++) {
 
 		double x, z;
-		if (zombiesMovementModel->calculateMove(zombies, i, banderaNode->getPosition(), &x, &z))
+		if (zombiesMovementModel->calculateMove(zombies, nZombies, i, banderaNode->getPosition(), &x, &z))
 			zombies[i]->move(x, z);
 
 		zombies[i]->update(evt);

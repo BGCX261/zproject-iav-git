@@ -6,18 +6,34 @@
 
 class UnitMovModel
 {
+   protected:
+	double aux;
+	double rate;
+
    public:
-	virtual bool calculateMove(Zombie **zom, int i, Ogre::Vector3 flag, double* x, double* z)  = 0;
+	UnitMovModel(double r);
+	virtual bool calculateMove(Zombie **zom, int nZom, int i, Ogre::Vector3 flag, double* x, double* z)  = 0;
+	void preProcess(double time);
+	void postProcess();
 };
 //-------------------------------------------------------
 
 class UnitMovModelRandom : public UnitMovModel
 {
-	private:
-		double aux;
+
 	public:
 		UnitMovModelRandom();
-		bool calculateMove(Zombie **zom, int i, Ogre::Vector3 flag, double* x, double* z);
+		bool calculateMove(Zombie **zom, int nZom, int i, Ogre::Vector3 flag, double* x, double* z);
+};
+
+//-------------------------------------------------------
+
+class UnitMovModelRBSFlock : public UnitMovModel
+{
+
+	public:
+		UnitMovModelRBSFlock();
+		bool calculateMove(Zombie **zom, int nZom, int i, Ogre::Vector3 flag, double* x, double* z);
 		void preProcess(double time);
 		void postProcess();
 };

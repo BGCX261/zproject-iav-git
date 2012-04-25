@@ -54,7 +54,7 @@ protected:
 	// Zombies
 	int nZombies;
 	Zombie** zombies;
-	UnitMovModelRandom* zombiesMovementModel;
+	UnitMovModel* zombiesMovementModel;
 
 	// Variables para la animacion del robot (en Pruebas)
 	Ogre::SceneNode* robotNode;

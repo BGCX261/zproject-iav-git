@@ -20,10 +20,11 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 
 	speed = sp;
 	translateVector = Ogre::Vector3(0, 0, 0);
+	translateVector = Ogre::Vector3(0, 0, 0);
 
 	// start ALIVE !
 	live = true;
-	hunger = 0.5;
+	hunger = 0.75;
 }
 
 //-------------------------------------------------------------------------------------
@@ -34,19 +35,14 @@ Zombie::~Zombie(void)
 //-------------------------------------------------------------------------------------
 void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 {
-	/*double Bx = axisX - node->getPosition().x;
-	double Bz = axisZ - node->getPosition().z;
-
-	double Vx = Ogre::Math::Cos(node->getOrientation().getYaw()); 
-	double Vz = Ogre::Math::Sin(node->getOrientation().getYaw()); 
-
-	Ogre::Radian angle = Ogre::Math::ACos(Ogre::Math::Abs(Bx*Vx + Bz*Vz) / (Ogre::Math::Sqrt(Bx*Bx + Bz*Bz) + (Ogre::Math::Sqrt(Vx*Vx + Vz*Vz))));*/
-
 	Ogre::Radian angle = Ogre::Math::ATan2(axisZ - node->getPosition().z, axisX - node->getPosition().x);
 
 	node->setOrientation(Ogre::Quaternion(-angle, Ogre::Vector3::UNIT_Y));
+
 	translateVector.x = speed;
-	translateVector.z = 0;
+	
+	headingTo.x = axisX;
+	headingTo.z = axisZ;
 }
 
 //-------------------------------------------------------------------------------------

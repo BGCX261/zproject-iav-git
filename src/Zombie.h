@@ -17,7 +17,9 @@ public:
 	bool isLive(void);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
+
 	double hunger;
+	Ogre::Vector3 headingTo;
 
 protected:
 
