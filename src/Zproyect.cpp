@@ -59,7 +59,7 @@ void Zproyect::createScene(void)
 	nZombies = 10;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
-		zombies[i] = new Zombie(Ogre::String("Cube.mesh"), rand() % nZombies, rand() % nZombies, 4, 0.5);	
+		zombies[i] = new Zombie(Ogre::String("Body.mesh"), rand() % nZombies, rand() % nZombies, 4, 0.5);	
 	}
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock(30, 5);
@@ -142,7 +142,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 			playRobotShoot=false;							// stop animation
 		}
 	}else{
-		robotAnimState_idle->addTime(evt.timeSinceLastFrame);			// idle animation
+		robotAnimState_idle->addTime(4*evt.timeSinceLastFrame);			// idle animation
 	}
 	
 

@@ -24,6 +24,7 @@ public:
 protected:
 
 	Ogre::Entity* entity;
+	Ogre::AnimationState *anim_walk;
 
 	Ogre::Vector3 translateVector;
 
