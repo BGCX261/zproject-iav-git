@@ -30,9 +30,12 @@ class UnitMovModelRandom : public UnitMovModel
 
 class UnitMovModelRBSFlock : public UnitMovModel
 {
+	private:
+		double maxDist;
+		double minDist;
 
 	public:
-		UnitMovModelRBSFlock();
+		UnitMovModelRBSFlock(double max, double min);
 		bool calculateMove(Zombie **zom, int nZom, int i, Ogre::Vector3 flag, double* x, double* z);
 		void preProcess(double time);
 		void postProcess();

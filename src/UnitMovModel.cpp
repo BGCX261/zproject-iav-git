@@ -71,9 +71,10 @@ bool UnitMovModelRandom::calculateMove(Zombie **zom,  int nZom, int i, Ogre::Vec
 //-------------------------------------------------
 //-------------------------------------------------
 
-UnitMovModelRBSFlock::UnitMovModelRBSFlock() : UnitMovModel(0.5)
+UnitMovModelRBSFlock::UnitMovModelRBSFlock(double max, double min) : UnitMovModel(0.5)
 {
-
+	maxDist = max;
+	minDist = min;
 }
 
 
@@ -93,7 +94,7 @@ bool UnitMovModelRBSFlock::calculateMove(Zombie **zom,  int nZom, int i, Ogre::V
 			
 			// Calculate the nearest zombie:
 			int nearest = 0;
-			double minDist = 99999999;
+			double nearestDist = 99999999;
 			for (int j = 0; j < nZom; j++)
 			{
 				if (i == j || !zom[j]->isLive()) {
@@ -104,18 +105,18 @@ bool UnitMovModelRBSFlock::calculateMove(Zombie **zom,  int nZom, int i, Ogre::V
 				double hisZ =  zom[j]->node->getPosition().z;
 				double d = Ogre::Math::Sqrt( (myX-hisX)*(myX-hisX) + (myZ-hisZ)*(myZ-hisZ));
 
-				if (d < minDist) {
+				if (d < nearestDist) {
 					nearest = j;
-					minDist = d;
+					nearestDist = d;
 				}
 			}
 
 			// Apply the rule set:
-			if (minDist > 50) {
+			if (nearestDist > maxDist) {
 				*x = zom[nearest]->node->getPosition().x;								
 				*z = zom[nearest]->node->getPosition().z;
 
-			} else if (minDist < 5) {
+			} else if (nearestDist < minDist) {
 				*x = 2 * myX - zom[nearest]->node->getPosition().x;								
 				*z = 2 * myZ - zom[nearest]->node->getPosition().z;								
 
