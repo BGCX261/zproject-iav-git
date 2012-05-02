@@ -1,0 +1,32 @@
+
+// blender material: Banderita3
+material Banderita3 
+{
+    receive_shadows on
+    technique b2ogre_1336001785.173951
+    {
+        pass b2ogre_1336001785.173967
+        {
+            ambient 0.07491964846849442 0.1901724487543106 0.11402073502540588 1.0
+            diffuse 0.05993571966790734 0.15213796127048074 0.09121658937955779 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+        }
+    }
+}
