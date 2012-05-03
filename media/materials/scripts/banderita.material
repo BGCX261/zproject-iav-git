@@ -1,11 +1,27 @@
 
-// blender material: Material.001
-material Material.001 
+material _missing_material_ 
+{
+    receive_shadows off
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1 1.0
+            diffuse 0.8 0.0 0.0 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.3 0.3 0.3 1.0
+        }
+    }
+}
+
+
+// blender material: rojobandera
+material rojobandera 
 {
     receive_shadows on
-    technique b2ogre_1334511690.468
+    technique b2ogre_1336033005.12988
     {
-        pass b2ogre_1334511690.468
+        pass b2ogre_1336033005.129953
         {
             ambient 0.800000011920929 0.0 0.0 1.0
             diffuse 0.6400000190734865 0.0 0.0 1.0
@@ -31,16 +47,48 @@ material Material.001
     }
 }
 
-// blender material: Material.002
-material Material.002 
+// blender material: rojopalo
+material rojopalo 
 {
     receive_shadows on
-    technique b2ogre_1334511690.469
+    technique b2ogre_1336033005.130879
     {
-        pass b2ogre_1334511690.469
+        pass b2ogre_1336033005.130941
         {
             ambient 0.22025148570537567 0.002533942461013794 0.0 1.0
             diffuse 0.17620119118990285 0.002027153999017983 0.0 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+        }
+    }
+}
+
+// blender material: verdebase
+material verdebase 
+{
+    receive_shadows on
+    technique b2ogre_1336033005.131744
+    {
+        pass b2ogre_1336033005.131785
+        {
+            ambient 0.01650741510093212 0.06371802091598511 0.016709189862012863 1.0
+            diffuse 0.01320593227752942 0.050974417492366086 0.013367352088799356 1.0
             specular 0.5 0.5 0.5 1.0 12.5
             emissive 0.0 0.0 0.0 1.0
             alpha_to_coverage off

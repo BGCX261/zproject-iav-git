@@ -59,15 +59,20 @@ void Zproyect::createScene(void)
 	nZombies = 20;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
-		zombies[i] = new Zombie(Ogre::String("Zombie.mesh"), rand() % nZombies, rand() % nZombies, 2, 3);	
+		char aux[20];
+		sprintf(aux, "Zombie%li.mesh", random()%2+1);
+		zombies[i] = new Zombie(Ogre::String(aux), rand() % nZombies, rand() % nZombies, 2, 3);	
 	}
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock(30, 5);
 
+	enemy = new Enemy(Ogre::String("robot.mesh"), 10, -33, 2, 1);
+
+
 	// --------------------- Pruebas --------------------------------
 
 	// Banderita selection with Ray
-	Ogre::Entity* banderaEntity = mSceneMgr->createEntity("Banderita", "Banderita.mesh");
+	Ogre::Entity* banderaEntity = mSceneMgr->createEntity("Banderita", "banderita.mesh");
 	banderaNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("BanderitaNode",Ogre::Vector3(0,-20,0));
 	banderaNode->attachObject(banderaEntity);
 	banderaNode->roll(Ogre::Degree(-90));		// Redefine Banderita position (fuck Blender-Ogre exporter)
@@ -84,28 +89,10 @@ void Zproyect::createScene(void)
 	bunkerNode->setPosition(10, -bunkerBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y*5, -40);
 	bunkerNode->attachObject(bunkerEntity);
 
-	// Robot on Bunker
-	Ogre::Entity* robotEntity = mSceneMgr->createEntity("Robot", "robot.mesh");
-	robotNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("robotNode",Ogre::Vector3(10,1,-33));
-	robotNode->attachObject(robotEntity);
 
-	//robotEntity->setMaterialName("robot");
-	robotNode->scale(0.1,0.1,0.1);
-	robotNode->yaw(Ogre::Degree(-90));
-
-	// Robot Animations
-	robotAnimState_idle = robotEntity->getAnimationState("Idle");
-	robotAnimState_shoot = robotEntity->getAnimationState("Shoot");
-
-	robotAnimState_idle->setEnabled(true);
-	robotAnimState_idle->setLoop(true);
-
-	robotAnimState_shoot->setEnabled(true);	playRobotShoot=false;
-	robotAnimState_shoot->setLoop(false);
-
-	//------------------------------------------------------------------------------------------
 }
 
+//-----------------------------------------------------------------------------------------------
 bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 	bool ret = BaseApplication::frameRenderingQueued(evt);
@@ -123,29 +110,17 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 		zombies[i]->update(evt);
 
+
 		// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
-		if( (zombies[i]->node->getPosition().distance( robotNode->getPosition() ) <= 25 )&&( zombies[i]->isLive() ) ){
-			playRobotShoot=true;
+		if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 )&&( zombies[i]->isLive() ) ){
+			enemy->shoot = true;
 			zombies[i]->kill();
 		}
 	}
 
 	zombiesMovementModel->postProcess();
 
-	// ---------------------------------------------------------------------------------------------
-	// play robot animation (encapsular esto)
-	if(playRobotShoot) {
-		robotAnimState_shoot->addTime(evt.timeSinceLastFrame*0.7);		// shot animation
-		// Stop animation
-		if (robotAnimState_shoot->getTimePosition() >= robotAnimState_shoot->getLength()){
-			robotAnimState_shoot->setTimePosition(0);		// reset animation time
-			playRobotShoot=false;							// stop animation
-		}
-	}else{
-		robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);			// idle animation
-	}
-	
-
+	enemy->update(evt);
 
 	return ret;
 }

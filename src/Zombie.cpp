@@ -22,6 +22,8 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 	anim_walk = entity->getAnimationState("Andar");
 	anim_walk->setEnabled(true);
 	anim_walk->setLoop(true);
+	anim_walk->setTimePosition((float)rand()/(float)RAND_MAX*anim_walk->getLength());
+	
 
 	speed = sp;
 	speedTurn = sptr;
@@ -87,7 +89,8 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 		}
 
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
-		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*1.2));
+
+		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.7));
 	} else{
 		node->yaw(Ogre::Degree(1)); // simulate the dead turning
 	}
