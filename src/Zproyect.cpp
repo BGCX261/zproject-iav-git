@@ -66,7 +66,7 @@ void Zproyect::createScene(void)
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock(30, 5);
 
-	enemy = new Enemy(Ogre::String("robot.mesh"), 10, -33, 2, 1);
+	enemy = new Enemy(Ogre::String("Turret.mesh"), -20, 10, 2, 1);
 
 
 	// --------------------- Pruebas --------------------------------

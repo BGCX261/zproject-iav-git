@@ -33,7 +33,7 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 
 
 	//Animations
-	robotAnimState_idle = entity->getAnimationState("Idle");
+	/*robotAnimState_idle = entity->getAnimationState("Idle");
 	robotAnimState_shoot = entity->getAnimationState("Shoot");
 
 	robotAnimState_idle->setEnabled(true);
@@ -41,6 +41,7 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 
 	robotAnimState_shoot->setEnabled(true);
 	robotAnimState_shoot->setLoop(false);
+	*/
 }
 
 //-------------------------------------------------------------------------------------
@@ -69,17 +70,19 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 	    	// If we are still turning we have to update the orientation:
 	    	if (seek)
 		{
-			robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);
+			//robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);
 			node->yaw(Ogre::Radian(evt.timeSinceLastFrame));
 		} 
 		else if(shoot)
 		{
+/*
 			robotAnimState_shoot->addTime(evt.timeSinceLastFrame*0.7);
 			// Stop animation
 			if (robotAnimState_shoot->getTimePosition() >= robotAnimState_shoot->getLength()){
 				robotAnimState_shoot->setTimePosition(0);// reset animation time
 				shoot=false;// stop animation
 			}
+*/
 		}
 
 

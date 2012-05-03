@@ -1,0 +1,166 @@
+
+material _missing_material_ 
+{
+    receive_shadows off
+    technique
+    {
+        pass
+        {
+            ambient 0.1 0.1 0.1 1.0
+            diffuse 0.8 0.0 0.0 1.0
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.3 0.3 0.3 1.0
+        }
+    }
+}
+
+
+// blender material: tu1
+material tu1 
+{
+    receive_shadows on
+    technique b2ogre_1336083516.984617
+    {
+        pass b2ogre_1336083516.98469
+        {
+            ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
+            diffuse 0.5320634921202583 0.5320634921202583 0.5320634921202583 1.0
+            specular 0.6190476417541504 0.6190476417541504 0.6190476417541504 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+            texture_unit b2ogre_1336083516.985574
+            {
+                texture MetalBare0102_L.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                tex_coord_set 0
+                colour_op replace
+            }
+        }
+    }
+}
+
+// blender material: tu2
+material tu2 
+{
+    receive_shadows on
+    technique b2ogre_1336083516.986106
+    {
+        pass b2ogre_1336083516.98615
+        {
+            ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
+            diffuse 0.6400000190734865 0.6400000190734865 0.6400000190734865 1.0
+            specular 0.19841268658638 0.19841268658638 0.19841268658638 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+            texture_unit b2ogre_1336083516.986865
+            {
+                texture MetalBare0018_L.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op replace
+            }
+        }
+    }
+}
+
+// blender material: tu3
+material tu3 
+{
+    receive_shadows on
+    technique b2ogre_1336083516.98723
+    {
+        pass b2ogre_1336083516.987271
+        {
+            ambient 0.015993552282452583 0.015993552282452583 0.015993552282452583 1.0
+            diffuse 0.012794842016620067 0.012794842016620067 0.012794842016620067 1.0
+            specular 0.0 0.0 0.0 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+        }
+    }
+}
+
+// blender material: tu4
+material tu4 
+{
+    receive_shadows on
+    technique b2ogre_1336083516.988035
+    {
+        pass b2ogre_1336083516.988075
+        {
+            ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
+            diffuse 0.15111112819777617 0.15111112819777617 0.15111112819777617 1.0
+            specular 0.0317460298538208 0.0317460298538208 0.0317460298538208 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+            alpha_to_coverage off
+            colour_write on
+            cull_hardware clockwise
+            depth_check on
+            depth_func less_equal
+            depth_write on
+            illumination_stage 
+            light_clip_planes off
+            light_scissor off
+            lighting on
+            normalise_normals off
+            polygon_mode solid
+            scene_blend one zero
+            scene_blend_op add
+            shading gouraud
+            transparent_sorting on
+            texture_unit b2ogre_1336083516.988781
+            {
+                texture MetalBare0043_M.jpg
+                tex_address_mode wrap
+                scale 1.0 1.0
+                colour_op replace
+            }
+        }
+    }
+}
