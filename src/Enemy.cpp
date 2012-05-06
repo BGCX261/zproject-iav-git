@@ -9,11 +9,11 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 	// Enemy Entity
 	entity = mSceneMgr->createEntity(model);
 	// bounding box
-	Ogre::AxisAlignedBox box = entity->getBoundingBox();
+	box = entity->getBoundingBox();
 	// Enemy Node
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	// Node Position (relative to bounding box Left-Bottom)
-
+	//node->showBoundingBox(true);
 	node->setPosition(initX, -box.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y, initZ);
 	// attach to node
 	node->attachObject(entity);

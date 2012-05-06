@@ -60,8 +60,8 @@ void Zproyect::createScene(void)
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
 		char aux[20];
-		sprintf(aux, "Zombie%li.mesh", random()%2+1);
-		zombies[i] = new Zombie(Ogre::String(aux), rand() % nZombies, rand() % nZombies, 2, 3);	
+		sprintf(aux, "Zombie%li.mesh", rand()%2+1);
+		zombies[i] = new Zombie(Ogre::String(aux), rand()%(nZombies+40), rand()%(nZombies), 2, 3);
 	}
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock(30, 5);
@@ -90,6 +90,10 @@ void Zproyect::createScene(void)
 	bunkerNode->attachObject(bunkerEntity);
 
 
+	// ------------ MOC ------------------------------------
+	mCollisionTools = new MOC::CollisionTools(mSceneMgr);
+
+
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -101,15 +105,18 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	cameraMan->update(evt);
 
+	// create a temporal bounding box, for check collisions
+	bool isCollission = false;
+
 	// We now move all the units, according to the movement model:
 	for (int i = 0; i < nZombies; i++) {
 
 		double x, z;
 		if (zombiesMovementModel->calculateMove(zombies, nZombies, i, banderaNode->getPosition(), &x, &z))
 			zombies[i]->move(x, z);
+				
 
 		zombies[i]->update(evt);
-
 
 		// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
 		if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 )&&( zombies[i]->isLive() ) ){
@@ -123,6 +130,23 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	enemy->update(evt);
 
 	return ret;
+}
+
+void Zproyect::pickEntity(const OIS::MouseEvent &arg, const Ogre::uint32 queryMask)
+{
+	Ogre::Entity *tmpE = NULL;
+	Ogre::Vector3 result = Ogre::Vector3::ZERO;
+	float distToColl;
+	Ogre::Vector2 mousePos = Ogre::Vector2(arg.state.X.abs,arg.state.Y.abs);
+    if (mCollisionTools->raycastFromCamera(mWindow, mCamera, mousePos, result, tmpE, distToColl, queryMask))
+	{
+		Ogre::SceneNode* node = tmpE->getParentSceneNode();
+		if (node->getShowBoundingBox()) {
+			node->showBoundingBox(false);
+		} else {
+			node->showBoundingBox(true);
+		}
+	}
 }
 
 bool Zproyect::keyPressed( const OIS::KeyEvent &arg )
@@ -147,17 +171,24 @@ bool Zproyect::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 	bool ret = BaseApplication::mousePressed(arg,id);
 
-	// si boton izquierdo mouse
-	if (arg.state.buttonDown(OIS::MB_Left))
+	// if right mouse button put flag
+	if (arg.state.buttonDown(OIS::MB_Right))
 	{
-		// Rayo atraves del viewport
+		// Ray throught viewport
 		Ogre::Ray mouseRay = mCamera->getCameraToViewportRay((float)arg.state.X.abs/arg.state.width, (float)arg.state.Y.abs/arg.state.height );
 	
-		// Calcular interseccion con plano y obtener el punto 3D
+		// Calculate intersection between plane and a 3D point
 		std::pair<bool, Ogre::Real> resultRay =  mouseRay.intersects( plane );	
 		Ogre::Vector3 pointRay = mouseRay.getPoint(resultRay.second);
-		// Colocar banderita en el punto
+		// Put the flag 
 		banderaNode->setPosition(pointRay.x,4,pointRay.z);
+	}
+
+	// if left button select a entity
+	if(arg.state.buttonDown(OIS::MB_Left)){
+		// Pick one
+		pickEntity(arg, ENTITY_MASK);
+
 	}
 	
 

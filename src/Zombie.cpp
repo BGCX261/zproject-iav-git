@@ -14,6 +14,7 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 	// Zombie Node
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	// Node Position (relative to bounding box Left-Bottom)
+	//node->showBoundingBox(true);
 	node->setPosition(initX, -box.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y, initZ);
 	// attach to node
 	node->attachObject(entity);
@@ -46,7 +47,7 @@ void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 {
 	angleTurn = - Ogre::Math::ATan2(axisZ - node->getPosition().z, axisX - node->getPosition().x);
 	turning = true;
-
+	
 	translateVector.x = speed;
 	
 	headingTo.x = axisX;
@@ -90,7 +91,7 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 
-		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.7));
+		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.4));
 	} else{
 		node->yaw(Ogre::Degree(1)); // simulate the dead turning
 	}

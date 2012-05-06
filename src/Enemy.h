@@ -17,6 +17,7 @@ public:
 	bool isLive(void);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
+	Ogre::AxisAlignedBox box;
 
 	Ogre::Vector3 headingTo;
 	
