@@ -21,7 +21,7 @@ Zproyect::~Zproyect(void)
 //-------------------------------------------------------------------------------------
 void Zproyect::createScene(void)
 {
-	srand(time(0));
+	srand((unsigned int)time(0));
 
 	// Create the camera for map navigation:
 	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 35, 50));
@@ -42,10 +42,8 @@ void Zproyect::createScene(void)
     	entGround->setMaterialName("GroundMat");
     	entGround->setCastShadows(false);
 
-
 	// SkyBox with skydom
 	mSceneMgr->setSkyDome(true, "CloudySky", 5, 8);
-
 
 	// Set ambient light
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
@@ -54,14 +52,13 @@ void Zproyect::createScene(void)
 	Ogre::Light* l = mSceneMgr->createLight("MainLight");
 	l->setPosition(20,80,50);
 
-
 	// Create the zombies
-	nZombies = 20;
+	nZombies = 30;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
 		char aux[20];
 		sprintf(aux, "Zombie%li.mesh", rand()%2+1);
-		zombies[i] = new Zombie(Ogre::String(aux), rand()%(nZombies+40), rand()%(nZombies), 2, 3);
+		zombies[i] = new Zombie(Ogre::String(aux), rand()%(nZombies), rand()%(nZombies), 2, 3);
 	}
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock(30, 5);
@@ -80,6 +77,7 @@ void Zproyect::createScene(void)
 
 	// Bunker
 	Ogre::Entity* bunkerEntity = mSceneMgr->createEntity("Bunker", "bunker.mesh");
+	bunkerEntity->setQueryFlags(STATIC_MASK);
 	Ogre::AxisAlignedBox bunkerBox = bunkerEntity->getBoundingBox();	// bounding box
 	Ogre::SceneNode* bunkerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	bunkerNode->scale(5,5,6);
@@ -114,9 +112,21 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		double x, z;
 		if (zombiesMovementModel->calculateMove(zombies, nZombies, i, banderaNode->getPosition(), &x, &z))
 			zombies[i]->move(x, z);
-				
+		
+			// MOC collision
+			// Get the old position movement
+			Ogre::Vector3 oldPos = zombies[i]->node->getPosition();		
 
+		// Commit the zombie movement
 		zombies[i]->update(evt);
+		
+			// check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
+			// set the ray origin 10.0 for the bunker collision
+			if (mCollisionTools->collidesWithEntity(oldPos, zombies[i]->node->getPosition(), 4.0f , 10.0f, STATIC_MASK))
+			{
+				// undo move
+				zombies[i]->node->setPosition(oldPos);
+			}
 
 		// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
 		if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 )&&( zombies[i]->isLive() ) ){
@@ -154,6 +164,12 @@ bool Zproyect::keyPressed( const OIS::KeyEvent &arg )
 	bool ret = BaseApplication::keyPressed(arg);
 
 	cameraMan->keyPressed(arg);
+
+	if (arg.key == OIS::KC_ADD)
+		for(int i=0;i<nZombies;i++) zombies[i]->speed *=1.1;
+	
+	if (arg.key == OIS::KC_SUBTRACT)
+		for(int i=0;i<nZombies;i++) zombies[i]->speed *=0.9;
 	
 	return ret;
 }
@@ -163,6 +179,12 @@ bool Zproyect::keyReleased( const OIS::KeyEvent &arg )
 	bool ret = BaseApplication::keyReleased(arg);
 
 	cameraMan->keyReleased(arg);
+
+	if (arg.key == OIS::KC_ADD)
+		for(int i=0;i<nZombies;i++) zombies[i]->speed =zombies[i]->speed;
+	
+	if (arg.key == OIS::KC_SUBTRACT)
+		for(int i=0;i<nZombies;i++) zombies[i]->speed =zombies[i]->speed;
 
 	return ret;
 }
@@ -187,8 +209,7 @@ bool Zproyect::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 	// if left button select a entity
 	if(arg.state.buttonDown(OIS::MB_Left)){
 		// Pick one
-		pickEntity(arg, ENTITY_MASK);
-
+		pickEntity(arg, ZOMBIE_MASK);
 	}
 	
 

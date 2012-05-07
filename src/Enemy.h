@@ -2,7 +2,7 @@
 #define __Enemy_h_
 
 #include <OGRE/Ogre.h>
-
+#include "BaseApplication.h"
 
 class Enemy
 {

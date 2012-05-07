@@ -3,6 +3,8 @@
 
 #include <OGRE/Ogre.h>
 
+#include "BaseApplication.h"
+
 class Zombie
 {
 public:
@@ -21,6 +23,9 @@ public:
 	double hunger;
 	Ogre::Vector3 headingTo;
 
+	// cambiar velocidad inGame
+	Ogre::Real speed;
+
 protected:
 
 	Ogre::Entity* entity;
@@ -31,7 +36,6 @@ protected:
 	Ogre::Radian angleTurn;
 	bool turning;
 
-	Ogre::Real speed;
 	Ogre::Real speedTurn;
 
 	bool live;		// live/dead zombie

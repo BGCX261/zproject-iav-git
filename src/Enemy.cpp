@@ -8,6 +8,7 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 	
 	// Enemy Entity
 	entity = mSceneMgr->createEntity(model);
+	entity->setQueryFlags(ENEMY_MASK);
 	// bounding box
 	box = entity->getBoundingBox();
 	// Enemy Node

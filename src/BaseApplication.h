@@ -25,6 +25,17 @@ Filename:    BaseApplication.h
 
 #include <OgreWindowEventUtilities.h>
 
+// Collision MOC
+#include "CollisionTools.h"
+// Mask for collision system
+enum
+{
+   STATIC_MASK	= 1<<6,
+   ZOMBIE_MASK  = 1<<7,
+   ENEMY_MASK	= 1<<8
+
+};
+
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {
 public:
@@ -85,6 +96,7 @@ protected:
 	OIS::InputManager* mInputManager;
 	OIS::Mouse*    mMouse;
 	OIS::Keyboard* mKeyboard;
+
 };
 
 #endif // #ifndef __BaseApplication_h_

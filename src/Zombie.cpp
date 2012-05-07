@@ -1,5 +1,4 @@
 
-
 #include "Zombie.h"
 
 //-------------------------------------------------------------------------------------
@@ -9,6 +8,7 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 	
 	// Zombie Entity
 	entity = mSceneMgr->createEntity(model);
+	entity->setQueryFlags(ZOMBIE_MASK);			// add the mask to entity
 	// bounding box
 	Ogre::AxisAlignedBox box = entity->getBoundingBox();
 	// Zombie Node
@@ -61,8 +61,8 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 
 		Ogre::Radian actualBearing = node->getOrientation().getYaw();;
 
-	    	// If we are still turning we have to update the orientation:
-	    	if (turning)
+	    // If we are still turning we have to update the orientation:
+	    if (turning)
 		{
 			// Avoid to rotate using the longest path:
 			if(Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) > Ogre::Math::PI)
@@ -88,10 +88,11 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 			// Apply the turn on the node:
 			node->setOrientation(Ogre::Quaternion(actualBearing, Ogre::Vector3(0, 1, 0)));
 		}
-
+		
+		// Commint the movement
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 
-		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.4));
+		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.3));
 	} else{
 		node->yaw(Ogre::Degree(1)); // simulate the dead turning
 	}
