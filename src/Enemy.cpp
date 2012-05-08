@@ -32,17 +32,15 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 	patrol = false;
 	seek = true;
 
-
 	//Animations
-	/*robotAnimState_idle = entity->getAnimationState("Idle");
-	robotAnimState_shoot = entity->getAnimationState("Shoot");
+	//robotAnimState_idle = entity->getAnimationState("Idle");
+	robotAnimState_shoot = entity->getAnimationState("shoot");
 
-	robotAnimState_idle->setEnabled(true);
-	robotAnimState_idle->setLoop(true);
+	//robotAnimState_idle->setEnabled(true);
+	//robotAnimState_idle->setLoop(true);
 
 	robotAnimState_shoot->setEnabled(true);
-	robotAnimState_shoot->setLoop(false);
-	*/
+	robotAnimState_shoot->setLoop(true);
 }
 
 //-------------------------------------------------------------------------------------
@@ -67,7 +65,7 @@ void Enemy::move(Ogre::Real axisX, Ogre::Real axisZ)
 void Enemy::update(const Ogre::FrameEvent& evt)
 {
 	if(live){
-
+		
 	    	// If we are still turning we have to update the orientation:
 	    	if (seek)
 		{
@@ -76,16 +74,13 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 		} 
 		else if(shoot)
 		{
-/*
-			robotAnimState_shoot->addTime(evt.timeSinceLastFrame*0.7);
-			// Stop animation
-			if (robotAnimState_shoot->getTimePosition() >= robotAnimState_shoot->getLength()){
-				robotAnimState_shoot->setTimePosition(0);// reset animation time
-				shoot=false;// stop animation
-			}
-*/
-		}
 
+			robotAnimState_shoot->addTime(evt.timeSinceLastFrame);
+
+			shoot = false;
+			seek = true;
+
+		}
 
 	} else{
 		node->yaw(Ogre::Degree(1)); // simulate the dead turning
@@ -95,6 +90,11 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 // Kill the Enemy
 void Enemy::kill(){
 	live = false;
+}
+
+void Enemy::fire(){
+	seek = false;
+	shoot = true;
 }
 
 // Check if Enemy is live or dead

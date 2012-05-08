@@ -19,6 +19,12 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 	// attach to node
 	node->attachObject(entity);
 
+	// Set lifebar
+	lifebar = mSceneMgr->createEntity("Vida.mesh");
+	lifebarNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	lifebarNode->attachObject(lifebar);
+	lifebarNode->setPosition(initX, 12, initZ);
+
 	// get animation:
 	anim_walk = entity->getAnimationState("Andar");
 	anim_walk->setEnabled(true);
@@ -34,6 +40,7 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 
 	// start ALIVE !
 	live = true;
+	life = 100.0;
 	hunger = 0.6;
 }
 
@@ -59,7 +66,7 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 {
 	if(live){
 
-		Ogre::Radian actualBearing = node->getOrientation().getYaw();;
+		Ogre::Radian actualBearing = node->getOrientation().getYaw();
 
 	    // If we are still turning we have to update the orientation:
 	    if (turning)
@@ -91,6 +98,8 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 		
 		// Commint the movement
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
+		lifebarNode->setPosition(node->getPosition().x, 12, node->getPosition().z);
+
 
 		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.3));
 	} else{
@@ -103,9 +112,19 @@ void Zombie::kill(){
 	live = false;
 }
 
+void Zombie::damage(double deltaT){
+	life = life - 20*deltaT;
+	lifebarNode->scale(1-0.99*deltaT, 1, 1);
+	if (life <= 0)
+		live = false;
+	printf("life: %f\n",life);
+}
+
 // Check if zombie is live or dead
 bool Zombie::isLive(){
 	return live;
 }
+
+
 
 

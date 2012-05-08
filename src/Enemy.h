@@ -15,6 +15,8 @@ public:
 
 	void kill(void);			// kill it
 	bool isLive(void);
+	bool cooling(void);
+	void fire(void);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 	Ogre::AxisAlignedBox box;
@@ -36,7 +38,6 @@ protected:
 	Ogre::Real speedTurn;
 
 	bool live;		// live/dead
-
 
 	// Animations:
 	Ogre::AnimationState *robotAnimState_idle, *robotAnimState_shoot;

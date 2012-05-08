@@ -53,11 +53,11 @@ void Zproyect::createScene(void)
 	l->setPosition(20,80,50);
 
 	// Create the zombies
-	nZombies = 30;
+	nZombies = 2;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
 		char aux[20];
-		sprintf(aux, "Zombie%li.mesh", rand()%2+1);
+		sprintf(aux, "Zombie%d.mesh", rand()%2+1);
 		zombies[i] = new Zombie(Ogre::String(aux), rand()%(nZombies), rand()%(nZombies), 2, 3);
 	}
 	//zombiesMovementModel = new UnitMovModelRandom();
@@ -129,9 +129,9 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 			}
 
 		// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
-		if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 )&&( zombies[i]->isLive() ) ){
-			enemy->shoot = true;
-			zombies[i]->kill();
+		if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 ) && (zombies[i]->isLive())){
+			enemy->fire();
+			zombies[i]->damage(evt.timeSinceLastFrame);
 		}
 	}
 
@@ -141,6 +141,9 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	return ret;
 }
+
+
+
 
 void Zproyect::pickEntity(const OIS::MouseEvent &arg, const Ogre::uint32 queryMask)
 {

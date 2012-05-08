@@ -14,6 +14,7 @@ public:
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
 	void update(const Ogre::FrameEvent& evt);
 
+	void damage(double deltaT);
 	void kill(void);			// kill it
 	bool isLive(void);
 
@@ -28,16 +29,22 @@ public:
 
 protected:
 
+	// Graphics:
 	Ogre::Entity* entity;
 	Ogre::AnimationState *anim_walk;
 
-	Ogre::Vector3 translateVector;
+	Ogre::Entity* lifebar;
+	Ogre::SceneNode *lifebarNode;
 
+	// Movement:
+	Ogre::Vector3 translateVector;
 	Ogre::Radian angleTurn;
 	bool turning;
-
 	Ogre::Real speedTurn;
+	
 
+	// Atributes:
+	double life;
 	bool live;		// live/dead zombie
 };
 
