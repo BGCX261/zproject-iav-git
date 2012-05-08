@@ -2,8 +2,7 @@
 #define __Zombie_h_
 
 #include <OGRE/Ogre.h>
-
-#include "BaseApplication.h"
+#include "CollisionTools.h"
 
 class Zombie
 {
@@ -12,10 +11,12 @@ public:
 	virtual ~Zombie(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
-	void update(const Ogre::FrameEvent& evt);
+	void update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
 
 	void damage(double deltaT);
 	bool isLive(void);
+	void deselect();
+	void select();
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 

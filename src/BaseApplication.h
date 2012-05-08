@@ -28,16 +28,6 @@ Filename:    BaseApplication.h
 // Collision MOC
 #include "CollisionTools.h"
 
-// Mask for collision system
-enum
-{
-   STATIC_MASK	= 1<<6,
-   ZOMBIE_MASK  = 1<<7,
-   ENEMY_MASK	= 1<<8,
-   OTHER_MASK   = 1<<9 
-   
-
-};
 
 class BaseApplication : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener
 {

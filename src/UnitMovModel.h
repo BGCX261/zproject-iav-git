@@ -3,6 +3,7 @@
 
 #include <OGRE/Ogre.h>
 #include "Zombie.h"
+#include "CollisionTools.h"
 
 class UnitMovModel
 {

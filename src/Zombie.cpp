@@ -30,6 +30,7 @@ Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real
 	lifebarNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	lifebarNode->attachObject(lifebar);
 	lifebarNode->setPosition(initX, 8, initZ);
+	lifebarNode->setVisible(false);
 
 
 	// get animation:
@@ -70,11 +71,15 @@ void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 }
 
 //-------------------------------------------------------------------------------------
-void Zombie::update(const Ogre::FrameEvent& evt)
+void Zombie::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools)
 {
 	if(live){
 
-		Ogre::Radian actualBearing = node->getOrientation().getYaw();
+	// MOC collision
+	// Get the old position movement
+	Ogre::Vector3 oldPos = node->getPosition();
+
+	Ogre::Radian actualBearing = node->getOrientation().getYaw();
 
 	    // If we are still turning we have to update the orientation:
 	    if (turning)
@@ -106,6 +111,17 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 		
 		// Commint the movement
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
+
+
+		// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
+		// set the ray origin 10.0 for the bunker collision
+		if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 10.0f, STATIC_MASK))
+		{
+			// undo move
+			node->setPosition(oldPos);
+		}
+
+
 		lifebarNode->setPosition(node->getPosition().x, 8, node->getPosition().z);
 
 
@@ -128,6 +144,14 @@ bool Zombie::isLive(){
 	return live;
 }
 
+void Zombie::select()
+{
+	lifebarNode->setVisible(true);
+}
 
+void Zombie::deselect()
+{
+	lifebarNode->setVisible(false);
+}
 
 
