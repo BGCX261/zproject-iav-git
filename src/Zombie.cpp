@@ -2,12 +2,17 @@
 #include "Zombie.h"
 
 //-------------------------------------------------------------------------------------
-Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr)
+Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr)
 {
 	Ogre::SceneManager* mSceneMgr = Ogre::Root::getSingleton().getSceneManager("ingameManager");
 	
 	// Zombie Entity
-	entity = mSceneMgr->createEntity(model);
+	group = gr;
+	individual = ind;
+	char aux[20];
+	sprintf(aux, "Z-%d-%d", group, individual);
+
+	entity = mSceneMgr->createEntity(Ogre::String(aux), model);
 	entity->setQueryFlags(ZOMBIE_MASK);			// add the mask to entity
 	// bounding box
 	Ogre::AxisAlignedBox box = entity->getBoundingBox();
@@ -21,9 +26,11 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 
 	// Set lifebar
 	lifebar = mSceneMgr->createEntity("Vida.mesh");
+	lifebar->setQueryFlags(OTHER_MASK);
 	lifebarNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	lifebarNode->attachObject(lifebar);
-	lifebarNode->setPosition(initX, 12, initZ);
+	lifebarNode->setPosition(initX, 8, initZ);
+
 
 	// get animation:
 	anim_walk = entity->getAnimationState("Andar");
@@ -47,6 +54,7 @@ Zombie::Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Rea
 //-------------------------------------------------------------------------------------
 Zombie::~Zombie(void)
 {
+
 }
 
 //-------------------------------------------------------------------------------------
@@ -90,7 +98,7 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 			}
 		
 			// Update the actual orientation:
-			actualBearing = actualBearing + (angleTurn - actualBearing) / (speedTurn / evt.timeSinceLastFrame);
+			actualBearing = actualBearing + (angleTurn - actualBearing) * (speedTurn*evt.timeSinceLastFrame);
 			    
 			// Apply the turn on the node:
 			node->setOrientation(Ogre::Quaternion(actualBearing, Ogre::Vector3(0, 1, 0)));
@@ -98,26 +106,21 @@ void Zombie::update(const Ogre::FrameEvent& evt)
 		
 		// Commint the movement
 		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
-		lifebarNode->setPosition(node->getPosition().x, 12, node->getPosition().z);
+		lifebarNode->setPosition(node->getPosition().x, 8, node->getPosition().z);
 
 
-		anim_walk->addTime(evt.timeSinceLastFrame * 1/(speed*0.3));
+		anim_walk->addTime(evt.timeSinceLastFrame * (speed*0.3));
 	} else{
 		node->yaw(Ogre::Degree(1)); // simulate the dead turning
 	}
 }
 
-// Kill the zombie
-void Zombie::kill(){
-	live = false;
-}
-
 void Zombie::damage(double deltaT){
 	life = life - 20*deltaT;
-	lifebarNode->scale(1-0.99*deltaT, 1, 1);
+	lifebarNode->setScale(life/100, 1, 1);
 	if (life <= 0)
+		// KILL KILL KILL
 		live = false;
-	printf("life: %f\n",life);
 }
 
 // Check if zombie is live or dead

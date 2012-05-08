@@ -8,14 +8,13 @@
 class Zombie
 {
 public:
-	Zombie(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr);
+	Zombie(Ogre::String model, 	int gr, int ind, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr);
 	virtual ~Zombie(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
 	void update(const Ogre::FrameEvent& evt);
 
 	void damage(double deltaT);
-	void kill(void);			// kill it
 	bool isLive(void);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
@@ -41,9 +40,11 @@ protected:
 	Ogre::Radian angleTurn;
 	bool turning;
 	Ogre::Real speedTurn;
-	
 
 	// Atributes:
+	int group;
+	int individual;
+
 	double life;
 	bool live;		// live/dead zombie
 };

@@ -70,7 +70,7 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 	    	if (seek)
 		{
 			//robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);
-			node->yaw(Ogre::Radian(evt.timeSinceLastFrame));
+			node->yaw(Ogre::Radian(evt.timeSinceLastFrame*speedTurn));
 		} 
 		else if(shoot)
 		{

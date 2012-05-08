@@ -25,6 +25,8 @@ public:
 	
 	bool patrol, seek, shoot;
 
+	
+
 protected:
 
 	Ogre::Entity* entity;

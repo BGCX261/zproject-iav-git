@@ -53,13 +53,14 @@ void Zproyect::createScene(void)
 	l->setPosition(20,80,50);
 
 	// Create the zombies
-	nZombies = 2;
+	nZombies = 3;
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
 		char aux[20];
 		sprintf(aux, "Zombie%d.mesh", rand()%2+1);
-		zombies[i] = new Zombie(Ogre::String(aux), rand()%(nZombies), rand()%(nZombies), 2, 3);
+		zombies[i] = new Zombie(Ogre::String(aux), 0, i, rand()%(nZombies), rand()%(nZombies), 2, 1);
 	}
+
 	//zombiesMovementModel = new UnitMovModelRandom();
 	zombiesMovementModel = new UnitMovModelRBSFlock(30, 5);
 
@@ -70,6 +71,7 @@ void Zproyect::createScene(void)
 
 	// Banderita selection with Ray
 	Ogre::Entity* banderaEntity = mSceneMgr->createEntity("Banderita", "banderita.mesh");
+	banderaEntity->setQueryFlags(OTHER_MASK);
 	banderaNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("BanderitaNode",Ogre::Vector3(0,-20,0));
 	banderaNode->attachObject(banderaEntity);
 	banderaNode->roll(Ogre::Degree(-90));		// Redefine Banderita position (fuck Blender-Ogre exporter)
@@ -91,6 +93,24 @@ void Zproyect::createScene(void)
 	// ------------ MOC ------------------------------------
 	mCollisionTools = new MOC::CollisionTools(mSceneMgr);
 
+	myManualObject =  mSceneMgr->createManualObject("manual1"); 
+	myManualObjectNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("manual1_node"); 
+	 
+	myManualObjectMaterial = Ogre::MaterialManager::getSingleton().create("manual1Material", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME); 
+	myManualObjectMaterial->setReceiveShadows(false); 
+	myManualObjectMaterial->getTechnique(0)->setLightingEnabled(true); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setDiffuse(Ogre::ColourValue(255, 0, 0, 0)); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setAmbient(0,0,1); 
+	myManualObjectMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(0,0,1); 
+	//myManualObjectMaterial->dispose();  // dispose pointer, not the material
+	 
+	 
+	myManualObject->begin("manual1Material", Ogre::RenderOperation::OT_LINE_LIST); 
+	myManualObject->position(3, 2, 1); 
+	myManualObject->position(4, 1, 0); 
+	// etc 
+	myManualObject->end(); 
+	myManualObjectNode->attachObject(myManualObject);
 
 }
 
@@ -128,14 +148,44 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 				zombies[i]->node->setPosition(oldPos);
 			}
 
-		// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
-		if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 ) && (zombies[i]->isLive())){
+
+
+		/*if( (zombies[i]->node->getPosition().distance( enemy->node->getPosition() ) <= 25 ) && (zombies[i]->isLive())){
 			enemy->fire();
 			zombies[i]->damage(evt.timeSinceLastFrame);
-		}
+		}*/
 	}
 
 	zombiesMovementModel->postProcess();
+
+	Ogre::Degree angle	  = enemy->node->getOrientation().getYaw();
+	Ogre::Vector3 origin      = enemy->node->getPosition();
+	origin.y = 4;
+	Ogre::Vector3 destination = Ogre::Vector3(origin.x + 30 * Ogre::Math::Sin(angle), origin.y, origin.z + 30 * Ogre::Math::Cos(angle));
+
+	Ogre::Entity *tmpE = NULL;
+	Ogre::Vector3 result = Ogre::Vector3::ZERO;
+	float distToColl = 30;
+
+	myManualObject->beginUpdate(0);
+	myManualObject->position(origin); 
+	myManualObject->position(destination); 
+	myManualObject->end(); 
+
+	// enable shoot animation when a zombie is near to robotNode - Kill the zombie		
+	if(mCollisionTools->raycastFromPoint(origin, destination, result, tmpE, distToColl, ZOMBIE_MASK)){
+
+		Ogre::String name = tmpE->getName();
+		std::vector<Ogre::String, Ogre::STLAllocator<Ogre::String, Ogre::GeneralAllocPolicy> > nameGroups = Ogre::StringUtil::split(name, Ogre::String("-"));
+		int group = Ogre::StringConverter::parseInt(nameGroups[1]);
+		int individual = Ogre::StringConverter::parseInt(nameGroups[2]);
+
+		if (zombies[individual]->isLive())
+		{
+			enemy->fire();
+			zombies[individual]->damage(evt.timeSinceLastFrame);
+		}
+	}
 
 	enemy->update(evt);
 
