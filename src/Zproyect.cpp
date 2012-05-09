@@ -44,6 +44,7 @@ void Zproyect::createScene(void)
 
     	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
     	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+	entGround->setQueryFlags(OTHER_MASK);
 
     	entGround->setMaterialName("GroundMat");
     	entGround->setCastShadows(false);
@@ -80,7 +81,7 @@ void Zproyect::createScene(void)
 	nGroups = 2;
 	zombieGroups = new ZombiePack*[nGroups];
 	for (int i = 0; i < nGroups; i++)
-		zombieGroups[i] = new ZombiePack(i, 10, i*20, i*20, 2, 1);
+		zombieGroups[i] = new ZombiePack(i, 2, i*20, i*20, 2, 1);
 
 	selectedGroup = 0;
 	zombieGroups[selectedGroup]->select();
@@ -153,7 +154,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	Ogre::Radian angle	  = enemy->node->getOrientation().getYaw();
 	Ogre::Vector3 origin      = enemy->node->getPosition();
 	origin.y = 4;
-	Ogre::Vector3 destination = Ogre::Vector3(origin.x + 30 * Ogre::Math::Cos(angle), origin.y, origin.z + 30 * Ogre::Math::Sin(angle));
+	Ogre::Vector3 destination = Ogre::Vector3(origin.x + 30 * Ogre::Math::Sin(angle), origin.y, origin.z + 30 * Ogre::Math::Cos(angle));
 
 	Ogre::Entity *tmpE = NULL;
 	Ogre::Vector3 result = Ogre::Vector3::ZERO;
@@ -198,11 +199,9 @@ void Zproyect::pickEntity(const OIS::MouseEvent &arg, const Ogre::uint32 queryMa
 		Ogre::String name = tmpE->getName();
 		std::vector<Ogre::String, Ogre::STLAllocator<Ogre::String, Ogre::GeneralAllocPolicy> > nameGroups = Ogre::StringUtil::split(name, Ogre::String("-"));
 		int group = Ogre::StringConverter::parseInt(nameGroups[1]);
-
 		zombieGroups[selectedGroup]->deselect();
 		selectedGroup = group;
 		zombieGroups[selectedGroup]->select();
-
 	}
 }
 

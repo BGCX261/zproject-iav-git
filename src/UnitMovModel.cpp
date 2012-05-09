@@ -93,7 +93,7 @@ bool UnitMovModelRBSFlock::calculateMove(Zombie **zom,  int nZom, int i, Ogre::V
 			double myZ = zom[i]->node->getPosition().z;
 			
 			// Calculate the nearest zombie:
-			int nearest = 0;
+			int nearest = -1;
 			double nearestDist = 99999999;
 			for (int j = 0; j < nZom; j++)
 			{
@@ -112,14 +112,27 @@ bool UnitMovModelRBSFlock::calculateMove(Zombie **zom,  int nZom, int i, Ogre::V
 			}
 
 			// Apply the rule set:
-			if (nearestDist > maxDist) {
+			// If you are the only one, move randomly:		
+			if (nearest == -1) {
+				Ogre::Vector3 pos = zom[i]->node->getPosition();
+		
+				double angle = rand() % 360;
+				angle = Ogre::Math::DegreesToRadians(angle);
+
+				*x = pos.x + 5 * Ogre::Math::Cos(angle);
+				*z = pos.z + 5 * Ogre::Math::Sin(angle);
+
+			// If you are far away, move closer to the nearest:
+			} else if (nearestDist > maxDist) {
 				*x = zom[nearest]->node->getPosition().x;								
 				*z = zom[nearest]->node->getPosition().z;
 
+			// If you are about to crash move away:
 			} else if (nearestDist < minDist) {
 				*x = 2 * myX - zom[nearest]->node->getPosition().x;								
 				*z = 2 * myZ - zom[nearest]->node->getPosition().z;								
 
+			// Otherwise fly in the same direction:
 			} else {
 				*x = zom[nearest]->headingTo.x;
 				*z = zom[nearest]->headingTo.z;

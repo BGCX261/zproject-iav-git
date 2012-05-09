@@ -132,11 +132,14 @@ void Zombie::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollision
 }
 
 void Zombie::damage(double deltaT){
-	life = life - 20*deltaT;
+	life = life - 50*deltaT;
 	lifebarNode->setScale(life/100, 1, 1);
 	if (life <= 0)
+	{
 		// KILL KILL KILL
 		live = false;
+		entity->setQueryFlags(OTHER_MASK);
+	}
 }
 
 // Check if zombie is live or dead
