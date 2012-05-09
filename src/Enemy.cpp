@@ -117,6 +117,7 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 
 			shoot = false;
 			seek = true;
+			speedTurn *=-1;
 
 		}
 
