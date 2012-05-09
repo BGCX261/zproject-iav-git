@@ -152,7 +152,7 @@ void Zombie::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollision
 
 				// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
 				// set the ray origin 10.0 for the bunker collision
-				if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 10.0f, STATIC_MASK))
+				if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 3.0f, STATIC_MASK))
 				{
 					// undo move
 					node->setPosition(oldPos);
@@ -189,6 +189,8 @@ void Zombie::damage(int dps, double deltaT){
 		anim_walk->setEnabled(false);
 		anim_attack->setEnabled(false);
 		anim_death->setEnabled(true);
+
+		lifebar->setVisible(false);
 	}
 }
 
