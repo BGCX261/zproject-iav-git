@@ -11,8 +11,8 @@ ZombiePack::ZombiePack(int id, int nz, Ogre::Real initX, Ogre::Real initZ, Ogre:
 	zombies = new Zombie*[nZombies];
 	for (int i = 0; i < nZombies; i++) {
 		char aux[20];
-		sprintf(aux, "Zombie%d.mesh", rand()%2+1);
-		zombies[i] = new Zombie(Ogre::String(aux), id, i, initX + rand()%(nZombies),  initZ + rand()%(nZombies), sp, sptr);
+		//sprintf(aux, "Zombie%d.mesh", rand()%2+1);
+		zombies[i] = new Zombie(Ogre::String("Zombie1.mesh"), id, i, initX + rand()%(nZombies),  initZ + rand()%(nZombies), sp, sptr);
 	}
 
 	

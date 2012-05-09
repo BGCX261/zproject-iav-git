@@ -39,6 +39,9 @@ Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real
 	anim_walk->setLoop(true);
 	anim_walk->setTimePosition((float)rand()/(float)RAND_MAX*anim_walk->getLength());
 	
+	anim_death = entity->getAnimationState("Muerte");
+	anim_death->setEnabled(false);
+	anim_death->setLoop(false);
 
 	speed = sp;
 	speedTurn = sptr;
@@ -126,19 +129,31 @@ void Zombie::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollision
 
 
 		anim_walk->addTime(evt.timeSinceLastFrame * (speed*0.3));
-	} else{
-		node->yaw(Ogre::Degree(1)); // simulate the dead turning
+
+	} else {
+			double aux = anim_death->getTimePosition() + evt.timeSinceLastFrame*1.5;
+			if (aux >= anim_death->getLength()-0.05)
+			{
+				anim_death->setTimePosition(anim_death->getLength()-0.05);
+			} 
+			else {
+				anim_death->setTimePosition(aux);
+			}
 	}
 }
 
-void Zombie::damage(double deltaT){
-	life = life - 50*deltaT;
+void Zombie::damage(int dps, double deltaT){
+
+	life = life - dps * deltaT;
 	lifebarNode->setScale(life/100, 1, 1);
 	if (life <= 0)
 	{
 		// KILL KILL KILL
 		live = false;
 		entity->setQueryFlags(OTHER_MASK);
+
+		anim_walk->setEnabled(false);
+		anim_death->setEnabled(true);
 	}
 }
 

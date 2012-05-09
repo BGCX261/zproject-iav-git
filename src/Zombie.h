@@ -7,13 +7,13 @@
 class Zombie
 {
 public:
-	Zombie(Ogre::String model, 	int gr, int ind, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr);
+	Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr);
 	virtual ~Zombie(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
 	void update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
 
-	void damage(double deltaT);
+	void damage(int dps, double deltaT);
 	bool isLive(void);
 	void deselect();
 	void select();
@@ -32,6 +32,7 @@ protected:
 	// Graphics:
 	Ogre::Entity* entity;
 	Ogre::AnimationState *anim_walk;
+	Ogre::AnimationState *anim_death;
 
 	Ogre::Entity* lifebar;
 	Ogre::SceneNode *lifebarNode;

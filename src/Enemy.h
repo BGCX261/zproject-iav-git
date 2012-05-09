@@ -3,6 +3,8 @@
 
 #include <OGRE/Ogre.h>
 #include "CollisionTools.h"
+#include "ZombiePack.h"
+#include "Zombie.h"
 
 class Enemy
 {
@@ -11,6 +13,7 @@ public:
 	virtual ~Enemy(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
+	void trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, ZombiePack** zombies);
 	void update(const Ogre::FrameEvent& evt);
 
 	void kill(void);			// kill it
@@ -39,6 +42,9 @@ protected:
 	Ogre::Real speed;
 	Ogre::Real speedTurn;
 
+	
+	int range;
+	int dps;
 	bool live;		// live/dead
 
 	// Animations:

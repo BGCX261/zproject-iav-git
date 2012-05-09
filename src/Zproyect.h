@@ -65,9 +65,6 @@ protected:
 
 	// Enemies:
 	Enemy* enemy;
-	Ogre::ManualObject* myManualObject;
-	Ogre::SceneNode* myManualObjectNode;
-	Ogre::MaterialPtr myManualObjectMaterial;
 
 
 	// *** MOC Setup *** Collision
