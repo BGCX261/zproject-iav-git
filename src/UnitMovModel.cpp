@@ -97,7 +97,7 @@ bool UnitMovModelRBSFlock::calculateMove(Zombie **zom,  int nZom, int i, Ogre::V
 			double nearestDist = 99999999;
 			for (int j = 0; j < nZom; j++)
 			{
-				if (i == j || !zom[j]->isLive()) {
+				if (i == j || !zom[j]->isAlive()) {
 					continue;
 				}
 

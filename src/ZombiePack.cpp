@@ -47,7 +47,10 @@ void ZombiePack::move(UnitMovModel *model)
 void ZombiePack::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools)
 {
 	for (int i = 0; i < nZombies; i++)
+	{
+		zombies[i]->attack(evt, mCollisionTools);
 		zombies[i]->update(evt, mCollisionTools);
+	}
 }
 
 Zombie* ZombiePack::getZombie(int i)

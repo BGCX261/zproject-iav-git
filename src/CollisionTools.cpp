@@ -110,6 +110,28 @@ bool CollisionTools::collidesWithEntity(const Ogre::Vector3& fromPoint, const Og
 	}
 }
 
+bool CollisionTools::collidesWithEntityCustom(const Ogre::Vector3& fromPoint, const Ogre::Vector3& toPoint, Ogre::Entity* &target, const float collisionRadius, const float rayHeightLevel, const Ogre::uint32 queryMask)
+{
+	Ogre::Vector3 fromPointAdj(fromPoint.x, fromPoint.y + rayHeightLevel, fromPoint.z);
+	Ogre::Vector3 toPointAdj(toPoint.x, toPoint.y + rayHeightLevel, toPoint.z);
+	Ogre::Vector3 normal = toPointAdj - fromPointAdj;
+	float distToDest = normal.normalise();
+
+	Ogre::Vector3 myResult(0, 0, 0);
+	Ogre::MovableObject* myObject = NULL;
+	float distToColl = 0.0f;
+
+	if (raycastFromPoint(fromPointAdj, normal, myResult, target, distToColl, queryMask))
+	{
+		distToColl -= collisionRadius;
+		return (distToColl <= distToDest);
+	}
+	else
+	{
+		return false;
+	}
+}
+
 float CollisionTools::getTSMHeightAt(const float x, const float z) {
 	float y=0.0f;
 

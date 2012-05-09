@@ -1,5 +1,5 @@
-#ifndef __Zombie_h_
-#define __Zombie_h_
+#ifndef __ZOMBIE_H_
+#define __ZOMBIE_H_
 
 #include <OGRE/Ogre.h>
 #include "CollisionTools.h"
@@ -11,10 +11,11 @@ public:
 	virtual ~Zombie(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
+	void attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
 	void update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
 
 	void damage(int dps, double deltaT);
-	bool isLive(void);
+	bool isAlive();
 	void deselect();
 	void select();
 
@@ -33,6 +34,7 @@ protected:
 	Ogre::Entity* entity;
 	Ogre::AnimationState *anim_walk;
 	Ogre::AnimationState *anim_death;
+	Ogre::AnimationState *anim_attack;
 
 	Ogre::Entity* lifebar;
 	Ogre::SceneNode *lifebarNode;
@@ -48,7 +50,10 @@ protected:
 	int individual;
 
 	double life;
-	bool live;		// live/dead zombie
+	bool alive;
+
+	// State:
+	bool attacking;
 };
 
 #endif // #ifndef __Zombie_h_

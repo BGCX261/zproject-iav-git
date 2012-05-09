@@ -70,6 +70,8 @@ public:
 
 	bool collidesWithEntity(const Ogre::Vector3& fromPoint, const Ogre::Vector3& toPoint, const float collisionRadius = 2.5f, const float rayHeightLevel = 0.0f, const Ogre::uint32 queryMask = 0xFFFFFFFF);
 
+	bool collidesWithEntityCustom(const Ogre::Vector3& fromPoint, const Ogre::Vector3& toPoint, Ogre::Entity* &target, const float collisionRadius = 2.5f, const float rayHeightLevel = 0.0f,const Ogre::uint32 queryMask = 0xFFFFFFFF);
+
 	void calculateY(Ogre::SceneNode *n, const bool doTerrainCheck = true, const bool doGridCheck = true, const float gridWidth = 1.0f, const Ogre::uint32 queryMask = 0xFFFFFFFF);
 
 	float getTSMHeightAt(const float x, const float z);

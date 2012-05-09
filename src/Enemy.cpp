@@ -21,7 +21,7 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 
 	
 	// start ALIVE !
-	live = true;
+	alive = true;
 
 	// ATributes
 	shoot = false;
@@ -29,7 +29,8 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 	seek = true;
 
 	range   = 30;
-	dps 	= 80;
+	dps 	= 100;
+	life 	= 100;
 
 	// Movement
 	speed = sp;
@@ -88,21 +89,20 @@ void Enemy::trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& 
 			int group = Ogre::StringConverter::parseInt(nameGroups[1]);
 			int individual = Ogre::StringConverter::parseInt(nameGroups[2]);
 
-			if (zombies[group]->getZombie(individual)->isLive())
+			if (zombies[group]->getZombie(individual)->isAlive())
 			{
 				fire();
 				zombies[group]->getZombie(individual)->damage(dps, evt.timeSinceLastFrame);
 			}
 		}
 	}
-
 }
 
 
 //-------------------------------------------------------------------------------------
 void Enemy::update(const Ogre::FrameEvent& evt)
 {
-	if(live){
+	if(alive){
 		
 	    	// If we are still turning we have to update the orientation:
 	    	if (seek)
@@ -126,11 +126,18 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 	}
 }
 
+void Enemy::damage(int dps,  double deltaT){
 
+	life = life - dps * deltaT;
+	if (life <= 0)
+	{
+		// KILL KILL KILL
+		alive = false;
+		entity->setQueryFlags(OTHER_MASK);
 
-// Kill the Enemy
-void Enemy::kill(){
-	live = false;
+		/*anim_walk->setEnabled(false);
+		anim_death->setEnabled(true);*/
+	}
 }
 
 void Enemy::fire(){
@@ -139,8 +146,8 @@ void Enemy::fire(){
 }
 
 // Check if Enemy is live or dead
-bool Enemy::isLive(){
-	return live;
+bool Enemy::isAlive(){
+	return alive;
 }
 
 

@@ -91,7 +91,9 @@ void Zproyect::createScene(void)
 
 
 	// Enemies:
-	enemy = new Enemy(Ogre::String("Turret.mesh"), -20, 10, 2, 1);
+	nEnemies = 1;
+	enemies = new Enemy*[nEnemies];
+	enemies[0] = new Enemy(Ogre::String("Turret.mesh"), -20, 10, 2, 1);
 
 
 
@@ -122,8 +124,8 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	// ------------------------
 	// Enemies:
-	enemy->trace(mCollisionTools, evt, zombieGroups);
-	enemy->update(evt);
+	enemies[0]->trace(mCollisionTools, evt, zombieGroups);
+	enemies[0]->update(evt);
 
 	return ret;
 }

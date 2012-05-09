@@ -4,7 +4,11 @@
 #include <OGRE/Ogre.h>
 #include "CollisionTools.h"
 #include "ZombiePack.h"
+
+#ifndef __ZOMBIE_H_
+#define __ZOMBIE_H_
 #include "Zombie.h"
+#endif
 
 class Enemy
 {
@@ -16,10 +20,9 @@ public:
 	void trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, ZombiePack** zombies);
 	void update(const Ogre::FrameEvent& evt);
 
-	void kill(void);			// kill it
-	bool isLive(void);
-	bool cooling(void);
-	void fire(void);
+	void damage(int dps,  double deltaT);
+	bool isAlive();
+	void fire();
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 	Ogre::AxisAlignedBox box;
@@ -27,8 +30,6 @@ public:
 	Ogre::Vector3 headingTo;
 	
 	bool patrol, seek, shoot;
-
-	
 
 protected:
 
@@ -45,11 +46,13 @@ protected:
 	
 	int range;
 	int dps;
-	bool live;		// live/dead
+
+	bool alive;		// live/dead
+	int life;
 
 	// Animations:
 	Ogre::AnimationState *robotAnimState_idle, *robotAnimState_shoot;
 	bool playRobotShoot, playRobotIdle;
 };
 
-#endif // #ifndef __Zombie_h_
+#endif // #ifndef __Enemy_h_

@@ -43,6 +43,11 @@ Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real
 	anim_death->setEnabled(false);
 	anim_death->setLoop(false);
 
+	anim_attack = entity->getAnimationState("Atacar");
+	anim_attack->setEnabled(false);
+	anim_attack->setLoop(true);
+
+	// Atributes
 	speed = sp;
 	speedTurn = sptr;
 	angleTurn = 0;
@@ -50,7 +55,10 @@ Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real
 	
 
 	// start ALIVE !
-	live = true;
+	alive = true;
+
+	// State:
+	attacking = false;
 	life = 100.0;
 	hunger = 0.6;
 }
@@ -74,62 +82,88 @@ void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 }
 
 //-------------------------------------------------------------------------------------
+void Zombie::attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools)
+{
+	if (alive) {
+		// Check if we are colliding with an enemy and start to attack him:
+		if (mCollisionTools->collidesWithEntity(node->getPosition()+translateVector, node->getPosition(), 8.0f , 4.0f, ENEMY_MASK))
+		{
+			attacking = true;
+			anim_walk->setEnabled(false);
+			anim_attack->setEnabled(true);		
+		
+		} else {
+			attacking = false;
+			anim_walk->setEnabled(true);
+			anim_attack->setEnabled(false);
+		}
+	}
+	
+}
+
+//-------------------------------------------------------------------------------------
 void Zombie::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools)
 {
-	if(live){
+	if(alive){
 
-	// MOC collision
-	// Get the old position movement
-	Ogre::Vector3 oldPos = node->getPosition();
-
-	Ogre::Radian actualBearing = node->getOrientation().getYaw();
-
-	    // If we are still turning we have to update the orientation:
-	    if (turning)
+		if (attacking)
 		{
-			// Avoid to rotate using the longest path:
-			if(Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) > Ogre::Math::PI)
-			{
-		    		if(angleTurn > actualBearing)
-				{
-		        		actualBearing += Ogre::Radian(Ogre::Math::PI * 2);
-		    		}else
-				{
-		       			actualBearing -= Ogre::Radian(Ogre::Math::PI * 2);
-		    		}
-			}
-		
-			// If we are about to complete the turning we force it to be sure it reaches th exact amount:
-			if (Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) < 0.08726) {
-			    actualBearing = angleTurn;
-			    turning = false;
-			}
-		
-			// Update the actual orientation:
-			actualBearing = actualBearing + (angleTurn - actualBearing) * (speedTurn*evt.timeSinceLastFrame);
-			    
-			// Apply the turn on the node:
-			node->setOrientation(Ogre::Quaternion(actualBearing, Ogre::Vector3(0, 1, 0)));
-		}
-		
-		// Commint the movement
-		node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
-
-
-		// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
-		// set the ray origin 10.0 for the bunker collision
-		if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 10.0f, STATIC_MASK))
+			// Update Animation
+			anim_attack->addTime(evt.timeSinceLastFrame);
+		} else
 		{
-			// undo move
-			node->setPosition(oldPos);
+			// MOC collision
+			// Get the old position movement
+			Ogre::Vector3 oldPos = node->getPosition();
+
+			Ogre::Radian actualBearing = node->getOrientation().getYaw();
+
+			    // If we are still turning we have to update the orientation:
+			    if (turning)
+				{
+					// Avoid to rotate using the longest path:
+					if(Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) > Ogre::Math::PI)
+					{
+				    		if(angleTurn > actualBearing)
+						{
+							actualBearing += Ogre::Radian(Ogre::Math::PI * 2);
+				    		}else
+						{
+				       			actualBearing -= Ogre::Radian(Ogre::Math::PI * 2);
+				    		}
+					}
+		
+					// If we are about to complete the turning we force it to be sure it reaches th exact amount:
+					if (Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) < 0.08726) {
+					    actualBearing = angleTurn;
+					    turning = false;
+					}
+		
+					// Update the actual orientation:
+					actualBearing = actualBearing + (angleTurn - actualBearing) * (speedTurn*evt.timeSinceLastFrame);
+					    
+					// Apply the turn on the node:
+					node->setOrientation(Ogre::Quaternion(actualBearing, Ogre::Vector3(0, 1, 0)));
+				}
+		
+				// Commit the movement
+				node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
+
+
+				// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
+				// set the ray origin 10.0 for the bunker collision
+				if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 10.0f, STATIC_MASK))
+				{
+					// undo move
+					node->setPosition(oldPos);
+				}
+
+
+				lifebarNode->setPosition(node->getPosition().x, 8, node->getPosition().z);
+
+
+				anim_walk->addTime(evt.timeSinceLastFrame * (speed*0.3));
 		}
-
-
-		lifebarNode->setPosition(node->getPosition().x, 8, node->getPosition().z);
-
-
-		anim_walk->addTime(evt.timeSinceLastFrame * (speed*0.3));
-
 	} else {
 			double aux = anim_death->getTimePosition() + evt.timeSinceLastFrame*1.5;
 			if (aux >= anim_death->getLength()-0.05)
@@ -149,17 +183,18 @@ void Zombie::damage(int dps, double deltaT){
 	if (life <= 0)
 	{
 		// KILL KILL KILL
-		live = false;
+		alive = false;
 		entity->setQueryFlags(OTHER_MASK);
 
 		anim_walk->setEnabled(false);
+		anim_attack->setEnabled(false);
 		anim_death->setEnabled(true);
 	}
 }
 
 // Check if zombie is live or dead
-bool Zombie::isLive(){
-	return live;
+bool Zombie::isAlive(){
+	return alive;
 }
 
 void Zombie::select()

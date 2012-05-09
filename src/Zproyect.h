@@ -64,7 +64,8 @@ protected:
 
 
 	// Enemies:
-	Enemy* enemy;
+	int nEnemies;
+	Enemy** enemies;
 
 
 	// *** MOC Setup *** Collision
