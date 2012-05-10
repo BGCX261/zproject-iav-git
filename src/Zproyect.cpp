@@ -51,6 +51,9 @@ void Zproyect::createScene(void)
 
 	// SkyBox with skydom
 	mSceneMgr->setSkyDome(true, "CloudySky", 5, 8);
+	// fog
+	Ogre::ColourValue fadeColour(0.8, 0.8, 0.7);
+	mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 70, 200);
 
 	// Bunker
 	Ogre::Entity* bunkerEntity = mSceneMgr->createEntity("Bunker", "bunker.mesh");
