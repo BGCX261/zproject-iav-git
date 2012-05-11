@@ -2,8 +2,9 @@
 #define __ZombiePack_h_
 
 #include <OGRE/Ogre.h>
-#include "CollisionTools.h"
+#include <vector>
 
+#include "CollisionTools.h"
 #include "Zombie.h"
 #include "UnitMovModel.h"
 
@@ -16,6 +17,7 @@ public:
 	Zombie* getZombie(int i);
 
 	void move(UnitMovModel *model);
+	void attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools, Ogre::String** &nombre);
 	void update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
 	void modifySpeed(float factor);
 	void setBandera(double x, double z);

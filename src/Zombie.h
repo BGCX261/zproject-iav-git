@@ -4,6 +4,10 @@
 #include <OGRE/Ogre.h>
 #include "CollisionTools.h"
 
+
+//#include "Enemy.h"
+
+
 class Zombie
 {
 public:
@@ -11,7 +15,7 @@ public:
 	virtual ~Zombie(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
-	void attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
+	void attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools, Ogre::String* &nombre);
 	void update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools);
 
 	void damage(int dps, double deltaT);
@@ -27,6 +31,7 @@ public:
 
 	// cambiar velocidad inGame
 	Ogre::Real speed;
+	int dps;
 
 protected:
 

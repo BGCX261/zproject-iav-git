@@ -103,6 +103,10 @@ void Zproyect::createScene(void)
 	// ------------ MOC ------------------------------------
 	mCollisionTools = new MOC::CollisionTools(mSceneMgr);
 
+	
+	// 	PRUEBAS:::::
+
+
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -117,10 +121,21 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	// ------------------------
 	// Zombies:
+	Ogre::String **nombres = new std::string*[20];	
+
 	zombiesMovementModel->preProcess(evt.timeSinceLastFrame);
 	for (int i = 0; i < nGroups; i++)
 	{
 		zombieGroups[i]->move(zombiesMovementModel);
+		zombieGroups[i]->attack(evt, mCollisionTools, nombres);
+		for (int j = 0; j < 20; j++)
+		{	
+			// Dañamos a los enemigos si procede:
+			std::vector<Ogre::String, Ogre::STLAllocator<Ogre::String, Ogre::GeneralAllocPolicy> > nameGroups = Ogre::StringUtil::split(*nombres[j], Ogre::String("."));
+			int individual = Ogre::StringConverter::parseInt(nameGroups[1]);
+			if (individual != -1)
+				enemies[individual]->damage(zombieGroups[i]->getZombie(j)->dps, evt.timeSinceLastFrame);
+		}
 		zombieGroups[i]->update(evt, mCollisionTools);
 	}
 	zombiesMovementModel->postProcess();
@@ -142,6 +157,7 @@ void Zproyect::pickEntity(const OIS::MouseEvent &arg, const Ogre::uint32 queryMa
 	Ogre::Vector3 result = Ogre::Vector3::ZERO;
 	float distToColl;
 	Ogre::Vector2 mousePos = Ogre::Vector2(arg.state.X.abs,arg.state.Y.abs);
+
     if (mCollisionTools->raycastFromCamera(mWindow, mCamera, mousePos, result, tmpE, distToColl, queryMask))
 	{
 		Ogre::String name = tmpE->getName();
