@@ -121,7 +121,7 @@ bool CollisionTools::collidesWithEntityCustom(const Ogre::Vector3& fromPoint, co
 	Ogre::MovableObject* myObject = NULL;
 	float distToColl = 0.0f;
 
-	if (raycastFromPoint(fromPointAdj, normal, myResult, target, distToColl, queryMask))
+	if (raycastFromPoint(fromPointAdj, normal, myResult, (Ogre::MovableObject*&)target, distToColl, queryMask))
 	{
 		distToColl -= collisionRadius;
 		return (distToColl <= distToDest);

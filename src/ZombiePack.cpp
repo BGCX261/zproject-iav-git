@@ -44,11 +44,20 @@ void ZombiePack::move(UnitMovModel *model)
 	}
 }
 
+void ZombiePack::attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools, Ogre::String** &nombre)
+{
+	Ogre::String* nom = NULL;
+	for (int i = 0; i < nZombies; i++)
+	{
+		zombies[i]->attack(evt, mCollisionTools, nom);
+		nombre[i] = nom;
+	}
+}
+
 void ZombiePack::update(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools)
 {
 	for (int i = 0; i < nZombies; i++)
 	{
-		zombies[i]->attack(evt, mCollisionTools);
 		zombies[i]->update(evt, mCollisionTools);
 	}
 }

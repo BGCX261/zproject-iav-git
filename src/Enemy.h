@@ -4,11 +4,8 @@
 #include <OGRE/Ogre.h>
 #include "CollisionTools.h"
 #include "ZombiePack.h"
-
-#ifndef __ZOMBIE_H_
-#define __ZOMBIE_H_
 #include "Zombie.h"
-#endif
+
 
 class Enemy
 {
@@ -48,11 +45,14 @@ protected:
 	int dps;
 
 	bool alive;		// live/dead
-	int life;
+	double life;
 
 	// Animations:
 	Ogre::AnimationState *robotAnimState_idle, *robotAnimState_shoot;
 	bool playRobotShoot, playRobotIdle;
+
+        Ogre::SceneNode* smokeNode;
+        Ogre::ParticleSystem* smokeParticles;
 };
 
 #endif // #ifndef __Enemy_h_

@@ -61,6 +61,7 @@ Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real
 	attacking = false;
 	life = 100.0;
 	hunger = 0.6;
+	dps = 5;
 }
 
 //-------------------------------------------------------------------------------------
@@ -82,22 +83,30 @@ void Zombie::move(Ogre::Real axisX, Ogre::Real axisZ)
 }
 
 //-------------------------------------------------------------------------------------
-void Zombie::attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools)
+void Zombie::attack(const Ogre::FrameEvent& evt, MOC::CollisionTools *mCollisionTools, Ogre::String* &nombre)
 {
+	Ogre::Entity *tmpE = NULL;
+
 	if (alive) {
+	bool aux = mCollisionTools->collidesWithEntityCustom(node->getPosition()+translateVector, node->getPosition(), tmpE, 8.0f , 4.0f, ENEMY_MASK);
 		// Check if we are colliding with an enemy and start to attack him:
-		if (mCollisionTools->collidesWithEntity(node->getPosition()+translateVector, node->getPosition(), 8.0f , 4.0f, ENEMY_MASK))
+		if (aux)
 		{
 			attacking = true;
 			anim_walk->setEnabled(false);
-			anim_attack->setEnabled(true);		
-		
+			anim_attack->setEnabled(true);
+			nombre = new Ogre::String(tmpE->getName());			
+			return;
 		} else {
+
 			attacking = false;
 			anim_walk->setEnabled(true);
 			anim_attack->setEnabled(false);
 		}
 	}
+
+	nombre = new Ogre::String("X.-1");
+
 	
 }
 
