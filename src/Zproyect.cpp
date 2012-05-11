@@ -30,7 +30,7 @@ void Zproyect::createScene(void)
 	// Camera init and management:
 	cameraNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("cameraNode", Ogre::Vector3(0, 35, 50));
 	cameraNode->attachObject(mCamera);
-	cameraMan = new CameraMan(cameraNode, Ogre::Vector3::ZERO ,15);
+	cameraMan = new CameraMan(cameraNode, Ogre::Vector3::ZERO ,25);
 
 	mCamera->lookAt(Ogre::Vector3(0,0,0));
 	mCamera->setNearClipDistance(5);
@@ -38,22 +38,33 @@ void Zproyect::createScene(void)
 
 	// -----------------------------------------------
 	// Terrain and enviroment:
+	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+	
+	Ogre::Entity* entGround2 = mSceneMgr->createEntity("terrenoEntity", "terreno.mesh");
+	Ogre::SceneNode* nodeGround = mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0,0,0));
+	nodeGround->attachObject(entGround2);
+	nodeGround->scale(80,80/2,80);
+	entGround2->setQueryFlags(OTHER_MASK);
+    entGround2->setCastShadows(false);
+
 	plane.redefine(Ogre::Vector3::UNIT_Y, Ogre::Vector3(0,0,0) );
-		Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-        	plane, 300, 300, 1, 1, true, 1, 12, 12, Ogre::Vector3::UNIT_Z);
+	Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        plane, 300, 300, 1, 1, true, 1, 12, 12, Ogre::Vector3::UNIT_Z);
 
-    	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
-    	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+	// hacerlo invisible, PORVISIONAL <-----
+    /*Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
+    mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
 	entGround->setQueryFlags(OTHER_MASK);
+    entGround->setMaterialName("GroundMat");
+    entGround->setCastShadows(false);
 
-    	entGround->setMaterialName("GroundMat");
-    	entGround->setCastShadows(false);
+	entGround->setVisible(false);*/
 
 	// SkyBox with skydom
 	mSceneMgr->setSkyDome(true, "CloudySky", 5, 8);
 	// fog
 	Ogre::ColourValue fadeColour(0.8, 0.8, 0.7);
-	mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 70, 200);
+	mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 100, 500);
 
 	// Bunker
 	Ogre::Entity* bunkerEntity = mSceneMgr->createEntity("Bunker", "bunker.mesh");
@@ -121,17 +132,18 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	// ------------------------
 	// Zombies:
-	Ogre::String **nombres = new std::string*[20];	
+	nameZombies = new std::string*[20];	
 
 	zombiesMovementModel->preProcess(evt.timeSinceLastFrame);
 	for (int i = 0; i < nGroups; i++)
 	{
 		zombieGroups[i]->move(zombiesMovementModel);
-		zombieGroups[i]->attack(evt, mCollisionTools, nombres);
+		
+		zombieGroups[i]->attack(evt, mCollisionTools, nameZombies);
 		for (int j = 0; j < 20; j++)
 		{	
 			// Dañamos a los enemigos si procede:
-			std::vector<Ogre::String, Ogre::STLAllocator<Ogre::String, Ogre::GeneralAllocPolicy> > nameGroups = Ogre::StringUtil::split(*nombres[j], Ogre::String("."));
+			nameGroups = Ogre::StringUtil::split(*nameZombies[j], Ogre::String("."));
 			int individual = Ogre::StringConverter::parseInt(nameGroups[1]);
 			if (individual != -1)
 				enemies[individual]->damage(zombieGroups[i]->getZombie(j)->dps, evt.timeSinceLastFrame);

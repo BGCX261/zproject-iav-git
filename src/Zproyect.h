@@ -54,12 +54,14 @@ protected:
 	// Plano para acceder a el globalmente
 	Ogre::Plane plane;
 
-
 	// Zombies
 	int nGroups;
 	int selectedGroup;
 	ZombiePack** zombieGroups;
 	UnitMovModel* zombiesMovementModel;
+
+	Ogre::String **nameZombies;
+	std::vector<Ogre::String, Ogre::STLAllocator<Ogre::String, Ogre::GeneralAllocPolicy> > nameGroups;
 
 
 	// Enemies:

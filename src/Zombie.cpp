@@ -26,13 +26,13 @@ Zombie::Zombie(Ogre::String model, int gr, int ind, Ogre::Real initX, Ogre::Real
 
 	// Set lifebar
 	lifebar = mSceneMgr->createEntity("Vida.mesh");
+	lifebar->setCastShadows(false);
 	lifebar->setQueryFlags(OTHER_MASK);
 	lifebarNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	lifebarNode->attachObject(lifebar);
 	lifebarNode->setPosition(initX, 8, initZ);
 	lifebarNode->setVisible(false);
-
-
+	
 	// get animation:
 	anim_walk = entity->getAnimationState("Andar");
 	anim_walk->setEnabled(true);
