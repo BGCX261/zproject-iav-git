@@ -69,12 +69,13 @@
     \p{There are three main elements on the game:}
 
     \begin{itemize}
-     \item \textbf{Zombies:} This is the interactive element of the game. You will control groups of approximately ten zombies that will start spread over the map. You can order the zombies to move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the centre of the map they should attack the enemy, but beware because they can shoot and kill the zombies.
+     \item \textbf{Zombies:} This is the interactive element of the game. You will control a few groups of zombies that will start spread over the map. You can order to each group of zombies move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the goal (centre of the map) they should attack the enemy, but beware because they can shoot and kill the zombies.
      \item \textbf{Food:} Spread along the map you can also find food, food is necessary for the zombies to get strong and obey your orders. If a group of zombies find food they will eat it.
-     \item \textbf{Enemies:} In the centre of the map you will find a bunch of enemies. They will be patrolling all the time and trying to kill your zombies if they come close enough. Your goal is to kill every enemy on the map.
+     \item \textbf{Enemies:} In the centre of the map, and spread along it, you will find a bunch of enemies. They will be patrolling all the time and trying to kill your zombies if they come close enough. Your goal is to kill every enemy on the map (or reach the goal).
+     \item \textbf{Goal:} The objetive of the game is to catch the centre goal, a big Brain. If a zombie touch the Brain, you will win; but is not too easy because all the enemies are patrolling and protecting the goal.
     \end{itemize}
 
-  \p{You can also find obstacles and other passive elements along the map.}
+  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks \dots.}
 
 
   \subsection{Knowledge extraction}
@@ -170,9 +171,29 @@
 
   \subsection{Application of CBR}
 
-    \p{Not yet formalized...}
+    \p{The idea is to use CBR in order to define some strategies for the opponent, giving more flexibility than a RBS. We have different strategies for the opponent, and we need to choose one.
+	The possible strategies are: \textbf{patrol}, \textbf{explore}, \textbf{attack to zombie detected} or \textbf{protect the Brain}.}
 
-    \p{The idea is to use them in order to define some strategies for the opponent, giving more flexibility than a RBS.}
+    \p{The Case-based reasoning has been formalized as the following a four-step processes:}
+
+      \begin{itemize}
+	\item \textbf{Select:} Given a target problem, retrieve from memory cases relevant to solving it. A case consists of a problem, its solution, and, typically, annotations about how the solution was derived. 
+
+	For our problem of select the correct strategy, we retrieve from our database the most case relevant (with best solution) that solve the choice with the actual status.
+
+	\item \textbf{Matching} Map the solution from the previous case to the target problem. This may involve adapting the solution as needed to fit the new situation.
+
+	Adapt the retrieve solution to include all the particularities of actual situation, such as different number of zombies, positions, and so on.
+
+	\item \textbf{Review} Having mapped the previous solution to the target situation, test the new solution and, if necessary, revise. 
+
+	We need to check, if after adapt the retrieve solution of strategy selection, this is a valid solution to the problem or we can not solve the choice. If a solution do not give good results (is not valid ), we need to make a revision, such as modify the selection trying to do a better solution.
+
+	\item \textbf{Update} After the solution has been successfully adapted to the target problem, store the resulting experience as a new case in memory.
+
+	When we have a new successfull selection of a strategy, we include it to out database like a new case for future steps.
+
+      \end{itemize}
 
 
 
@@ -186,8 +207,19 @@
 
   \subsection{Programing with Ogre3D}
 
+    \p{\textbf{OGRE} (\textit{Object-Oriented Graphics Rendering Engine}) is a scene-oriented, flexible 3D rendering engine (as opposed to a game engine) written in \textbf{C++} designed to make it easier and intuitive for developers to produce applications utilizing hardware-accelerated 3D graphics. The class library abstracts the details of using the underlying system libraries like \textit{Direct3D} and \textit{OpenGL} and provides an interface based on world objects and other high level classes.}
+
+    \p{The learning curve of OGRE is very high, it costs a lot to adapt and understand all the systems and methods for developing a first application.}
+
+    \p{But on the other hand, once you have come to understand its operation, continue to develop and incorporate new functionality is much more fluid. But how OGRE is only a rendering engine, we need other kind of software to desing our models and animation. We have choose Blender for 3D modeling.}
+
   \subsection{Artwork in Blender and Gimp}
 
+    \p{\textbf{Blender} is a free and open-source 3D computer graphics software product used for creating animated films, visual effects, interactive 3D applications or video games. Blender's features include 3D modeling, UV unwrapping, texturing, rigging and skinning, fluid and smoke simulation, particle simulation, animating, rendering, video editing and compositing. It also features a built-in game engine.}
+
+    \p{\textbf{GIMP} (GNU Image Manipulation Program) is a free and open source software image retouching and editing tool. Gimp has tools used for image retouching and editing, free-form drawing, resizing, cropping, photo-montages (combining multiple images), converting between different image formats, and more specialised tasks. }
+
+    \p{Like Blener is just a 3D modeling software, our models and animations need to be exported to use it on OGRE aplication. First of all, we desing the 3D geometry of, for example, a zombie in Blender; then, include some textures and details with an external 2D editing software (like GIMP), and finally export our model to a OGRE format.}
 
   \subsection{AI techniques integration}
 
@@ -201,8 +233,31 @@
 
     \p{The movement module itself should catch some of the parameters from the units and environment and provide a function \textit{calculateMove()} that, for a given avatar, will calculate the next move.}
 
+    \p{The next models have been included in the game and all fully interchangeable without changing anything on the code rather than its name:}
+
+    \begin{itemize}
+     \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
+     \item \textbf{Bird Flock:} This model is based on a biological approach and has been implemented by using a ruled based system, the specification is shown before in its own section. With this model the whole group will maintain some coherence and will move along together, it neither has any consideration on the environment.
+    \end{itemize}
+
+
   \subsubsection{Behaving and action module and models}
 
   \subsubsection{Strategy and meta-game module and models}
+
+
+\section{Conclusions}
+
+  \subsection{AI Results}
+    \p{We have obtained the following results, in terms of artificial intelligence behavior:}
+    TODO
+
+  \subsection{Development costs}
+    \p{The approximate time invested in the development of the application has been:}
+    TODO
+
+  \subsection{Showing}
+    \p{A sample screenshots of the application Zproyect:}
+    TODO
 
 \end{document}          
