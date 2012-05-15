@@ -27,11 +27,11 @@ public:
 	Zombie **zombies;
 
 	int identifier;
-	
+	int nZombies;
 
 protected:
 
-	int nZombies;
+	
 
 	Ogre::SceneNode* banderaNode;
 };

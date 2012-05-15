@@ -210,11 +210,13 @@ bool Zombie::isAlive(){
 
 void Zombie::select()
 {
-	lifebarNode->setVisible(true);
+	if (alive)
+		lifebarNode->setVisible(true);
 }
 
 void Zombie::deselect()
 {
+
 	lifebarNode->setVisible(false);
 }
 

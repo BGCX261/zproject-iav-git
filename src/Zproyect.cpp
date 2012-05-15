@@ -136,14 +136,13 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	// ------------------------
 	// Zombies:
-	nameZombies = new std::string*[100];	
-
 	for (int i = 0; i < nGroups; i++)
-	{
+	{	
 		zombieGroups[i]->move(zombiesMovementModel);
 		
+		nameZombies = new std::string*[zombieGroups[i]->nZombies];
 		zombieGroups[i]->attack(evt, mCollisionTools, nameZombies);
-		for (int j = 0; j < 20; j++)
+		for (int j = 0; j < zombieGroups[i]->nZombies; j++)
 		{	
 			// Dañamos a los enemigos si procede:
 			nameGroups = Ogre::StringUtil::split(*nameZombies[j], Ogre::String("."));
