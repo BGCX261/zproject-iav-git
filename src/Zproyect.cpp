@@ -52,13 +52,6 @@ void Zproyect::createScene(void)
         plane, 300, 300, 1, 1, true, 1, 12, 12, Ogre::Vector3::UNIT_Z);
 
 	// hacerlo invisible, PORVISIONAL <-----
-    /*Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
-    mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
-	entGround->setQueryFlags(OTHER_MASK);
-    entGround->setMaterialName("GroundMat");
-    entGround->setCastShadows(false);
-
-	entGround->setVisible(false);*/
 
 	// SkyBox with skydom
 	mSceneMgr->setSkyDome(true, "CloudySky", 5, 8);
@@ -66,17 +59,17 @@ void Zproyect::createScene(void)
 	Ogre::ColourValue fadeColour(0.8, 0.8, 0.7);
 	mSceneMgr->setFog(Ogre::FOG_LINEAR, fadeColour, 0.0, 100, 500);
 
-	// Bunker
-	Ogre::Entity* bunkerEntity = mSceneMgr->createEntity("Bunker", "bunker.mesh");
-	bunkerEntity->setQueryFlags(STATIC_MASK);
-	Ogre::AxisAlignedBox bunkerBox = bunkerEntity->getBoundingBox();	// bounding box
-	Ogre::SceneNode* bunkerNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	bunkerNode->scale(5,5,6);
-	bunkerNode->yaw(Ogre::Degree(90) );
+	// Ruins
+	Ogre::Entity* ruinsEntity = mSceneMgr->createEntity("Ruins", "ruina.mesh");
+	ruinsEntity->setQueryFlags(STATIC_MASK);
+	Ogre::AxisAlignedBox ruinsBox = ruinsEntity->getBoundingBox();	// bounding box
+	Ogre::SceneNode* ruinsNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	ruinsNode->scale(4,4,4);
+	ruinsNode->yaw(Ogre::Degree(-90) );
 
-	// Node Position (relative to bunker bounding box Left-Bottom)
-	bunkerNode->setPosition(10, -bunkerBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y*5, -40);
-	bunkerNode->attachObject(bunkerEntity);
+	// Node Position (relative to ruins bounding box Left-Bottom)
+	ruinsNode->setPosition(10, -ruinsBox.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y-1, -40);
+	ruinsNode->attachObject(ruinsEntity);
 
 
 	// -----------------------------------------------

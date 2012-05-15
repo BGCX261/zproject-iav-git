@@ -9,6 +9,7 @@ EnemyAIModel::EnemyAIModel(double r)
 	rate = r;
 }
 
+
 //-------------------------------------------------
 EnemyAIModel::~EnemyAIModel()
 {
