@@ -71,6 +71,7 @@ protected:
 
 	EnemyAIModel *enemyAIJustTurn;
 	EnemyAIModel *enemyAIRandom;
+	EnemyAIModel *enemyAIHunt;
 
 	// *** MOC Setup *** Collision
 	MOC::CollisionTools* mCollisionTools;

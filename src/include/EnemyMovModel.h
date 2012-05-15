@@ -10,8 +10,9 @@ class EnemyMovModel
 {
    public:
 	EnemyMovModel();
-	virtual void calculateMove(Enemy *enemy, ZombiePack** zomb, double* x, double* z)  = 0;
+	virtual void calculateMove(Enemy *enemy, ZombiePack** zomb, int nZombies, double* x, double* z)  = 0;
 };
+
 //-------------------------------------------------------
 
 class EnemyMovModelRandom : public EnemyMovModel
@@ -19,7 +20,17 @@ class EnemyMovModelRandom : public EnemyMovModel
 
 	public:
 		EnemyMovModelRandom();
-		void calculateMove(Enemy *enemy, ZombiePack** zomb, double* x, double* z);
+		void calculateMove(Enemy *enemy, ZombiePack** zomb, int nZombies, double* x, double* z);
+};
+
+//-------------------------------------------------------
+
+class EnemyMovModelChase : public EnemyMovModel
+{
+
+	public:
+		EnemyMovModelChase();
+		void calculateMove(Enemy *enemy, ZombiePack** zomb, int nZombies, double* x, double* z);
 };
 
 #endif // #ifndef __EnemyMovModel_h_

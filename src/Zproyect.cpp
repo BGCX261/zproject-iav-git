@@ -98,14 +98,36 @@ void Zproyect::createScene(void)
 
 
 	// Enemies:
-	nEnemies = 2;
+	nEnemies = 3;
 	enemies = new Enemy*[nEnemies];
 	enemies[0] = new Enemy(ENEMY_TYPE_TURRET, 0, -20, 10);
 	enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
+	enemies[2] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
 
 	
 	enemyAIJustTurn = new EnemyAIModelJustTurn();
 	enemyAIRandom = new EnemyAIModelRandom();
+	enemyAIHunt = new EnemyAIModelHunt();
+
+	// Init them:
+	for (int e = 0; e < nEnemies; e++)
+	{
+		switch (enemies[e]->type)
+		{
+	
+		case ENEMY_TYPE_TURRET:
+			enemyAIJustTurn->start(enemies[e]);
+	    		break;
+
+		case ENEMY_TYPE_FLYER:
+			enemyAIRandom->start(enemies[e]);
+			break;
+
+		case ENEMY_TYPE_ROBOT:
+			enemyAIHunt->start(enemies[e]);
+			break;
+		}
+	}
 
 	// ------------ MOC ------------------------------------
 	mCollisionTools = new MOC::CollisionTools(mSceneMgr);
@@ -129,6 +151,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	zombiesMovementModel->preProcess(evt.timeSinceLastFrame);
 	enemyAIJustTurn->preProcess(evt.timeSinceLastFrame);
 	enemyAIRandom->preProcess(evt.timeSinceLastFrame);
+	enemyAIHunt->preProcess(evt.timeSinceLastFrame);
 
 	// ------------------------
 	// Zombies:
@@ -158,15 +181,15 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		{
 	
 		case ENEMY_TYPE_TURRET:
-			enemyAIJustTurn->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups);
+			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups, nGroups);
 	    		break;
 
 		case ENEMY_TYPE_FLYER:
-			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups);
+			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups, nGroups);
 			break;
 
 		case ENEMY_TYPE_ROBOT:
-			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups);
+			enemyAIHunt->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups, nGroups);
 			break;
 		}
 	}
@@ -174,6 +197,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	zombiesMovementModel->postProcess();
 	enemyAIJustTurn->postProcess();
 	enemyAIRandom->postProcess();
+	enemyAIHunt->postProcess();
 
 	return ret;
 }
@@ -206,11 +230,16 @@ bool Zproyect::keyPressed( const OIS::KeyEvent &arg )
 	cameraMan->keyPressed(arg);
 
 	if (arg.key == OIS::KC_ADD)
+	{
 		for(int i=0;i<nGroups;i++) zombieGroups[i]->modifySpeed(1.1);
-	
+		for (int e = 0; e < nEnemies; e++) enemies[e]->modifySpeed(1.01);
+	}
+
 	if (arg.key == OIS::KC_SUBTRACT)
+	{
 		for(int i=0;i<nGroups;i++) zombieGroups[i]->modifySpeed(0.9);
-	
+		for (int e = 0; e < nEnemies; e++) enemies[e]->modifySpeed(0.99);
+	}
 	return ret;
 }
 

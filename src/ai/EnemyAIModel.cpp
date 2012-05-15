@@ -5,8 +5,8 @@
 
 EnemyAIModel::EnemyAIModel(double r)
 {
-	aux = 0;
 	rate = r;
+	aux = 0;
 }
 
 
@@ -30,49 +30,81 @@ void EnemyAIModel::postProcess()
 	}
 }
 
-//-------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
 EnemyAIModelJustTurn::EnemyAIModelJustTurn() : EnemyAIModel(1)
 {
-	applied = false;
+
 }
 
-void EnemyAIModelJustTurn::makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies)
+void EnemyAIModelJustTurn::start(Enemy* enemy)
 {
-	if (!applied)
-	{
-		enemy->setAttack(true);
-		enemy->setSeek();
-		applied = true;
-	}
+	enemy->setAttack(true);
+	enemy->setSeek();
+}
 
+void EnemyAIModelJustTurn::makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies, int nZombies)
+{
 	enemy->update(mCollisionTools, evt, zombies);
 }
 
 //-------------------------------------------------------------
-
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
 EnemyAIModelRandom::EnemyAIModelRandom() : EnemyAIModel(1.5)
 {
 	movModel = new EnemyMovModelRandom();
-	applied = false;
 }
 
-void EnemyAIModelRandom::makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies)
+void EnemyAIModelRandom::start(Enemy* enemy)
 {
-	if (!applied)
-	{
-		enemy->setAttack(true);
-		enemy->setPatrol();
-		applied = true;
-	}
+	enemy->setAttack(true);
+	enemy->setPatrol();
+}
+
+void EnemyAIModelRandom::makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies, int nZombies)
+{
 	if (aux >= rate)
 	{
 		double x, z;
-		movModel->calculateMove(enemy, zombies, &x, &z);
+		movModel->calculateMove(enemy, zombies, nZombies, &x, &z);
 		enemy->move(x, z);
 	}
 
 	enemy->update(mCollisionTools, evt, zombies);
 }
+
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
+
+EnemyAIModelHunt::EnemyAIModelHunt() : EnemyAIModel(1.5)
+{
+	movModel = new EnemyMovModelChase();
+}
+
+void EnemyAIModelHunt::start(Enemy* enemy)
+{
+	enemy->setAttack(true);
+	enemy->setPatrol();
+}
+
+void EnemyAIModelHunt::makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies, int nZombies)
+{
+	if (aux >= rate)
+	{
+		double x, z;
+		movModel->calculateMove(enemy, zombies, nZombies, &x, &z);
+		enemy->move(x, z);
+	}
+
+	enemy->update(mCollisionTools, evt, zombies);
+}
+
 

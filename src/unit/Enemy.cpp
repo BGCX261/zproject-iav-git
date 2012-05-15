@@ -17,8 +17,8 @@ const struct EnemyDataStructure Enemy::EnemyData[] = {
  100,
  30,
  100,
+ 3,
  2,
- 1,
  1
 	},
 
@@ -26,8 +26,8 @@ const struct EnemyDataStructure Enemy::EnemyData[] = {
  100,
  30,
  100,
+ 3,
  2,
- 1,
  0.1
 	}
 };
@@ -245,9 +245,6 @@ void Enemy::damage(int dps,  double deltaT){
 		entity->setQueryFlags(OTHER_MASK);
 		smokeParticles->setEmitting(true);
 		smokeNode->setVisible(true);
-
-		//anim_walk->setEnabled(false);
-		//anim_death->setEnabled(true);
 	}
 }
 
@@ -274,8 +271,6 @@ void Enemy::fire(){
 	shootingDelay = anim_shoot->getLength();
 
 	anim_shoot->setEnabled(true);
-	//anim_walk->setEnabled(false);
-	//anim_idle->setEnabled(false);
 }
 
 void Enemy::setAttack(bool b){
@@ -287,5 +282,12 @@ void Enemy::setAttack(bool b){
 bool Enemy::isAlive(){
 	return alive;
 }
+
+double Enemy::modifySpeed(double factor)
+{
+	speed *= factor;
+	speedTurn *= factor;
+}
+
 
 

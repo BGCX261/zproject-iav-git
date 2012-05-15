@@ -7,7 +7,7 @@
 #include "Zombie.h"
 
 #define ENEMY_TYPE_TURRET  0
-#define ENEMY_TYPE_FLYER  1
+#define ENEMY_TYPE_FLYER   1
 #define ENEMY_TYPE_ROBOT   2
 
 struct EnemyDataStructure {
@@ -41,6 +41,8 @@ public:
 	void setPatrol();
 	void setSeek();
 	void setAttack(bool);
+
+	double modifySpeed(double factor);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 	Ogre::AxisAlignedBox box;
