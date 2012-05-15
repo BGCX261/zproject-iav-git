@@ -3,7 +3,7 @@
 #include "Enemy.h"
 
 //-------------------------------------------------------------------------------------
-Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr)
+Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ,  int ran, int d, Ogre::Real sp, Ogre::Real sptr)
 {
 	Ogre::SceneManager* mSceneMgr = Ogre::Root::getSingleton().getSceneManager("ingameManager");
 	
@@ -28,9 +28,10 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real 
 	shoot = false;
 	patrol = false;
 	seek = true;
+	attack = true;
 
-	range   = 30;
-	dps 	= 100;
+	range   = ran;
+	dps 	= d;
 	life 	= 100;
 
 	// Movement
@@ -78,6 +79,7 @@ void Enemy::move(Ogre::Real axisX, Ogre::Real axisZ)
 //-------------------------------------------------------------------------------------
 void Enemy::trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, ZombiePack** zombies)
 {
+
 	if (alive)
 	{
 		Ogre::Radian angle	  = node->getOrientation().getYaw();
@@ -111,12 +113,18 @@ void Enemy::trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& 
 
 
 //-------------------------------------------------------------------------------------
-void Enemy::update(const Ogre::FrameEvent& evt)
+void Enemy::update(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, ZombiePack** zombies)
 {
+	if (attack)
+		this->trace(mCollisionTools, evt, zombies);
+
 	if(alive){
 		
+		if (patrol)
+		{
+		
 	    	// If we are still turning we have to update the orientation:
-	    	if (seek)
+	    	} else if (seek)
 		{
 			//robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);
 			node->yaw(Ogre::Radian(evt.timeSinceLastFrame*speedTurn));
@@ -128,8 +136,6 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 
 			shoot = false;
 			seek = true;
-			speedTurn *=-1;
-
 		}
 
 	} else{
@@ -154,9 +160,30 @@ void Enemy::damage(int dps,  double deltaT){
 	}
 }
 
-void Enemy::fire(){
+void Enemy::setSeek(){
+
+	seek = true;
+	patrol = false;
+	shoot = false;
+}
+
+void Enemy::setPatrol(){
+
 	seek = false;
+	patrol = true;
+	shoot = false;
+}
+
+void Enemy::fire(){
+
+	seek = false;
+	patrol = false;
 	shoot = true;
+}
+
+void Enemy::setAttack(bool b){
+
+	attack = b;
 }
 
 // Check if Enemy is live or dead

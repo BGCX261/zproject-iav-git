@@ -10,16 +10,18 @@
 class Enemy
 {
 public:
-	Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, Ogre::Real sp, Ogre::Real sptr);
+	Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ, int ra, int d, Ogre::Real sp, Ogre::Real sptr);
 	virtual ~Enemy(void);
 
 	void move(Ogre::Real axisX, Ogre::Real axisZ);
 	void trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, ZombiePack** zombies);
-	void update(const Ogre::FrameEvent& evt);
+	void update(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, ZombiePack** zombies);
 
 	void damage(int dps,  double deltaT);
 	bool isAlive();
-	void fire();
+	void setPatrol();
+	void setSeek();
+	void setAttack(bool);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 	Ogre::AxisAlignedBox box;
@@ -27,8 +29,11 @@ public:
 	Ogre::Vector3 headingTo;
 	
 	bool patrol, seek, shoot;
+	bool attack;
 
 protected:
+
+	void fire();
 
 	Ogre::Entity* entity;
 	Ogre::AnimationState *anim_walk;
@@ -40,7 +45,6 @@ protected:
 	Ogre::Real speed;
 	Ogre::Real speedTurn;
 
-	
 	int range;
 	int dps;
 
