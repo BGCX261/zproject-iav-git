@@ -95,7 +95,7 @@ void Zproyect::createScene(void)
 	nGroups = 2;
 	zombieGroups = new ZombiePack*[nGroups];
 	for (int i = 0; i < nGroups; i++)
-		zombieGroups[i] = new ZombiePack(i, 100, i*20, i*20, 2, 1);
+		zombieGroups[i] = new ZombiePack(i, 20, i*20, i*20, 2, 1);
 
 	selectedGroup = 0;
 	zombieGroups[selectedGroup]->select();
@@ -105,12 +105,14 @@ void Zproyect::createScene(void)
 
 
 	// Enemies:
-	nEnemies = 1;
+	nEnemies = 2;
 	enemies = new Enemy*[nEnemies];
-	enemies[0] = new Enemy(Ogre::String("Turret.mesh"), -20, 10, 30, 100, 2, 1);
+	enemies[0] = new Enemy(ENEMY_TYPE_TURRET, 0, -20, 10);
+	enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
 
 	
 	enemyAIJustTurn = new EnemyAIModelJustTurn();
+	enemyAIRandom = new EnemyAIModelRandom();
 
 	// ------------ MOC ------------------------------------
 	mCollisionTools = new MOC::CollisionTools(mSceneMgr);
@@ -133,6 +135,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	// Update Models:
 	zombiesMovementModel->preProcess(evt.timeSinceLastFrame);
 	enemyAIJustTurn->preProcess(evt.timeSinceLastFrame);
+	enemyAIRandom->preProcess(evt.timeSinceLastFrame);
 
 	// ------------------------
 	// Zombies:
@@ -156,12 +159,28 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	// ------------------------
 	// Enemies:
-	enemyAIJustTurn->makeDecision(mCollisionTools, evt, enemies[0], zombieGroups);
+	for (int e = 0; e < nEnemies; e++)
+	{
+		switch (enemies[e]->type)
+		{
+	
+		case ENEMY_TYPE_TURRET:
+			enemyAIJustTurn->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups);
+	    		break;
 
+		case ENEMY_TYPE_FLYER:
+			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups);
+			break;
 
+		case ENEMY_TYPE_ROBOT:
+			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups);
+			break;
+		}
+	}
 	// UpdateModels:
 	zombiesMovementModel->postProcess();
 	enemyAIJustTurn->postProcess();
+	enemyAIRandom->postProcess();
 
 	return ret;
 }

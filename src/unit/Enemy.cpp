@@ -2,13 +2,47 @@
 #include "Zombie.h"
 #include "Enemy.h"
 
+const struct EnemyDataStructure Enemy::EnemyData[] = {
+
+{"Turret.mesh",
+ 100,
+ 30,
+ 100,
+ 2,
+ 1,
+ 1
+},
+
+{"Flyer.mesh",
+ 100,
+ 30,
+ 100,
+ 2,
+ 1,
+ 1
+	},
+
+{"robot.mesh",
+ 100,
+ 30,
+ 100,
+ 2,
+ 1,
+ 0.1
+	}
+};
+
 //-------------------------------------------------------------------------------------
-Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ,  int ran, int d, Ogre::Real sp, Ogre::Real sptr)
+Enemy::Enemy(int ty, int ind, Ogre::Real initX, Ogre::Real initZ)
 {
 	Ogre::SceneManager* mSceneMgr = Ogre::Root::getSingleton().getSceneManager("ingameManager");
-	
+	type = ty;	
+	index = ind;
+
 	// Enemy Entity
-	entity = mSceneMgr->createEntity("E.0", model);
+	char aux[20];
+	sprintf(aux, "E.%d", index);
+	entity = mSceneMgr->createEntity(Ogre::String(aux), EnemyData[type].model);
 	entity->setQueryFlags(ENEMY_MASK);
 	// bounding box
 	box = entity->getBoundingBox();
@@ -19,8 +53,8 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ,  int ran, i
 	node->setPosition(initX, -box.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y, initZ);
 	// attach to node
 	node->attachObject(entity);
+	node->scale(Ogre::Vector3(EnemyData[type].scaleFactor, EnemyData[type].scaleFactor, EnemyData[type].scaleFactor));
 
-	
 	// start ALIVE !
 	alive = true;
 
@@ -30,27 +64,32 @@ Enemy::Enemy(Ogre::String model, Ogre::Real initX, Ogre::Real initZ,  int ran, i
 	seek = true;
 	attack = true;
 
-	range   = ran;
-	dps 	= d;
-	life 	= 100;
+	range   = EnemyData[type].range;
+	dps 	= EnemyData[type].dps;
+	life 	= EnemyData[type].life;
 
 	// Movement
-	speed = sp;
-	speedTurn = sptr;
+	speed = EnemyData[type].speed;
+	speedTurn = EnemyData[type].speedTurn;
 	angleTurn = 0;
 	translateVector = Ogre::Vector3(0, 0, 0);
+	turning = false;
 
 	//Animations
-	//robotAnimState_idle = entity->getAnimationState("Idle");
-	robotAnimState_shoot = entity->getAnimationState("shoot");
+	anim_walk = entity->getAnimationState("walk");
+	anim_shoot = entity->getAnimationState("shoot");
+	anim_idle = entity->getAnimationState("idle");
 
-	//robotAnimState_idle->setEnabled(true);
-	//robotAnimState_idle->setLoop(true);
+	anim_walk->setEnabled(false);
+	anim_walk->setLoop(true);
+	anim_shoot->setEnabled(false);
+	anim_shoot->setLoop(true);
+	anim_idle->setEnabled(true);
+	anim_idle->setLoop(true);
 
-	robotAnimState_shoot->setEnabled(true);
-	robotAnimState_shoot->setLoop(true);
-
-	smokeParticles = mSceneMgr->createParticleSystem("TurretSmoke", "TurretSmoke");
+	char aux2[20];
+	sprintf(aux2, "TurretSmoke-%d", index);
+	smokeParticles = mSceneMgr->createParticleSystem(Ogre::String(aux2), "TurretSmoke");
 	smokeParticles->setEmitting(false);
 	smokeNode = node->createChildSceneNode();
 	smokeNode->attachObject(smokeParticles);
@@ -66,14 +105,10 @@ Enemy::~Enemy(void)
 //-------------------------------------------------------------------------------------
 void Enemy::move(Ogre::Real axisX, Ogre::Real axisZ)
 {
-	// Just turn:
-	//angleTurn = - Ogre::Math::ATan2(axisZ - node->getPosition().z, axisX - node->getPosition().x);
-	//turning = true;
-
-	//translateVector.x = speed;
+	angleTurn = - Ogre::Math::ATan2(axisZ - node->getPosition().z, axisX - node->getPosition().x);
+	turning = true;
 	
-	//headingTo.x = axisX;
-	//headingTo.z = axisZ;
+	translateVector.x = speed;
 }
 
 //-------------------------------------------------------------------------------------
@@ -82,7 +117,7 @@ void Enemy::trace(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& 
 
 	if (alive)
 	{
-		Ogre::Radian angle	  = node->getOrientation().getYaw();
+		Ogre::Degree angle	  = node->getOrientation().getYaw() + Ogre::Degree(90);
 		Ogre::Vector3 origin      = node->getPosition();
 		origin.y = 4;
 		Ogre::Vector3 destination = Ogre::Vector3(Ogre::Math::Sin(angle), 0,  Ogre::Math::Cos(angle));
@@ -120,27 +155,76 @@ void Enemy::update(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent&
 
 	if(alive){
 		
-		if (patrol)
+		if(shoot)
 		{
-		
+			anim_shoot->addTime(evt.timeSinceLastFrame);
+
+			shoot = false;
+
 	    	// If we are still turning we have to update the orientation:
 	    	} else if (seek)
 		{
 			//robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);
 			node->yaw(Ogre::Radian(evt.timeSinceLastFrame*speedTurn));
 		} 
-		else if(shoot)
+		else if (patrol)
 		{
 
-			robotAnimState_shoot->addTime(evt.timeSinceLastFrame);
+			//--------------------------------------------------------------------------------------------
+			// The movements... (ENCAPSULAR EST NO ESTARÍA MAL)
 
-			shoot = false;
-			seek = true;
+			// MOC collision
+			// Get the old position movement
+			Ogre::Vector3 oldPos = node->getPosition();
+
+			Ogre::Radian actualBearing = node->getOrientation().getYaw();
+
+			    // If we are still turning we have to update the orientation:
+			    if (turning)
+				{
+					// Avoid to rotate using the longest path:
+					if(Ogre::Math::Abs(actualBearing.valueRadians()+ - angleTurn.valueRadians()) > Ogre::Math::PI)
+					{
+				    		if(angleTurn > actualBearing)
+						{
+							actualBearing += Ogre::Radian(Ogre::Math::PI * 2);
+				    		}else
+						{
+				       			actualBearing -= Ogre::Radian(Ogre::Math::PI * 2);
+				    		}
+					}
+		
+					// If we are about to complete the turning we force it to be sure it reaches th exact amount:
+					if (Ogre::Math::Abs(actualBearing.valueRadians() - angleTurn.valueRadians()) < 0.08726) {
+					    actualBearing = angleTurn;
+					    turning = false;
+					}
+		
+					// Update the actual orientation:
+					actualBearing = actualBearing + (angleTurn - actualBearing) * (speedTurn*evt.timeSinceLastFrame);
+					    
+					// Apply the turn on the node:
+					node->setOrientation(Ogre::Quaternion(actualBearing, Ogre::Vector3(0, 1, 0)));
+				}
+		
+				// Commit the movement
+				node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
+
+
+				/*// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
+				// set the ray origin 10.0 for the bunker collision
+				if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 3.0f, STATIC_MASK))
+				{
+					// undo move
+					node->setPosition(oldPos);
+				}*/
+
+				anim_walk->addTime(evt.timeSinceLastFrame);
+
 		}
 
 	} else{
 
-		//node->roll(Ogre::Degree(1)); // simulate the dead turning
 		// The smoke is also on
 	}
 }
@@ -155,8 +239,9 @@ void Enemy::damage(int dps,  double deltaT){
 		entity->setQueryFlags(OTHER_MASK);
 		smokeParticles->setEmitting(true);
 		smokeNode->setVisible(true);
-		/*anim_walk->setEnabled(false);
-		anim_death->setEnabled(true);*/
+
+		//anim_walk->setEnabled(false);
+		//anim_death->setEnabled(true);
 	}
 }
 
@@ -164,20 +249,21 @@ void Enemy::setSeek(){
 
 	seek = true;
 	patrol = false;
-	shoot = false;
+
+	anim_walk->setEnabled(false);
+	anim_idle->setEnabled(true);
 }
 
 void Enemy::setPatrol(){
 
 	seek = false;
 	patrol = true;
-	shoot = false;
+
+	anim_walk->setEnabled(true);
+	anim_idle->setEnabled(false);
 }
 
 void Enemy::fire(){
-
-	seek = false;
-	patrol = false;
 	shoot = true;
 }
 

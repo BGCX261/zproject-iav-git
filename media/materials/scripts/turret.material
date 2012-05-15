@@ -19,9 +19,9 @@ material _missing_material_
 material metalBase 
 {
     receive_shadows on
-    technique b2ogre_1336468393.703276
+    technique b2ogre_1337096308.303499
     {
-        pass b2ogre_1336468393.703352
+        pass b2ogre_1337096308.303572
         {
             ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
             diffuse 0.5320634921202583 0.5320634921202583 0.5320634921202583 1.0
@@ -43,7 +43,7 @@ material metalBase
             scene_blend_op add
             shading gouraud
             transparent_sorting on
-            texture_unit b2ogre_1336468393.705281
+            texture_unit b2ogre_1337096308.304556
             {
                 texture MetalBare0102_L.jpg
                 tex_address_mode wrap
@@ -58,9 +58,9 @@ material metalBase
 material metal 
 {
     receive_shadows on
-    technique b2ogre_1336468393.831254
+    technique b2ogre_1337096308.305088
     {
-        pass b2ogre_1336468393.831276
+        pass b2ogre_1337096308.305136
         {
             ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
             diffuse 0.6400000190734865 0.6400000190734865 0.6400000190734865 1.0
@@ -82,7 +82,7 @@ material metal
             scene_blend_op add
             shading gouraud
             transparent_sorting on
-            texture_unit b2ogre_1336468393.831532
+            texture_unit b2ogre_1337096308.305849
             {
                 texture MetalBare0018_L.jpg
                 tex_address_mode wrap
@@ -97,9 +97,9 @@ material metal
 material agujero 
 {
     receive_shadows on
-    technique b2ogre_1336468393.888233
+    technique b2ogre_1337096308.306226
     {
-        pass b2ogre_1336468393.888254
+        pass b2ogre_1337096308.306266
         {
             ambient 0.015993552282452583 0.015993552282452583 0.015993552282452583 1.0
             diffuse 0.012794842016620067 0.012794842016620067 0.012794842016620067 1.0
@@ -129,12 +129,12 @@ material agujero
 material metalOscuro 
 {
     receive_shadows on
-    technique b2ogre_1336468393.888521
+    technique b2ogre_1337096308.307361
     {
-        pass b2ogre_1336468393.888533
+        pass b2ogre_1337096308.307404
         {
             ambient 0.800000011920929 0.800000011920929 0.800000011920929 1.0
-            diffuse 0.15111112819777617 0.15111112819777617 0.15111112819777617 1.0
+            diffuse 0.1017284170050683 0.1017284170050683 0.1017284170050683 1.0
             specular 0.0317460298538208 0.0317460298538208 0.0317460298538208 1.0 12.5
             emissive 0.0 0.0 0.0 1.0
             alpha_to_coverage off
@@ -153,7 +153,7 @@ material metalOscuro
             scene_blend_op add
             shading gouraud
             transparent_sorting on
-            texture_unit b2ogre_1336468393.888732
+            texture_unit b2ogre_1337096308.3081
             {
                 texture MetalBare0043_M.jpg
                 tex_address_mode wrap

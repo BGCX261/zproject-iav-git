@@ -27,9 +27,22 @@ class EnemyAIModelJustTurn : public EnemyAIModel
 {
 	public:
 		EnemyAIModelJustTurn();
+		~EnemyAIModelJustTurn();
 		void makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies);
 
 	protected:
 		bool applied;
+};
+
+class EnemyAIModelRandom : public EnemyAIModel
+{
+	public:
+		EnemyAIModelRandom();
+		~EnemyAIModelRandom();
+		void makeDecision(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent& evt, Enemy *enemy, ZombiePack **zombies);
+
+	protected:
+		bool applied;
+		EnemyMovModelRandom *movModel;
 };
 #endif // #ifndef __EnemyAIModel_h_

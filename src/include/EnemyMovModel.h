@@ -8,15 +8,9 @@
 
 class EnemyMovModel
 {
-   protected:
-	double aux;
-	double rate;
-
    public:
-	EnemyMovModel(double r);
-	virtual bool calculateMove(Enemy *enemy, ZombiePack** zomb, double* x, double* z)  = 0;
-	void preProcess(double time);
-	void postProcess();
+	EnemyMovModel();
+	virtual void calculateMove(Enemy *enemy, ZombiePack** zomb, double* x, double* z)  = 0;
 };
 //-------------------------------------------------------
 
@@ -25,7 +19,7 @@ class EnemyMovModelRandom : public EnemyMovModel
 
 	public:
 		EnemyMovModelRandom();
-		bool calculateMove(Enemy *enemy, ZombiePack** zomb, double* x, double* z);
+		void calculateMove(Enemy *enemy, ZombiePack** zomb, double* x, double* z);
 };
 
 #endif // #ifndef __EnemyMovModel_h_
