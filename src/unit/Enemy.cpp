@@ -68,12 +68,15 @@ Enemy::Enemy(int ty, int ind, Ogre::Real initX, Ogre::Real initZ)
 	dps 	= EnemyData[type].dps;
 	life 	= EnemyData[type].life;
 
+
 	// Movement
 	speed = EnemyData[type].speed;
 	speedTurn = EnemyData[type].speedTurn;
 	angleTurn = 0;
 	translateVector = Ogre::Vector3(0, 0, 0);
 	turning = false;
+
+	shootingDelay = 0;
 
 	//Animations
 	anim_walk = entity->getAnimationState("walk");
@@ -158,8 +161,11 @@ void Enemy::update(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent&
 		if(shoot)
 		{
 			anim_shoot->addTime(evt.timeSinceLastFrame);
-
-			shoot = false;
+			shootingDelay -= evt.timeSinceLastFrame;
+		
+			if (shootingDelay <= 0) {
+				shoot = false;
+			}
 
 	    	// If we are still turning we have to update the orientation:
 	    	} else if (seek)
@@ -265,6 +271,11 @@ void Enemy::setPatrol(){
 
 void Enemy::fire(){
 	shoot = true;
+	shootingDelay = anim_shoot->getLength();
+
+	anim_shoot->setEnabled(true);
+	//anim_walk->setEnabled(false);
+	//anim_idle->setEnabled(false);
 }
 
 void Enemy::setAttack(bool b){

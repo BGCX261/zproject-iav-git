@@ -65,6 +65,8 @@ protected:
 	Ogre::Real speed;
 	Ogre::Real speedTurn;
 
+	double shootingDelay;
+
 	int range;
 	int dps;
 
