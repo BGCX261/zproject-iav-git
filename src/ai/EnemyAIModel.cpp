@@ -9,6 +9,9 @@ EnemyAIModel::EnemyAIModel(double r)
 	rate = r;
 }
 
+EnemyAIModel::~EnemyAIModel()
+{
+}
 
 //-------------------------------------------------
 void EnemyAIModel::preProcess(double time)
