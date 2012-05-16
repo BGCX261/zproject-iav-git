@@ -283,7 +283,7 @@ bool Enemy::isAlive(){
 	return alive;
 }
 
-double Enemy::modifySpeed(double factor)
+void Enemy::modifySpeed(double factor)
 {
 	speed *= factor;
 	speedTurn *= factor;

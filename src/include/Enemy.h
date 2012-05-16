@@ -42,7 +42,7 @@ public:
 	void setSeek();
 	void setAttack(bool);
 
-	double modifySpeed(double factor);
+	void modifySpeed(double factor);
 
 	Ogre::SceneNode* node;		// lo necesito publico para acceder a su posicion y dispararle
 	Ogre::AxisAlignedBox box;
