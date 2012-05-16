@@ -46,7 +46,9 @@
 
     \p{The main feature of this game is that you won't be able to directly control your units, in case of that, you will give them orders and the units should behave according to them but with a high free will grade.}
 
-    \p{The horde will be separated into groups of units that you will be able to select. Using the mouse and the graphic interface provided, you will give these orders to your troops, an example can be ``approach to that position'' or ``became aggressive''.}
+    \p{The horde will be separated into groups of units that you will be able to select. Using the mouse and the graphic interface provided, you will be able to control a group of unit at once, giving orders to your troops should alter its behaviour and they will follow your order in their way.}
+
+    \p{There will be computer controlled enemies that will kill your units in order to defeat you. A longer description will be included in the next section.}
 
 
   \subsection{Motivation}
@@ -54,9 +56,22 @@
     \p{We have chosen this kind of game because we think that the AI integration possibilities are huge. AI principles can be integrated in many of the game components, for example, in the game engine, AI techniques can be used in order to define and implement the units free will, also it can be combined with an agent-based approach. AI could also be applied to make opponents for the game, we should define their strategies, decision, etc...}
 
 
-  \subsection{Platform}
+  \subsection{Game classification}
 
-    \p{The game will be developed in the 3D engine  Ogre, and it should be multi-platform (both windows and linux). The models and artwork will be designed in blender and gimp. So this game is fully free software made.}
+    \p{The presented game could be classified as:}
+
+    \begin{itemize}
+     \item \textbf{Game type:} Real Time Strategy
+     \item \textbf{Type of use:} The machine is controlling several characteristics as physics, ground generation and playing as an opponent.
+     \item \textbf{Theme:} Horde of units.
+     \item \textbf{User age:} No children are allowed to play this game because of the violence it contains.
+     \item \textbf{Skills development:} In this game player will develop spatial abilities and also reasoning ones by controlling the units and thinking fast strategies in order to win the game.
+     \item \textbf{Platform:} Originally it is developed for PC, with compatibility with Microsoft Windows and Linux.
+     \item \textbf{Technology development:} All the game has been developed using free software: Ogre 3D, Blender, Gimp, OIS and OpenAl.
+     \item \textbf{Development company:} Jacinto y Adrián ó Adrian y Jacinto Developing.
+     \item \textbf{Year of development:} 2012.
+    \end{itemize}
+
     
 
 \newpage
@@ -64,23 +79,29 @@
 
   \subsection{Game elements}
 
-    \p{In this game your goal is to conquer the centre of the map.}
+    \p{In this game your goal is to conquer the centre of the map by getting a large number of zombies inside the enemy fortress.}
 
-    \p{There are three main elements on the game:}
+    \p{There are four main elements on the game:}
 
     \begin{itemize}
      \item \textbf{Zombies:} This is the interactive element of the game. You will control a few groups of zombies that will start spread over the map. You can order to each group of zombies move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the goal (centre of the map) they should attack the enemy, but beware because they can shoot and kill the zombies.
      \item \textbf{Food:} Spread along the map you can also find food, food is necessary for the zombies to get strong and obey your orders. If a group of zombies find food they will eat it.
      \item \textbf{Enemies:} In the centre of the map, and spread along it, you will find a bunch of enemies. They will be patrolling all the time and trying to kill your zombies if they come close enough. Your goal is to kill every enemy on the map (or reach the goal).
-     \item \textbf{Goal:} The objetive of the game is to catch the centre goal, a big Brain. If a zombie touch the Brain, you will win; but is not too easy because all the enemies are patrolling and protecting the goal.
+     \item \textbf{Goal:} The goal of the game is to catch the centre goal, a big Brain. If a zombie touch the Brain, you will win; but is not too easy because all the enemies are patrolling and protecting the goal.
     \end{itemize}
 
-  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks \dots.}
+  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks \dots. That will make your zombies harder to move in a pack.}
 
 
   \subsection{Knowledge extraction}
 
-    \p{In further develop of the game we will be able to fill out this section.}
+    \p{The basic strategy a user has to know about how to play this game is that everything has to be accomplished by using a large number of units. Some enemies would be tougher than others so you should take a look of the map before start to send all your units to an early end.}
+
+    \p{When you plan your attack watch for fixed turrets or enemies in far positions in order to avoid them and don't waste troops killing them. Also, coordinate your units to attack at once and corner the stronger enemies to quickly take them down before they cause so many casualties.}
+
+    \p{The food should be a secondary goal, but you should collect many of them in order to make your army stronger for the last assault if you want your plan to be committed. Otherwise, your troops will fall into chaos and wander around the map letting the enemies to slowly kill them.}
+
+    \p{The game is simple, so when you discover how the different enemies behave you should be able to anticipate you plan by taken a quick look of the map disposal.}
 
   \subsection{Artificial intelligence applications}
 
@@ -122,6 +143,30 @@
     \end{itemize}
   
     \p{Those problems can be solved using a very simple system or using a high-level complicated strategy.}
+
+    \p{To commit this task, we provide a framework in order to identify a limited number of elements to work with:}
+
+    \begin{itemize}
+     \item \textbf{Enemy behaviour:} There are two behaviours in which the enemy can be at a given moment:
+	 \begin{itemize}
+	    \item Patrol: The enemy is moving around the map, moving to a given point that the punctual movement provider tells it.
+	    \item Seek: The enemy is rotating over himself at a constant speed, can be done for searching enemies in range.
+	  \end{itemize}
+
+     \item \textbf{Enemy aggressiveness:} The enemy can be in an aggressive mood or not. If aggressiveness is on, the enemy would shoot at anything that comes into range.
+     \item \textbf{Environment data:} The enemy can know at any moment about its own data and the zombies data over the map with no restriction.
+    \end{itemize}
+
+    \p{Additionally to those elements, each unit has different parameters, that would make it stronger o weaker:}
+
+      \begin{itemize}
+       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy can deal to the zombies.
+       \item \textbf{Life:} The amount of damage that an enemy can be dealt by zombies before die.
+       \item \textbf{Speed:} The velocity of the enemy displacements around the map.
+      \end{itemize}
+
+    \p{Using all of these elements we should implement all of the different AI for the different kind of enemies in the game. In further sections we will explain about the different implementations.}
+
 
 
   \newpage
@@ -165,11 +210,37 @@
       \item \textbf{¿Learning?:} As this system is based on purely injected knowledge it will be difficult to include any learning. Perhaps the distance parameters of that appears on the rules should be later optimized.
       \end{itemize}
 
+    \subsubsection{AI behaviour: The hunter}
+
+      \p{By using a simple set of rules, we can make a very effective opponent using a really low resources consuming technique.}
+
+      \p{For the implementation which will be explained later we have defined the next representation scheme:}
+
+      \begin{itemize}
+      \item \textbf{Input space:} As an input space we provide as antecedents the unit actual location, and the zombies locations.
+      \item \textbf{Output space:} As an output space the system returns the next action to achieve, that could be move to a given point or to stay and seek for enemies.
+      \item \textbf{Input and output representation:} The locations are represented as 2D points in a cartesian system, so we can make some calculations on them, the output is given directly to the program to interpret it.
+      \item \textbf{Statements base:} Previously attacked unit, nearest unit location.
+      \item \textbf{Set of rules (knowledge injected):}
+	  \begin{itemize}
+	    \item \textit{If the nearer enemy is too close move away before attacking it.}
+	    \item \textit{If an enemy gets in range, shoot at it.}
+	    \item \textit{If you has just killed and enemy, stay and seek for the rest of the pack}
+	    \item \textit{If you don't have an objetive move closer to the nearer enemy.}
+
+	  \end{itemize}
+      \item \textbf{Considerations for the inference engine:} As this will be a really short inference cycle, the inference engine will be emulated using sequential conditional and the statement base using numerical variables.
+      \item \textbf{¿Learning?:} As this system is based on purely injected knowledge it will be difficult to include any learning. Perhaps the distance parameters of that appears on the rules should be later optimized.
+      \end{itemize}
 
 
+\subsection{Not implemented techniques}
 
+    \p{The next techniques don't have a formalized representation scheme for our game, but they have been discussed and proposed for typical usages inside this game.}
 
-  \subsection{Application of CBR}
+    \p{The information provided next consists in factional ideas that could be revised and implemented in a more mature stage of development of our game. By the moment, we provide this information as an exercise for the current subject.}
+
+  \subsubsection{Application of CBR}
 
     \p{The idea is to use CBR in order to define some strategies for the opponent, giving more flexibility than a RBS. We have different strategies for the opponent, and we need to choose one.
 	The possible strategies are: \textbf{patrol}, \textbf{explore}, \textbf{attack to zombie detected} or \textbf{protect the Brain}.}
@@ -195,7 +266,42 @@
 
       \end{itemize}
 
+    \p{The point of using this kind of techniques is that we can but it in the game and face it against human players to see how it evolves.}
 
+     \p{A good variation of this should be using it to adjust the selected strategies of each enemy in the map. It could be used as a \textbf{meta-algorithm} to do that, designing and initial configuration of the AI system by assigning a pre-made behavior to each unit and evaluating the result at the end of the game.}
+
+  \subsubsection{Application of connectionism}
+
+      \p{The idea of connectionism is really similar to the previous one.}
+
+      \p{By using the different states of the enemies, and the enviromental information we can design a multi-layer neural network which outputs would be the next behaviour that the enemy should get to practice.}
+
+      \p{The big problem with this kind of model is the need of learning. With the CBR approach we would be able to put it in the game and teach it by playing with human players, but the neural network learning process is more complex and requires more simulation that would be really difficult to make without the intervention of an human player.}
+
+  \subsubsection{Evolutionary computation}
+
+  
+  \subsection{Mathematical approaches and other algorithms}
+
+    \p{As this game is a simple one, most of evaluated problems can be and have been solved by using more simple solution than using complex AI techniques.}
+
+    \p{Basic algorithms, and mathematical approaches have been applied in some situations that we are going to explain next.}
+
+    \subsubsection{Collision system and geometry navigation}
+
+      \p{For physics, like collisions, we've implemented mathematical solution based on raytracing. Those solutions are based in linear algebra and analitic geometry. So mathematical equations had been implemented directly in the code in order to solve the problem of collisions or for example, calculating the range of fire for the enemies weapons.}
+
+      \p{Also mathematical equations have been implemented in order to manage the navigation through the map. Elemental trigonometry and analitic geometry has been used in order to provide the mathematical support to spatial navigation.}
+
+    \subsubsection{Randomness}
+
+      \p{Randomness is deeply used in this game. For a lot of situations a random number is able to solve a problem and also to add some richer properties to the game, making it more stochastic and so amusing for the players.}
+
+    \subsubsection{Directly applied knowledge}
+
+      \p{In some situations, it could be a good point to directly apply some of the knowledge extracted directly by using simple programming techniques.}
+
+      \p{Although we could try to formalize some of this implementations by using some of the previous techniques, most of them are too simple for that. So state machines, search algorithms and other basic programming techniques can be found deeply used in some of the AI modules and can be considered as cornerstones.}
 
 \newpage
 \section{Artificial intelligence principles III: Implementation}
@@ -219,7 +325,7 @@
 
     \p{\textbf{GIMP} (GNU Image Manipulation Program) is a free and open source software image retouching and editing tool. Gimp has tools used for image retouching and editing, free-form drawing, resizing, cropping, photo-montages (combining multiple images), converting between different image formats, and more specialised tasks. }
 
-    \p{Like Blener is just a 3D modeling software, our models and animations need to be exported to use it on OGRE aplication. First of all, we desing the 3D geometry of, for example, a zombie in Blender; then, include some textures and details with an external 2D editing software (like GIMP), and finally export our model to a OGRE format.}
+    \p{As Blender is just a 3D modeling software, our models and animations need to be exported to use it on OGRE aplication. First of all, we desing the 3D geometry of, for example, a zombie in Blender; then, include some textures and details with an external 2D editing software (like GIMP), and finally export our model to a OGRE format.}
 
   \subsection{AI techniques integration}
 
@@ -244,5 +350,20 @@
   \subsubsection{Behaving and action module and models}
 
   \subsubsection{Strategy and meta-game module and models}
+
+
+\section{Conclusions}
+
+  \subsection{AI Results}
+    \p{We have obtained the following results, in terms of artificial intelligence behavior:}
+    TO DO
+
+  \subsection{Development costs}
+    \p{The approximate time invested in the development of the application has been:}
+    TO DO
+
+  \subsection{Showing}
+    \p{A sample screenshots of the application Zproyect:}
+    TO DO
 
 \end{document}          

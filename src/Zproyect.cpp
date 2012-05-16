@@ -45,7 +45,7 @@ void Zproyect::createScene(void)
 	nodeGround->attachObject(entGround2);
 	nodeGround->scale(80,80/2,80);
 	entGround2->setQueryFlags(OTHER_MASK);
-    entGround2->setCastShadows(false);
+       entGround2->setCastShadows(false);
 
 	plane.redefine(Ogre::Vector3::UNIT_Y, Ogre::Vector3(0,0,0) );
 	Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
@@ -133,7 +133,7 @@ void Zproyect::createScene(void)
 	mCollisionTools = new MOC::CollisionTools(mSceneMgr);
 
 	
-	// 	PRUEBAS:::::
+	// PRUEBAS:::::
 
 
 }
