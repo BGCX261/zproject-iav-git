@@ -6,29 +6,32 @@ const struct EnemyDataStructure Enemy::EnemyData[] = {
 
 {"Turret.mesh",
  100,
- 30,
+ 50,
  100,
  2,
  1,
- 1
+ 1,
+ 0
 },
 
 {"Flyer.mesh",
  100,
- 30,
+ 20,
  100,
- 3,
+ 6,
  2,
- 1
+ 1,
+ 0
 	},
 
 {"robot.mesh",
  100,
- 30,
+ 40,
  100,
+ 4,
  3,
- 2,
- 0.1
+ 0.1,
+ -3
 	}
 };
 
@@ -50,7 +53,7 @@ Enemy::Enemy(int ty, int ind, Ogre::Real initX, Ogre::Real initZ)
 	node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
 	// Node Position (relative to bounding box Left-Bottom)
 	//node->showBoundingBox(true);
-	node->setPosition(initX, -box.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y, initZ);
+	node->setPosition(initX, -box.getCorner(Ogre::AxisAlignedBox::FAR_LEFT_BOTTOM).y + EnemyData[type].boundYcorrection , initZ);
 	// attach to node
 	node->attachObject(entity);
 	node->scale(Ogre::Vector3(EnemyData[type].scaleFactor, EnemyData[type].scaleFactor, EnemyData[type].scaleFactor));
@@ -172,6 +175,8 @@ void Enemy::update(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent&
 		{
 			//robotAnimState_idle->addTime(2*evt.timeSinceLastFrame);
 			node->yaw(Ogre::Radian(evt.timeSinceLastFrame*speedTurn));
+			anim_idle->addTime(evt.timeSinceLastFrame);
+		
 		} 
 		else if (patrol)
 		{
@@ -217,13 +222,13 @@ void Enemy::update(MOC::CollisionTools *mCollisionTools, const Ogre::FrameEvent&
 				node->translate(translateVector * evt.timeSinceLastFrame, Ogre::Node::TS_LOCAL);
 
 
-				/*// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
+				// Check if we are colliding with anything with a collision radius of 4.0 ogre units and we 
 				// set the ray origin 10.0 for the bunker collision
 				if (mCollisionTools->collidesWithEntity(oldPos, node->getPosition(), 4.0f , 3.0f, STATIC_MASK))
 				{
 					// undo move
 					node->setPosition(oldPos);
-				}*/
+				}
 
 				anim_walk->addTime(evt.timeSinceLastFrame);
 

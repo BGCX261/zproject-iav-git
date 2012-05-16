@@ -160,8 +160,9 @@
     \p{Additionally to those elements, each unit has different parameters, that would make it stronger o weaker:}
 
       \begin{itemize}
-       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy can deal to the zombies.
+       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy deal to the zombies.
        \item \textbf{Life:} The amount of damage that an enemy can be dealt by zombies before die.
+       \item \textbf{Range:} The maximum distance that a unit cat attack.
        \item \textbf{Speed:} The velocity of the enemy displacements around the map.
       \end{itemize}
 
@@ -181,7 +182,7 @@
      \item \textbf{Input space:} As an input the algorithm will receive the game's map divided in regions and represented as a non directed graph where each node will be either a passable or an impassable region, the actual location of the unit to move and the final location where the unit want to reach. The arcs of the graph will be weighted with the distance between regions and only the nodes which represents adjacent region will be connected.
      \item \textbf{Output space:} As an output the algorithm will return a valid path of the graph, directly interpretable by the game engine.
      \item \textbf{States:} An stated will be conformed by a node on the graph. Only the nodes that are passable can be considered as valid states. 
-     \item \textbf{Initial state – Final state:} The initial state corresponds to the node which represents the region of the map where the unit is located.
+     \item \textbf{Initial state – Final state:} The initial state corresponds to the node which represents the region of the map where the unit is located. The final state is the one conformed by the desired location.
      \item \textbf{Operators:} Ramification through states should be done by moving directly to the neighbours of the current node.
      \item \textbf{Function of heuristic evaluation:} The heuristic function will just be the cost of the path of going directly from the origin to the destination without considering the condition of the regions. The distances will be precalculated for the algorithm.
     \end{itemize}

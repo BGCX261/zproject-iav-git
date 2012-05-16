@@ -19,6 +19,7 @@ struct EnemyDataStructure {
 	int speedTurn;
 	
 	double scaleFactor;
+	double boundYcorrection;
 };
 
 static struct EnemyDataStructure cosa = {"Robot.mesh"};
@@ -53,6 +54,9 @@ public:
 	int type;
 	int index;
 
+	int range;
+	int dps;
+
 protected:
 
 	void fire();
@@ -68,9 +72,6 @@ protected:
 	Ogre::Real speedTurn;
 
 	double shootingDelay;
-
-	int range;
-	int dps;
 
 	bool alive;		// live/dead
 	double life;

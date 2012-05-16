@@ -89,10 +89,11 @@ void Zproyect::createScene(void)
 	// -----------------------------------------------
 	// Units:
 	// Create the zombies
-	nGroups = 2;
+	nGroups = 3;
 	zombieGroups = new ZombiePack*[nGroups];
-	for (int i = 0; i < nGroups; i++)
-		zombieGroups[i] = new ZombiePack(i, 20, i*20, i*20, 2, 1);
+	zombieGroups[0] = new ZombiePack(0, 20, -60, 80, 3, 1);
+	zombieGroups[1] = new ZombiePack(1, 20, 0, 80, 3, 1);
+	zombieGroups[2] = new ZombiePack(2, 20, 60, 80, 3, 1);
 
 	selectedGroup = 0;
 	zombieGroups[selectedGroup]->select();
@@ -102,11 +103,12 @@ void Zproyect::createScene(void)
 
 
 	// Enemies:
-	nEnemies = 3;
+	nEnemies = 4;
 	enemies = new Enemy*[nEnemies];
-	enemies[0] = new Enemy(ENEMY_TYPE_TURRET, 0, -20, 10);
-	enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
-	enemies[2] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
+	enemies[0] = new Enemy(ENEMY_TYPE_TURRET, 0, 10, 10);
+	enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, -60, 0);
+	enemies[2] = new Enemy(ENEMY_TYPE_FLYER, 2, 60, -20);
+	enemies[3] = new Enemy(ENEMY_TYPE_ROBOT, 3, 10, -50);
 
 	
 	enemyAIJustTurn = new EnemyAIModelJustTurn();
@@ -216,7 +218,7 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		{
 	
 		case ENEMY_TYPE_TURRET:
-			enemyAIRandom->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups, nGroups);
+			enemyAIJustTurn->makeDecision(mCollisionTools, evt, enemies[e], zombieGroups, nGroups);
 	    		break;
 
 		case ENEMY_TYPE_FLYER:
@@ -252,7 +254,7 @@ void Zproyect::pickEntity(const OIS::MouseEvent &arg, const Ogre::uint32 queryMa
 	float distToColl;
 	Ogre::Vector2 mousePos = Ogre::Vector2(arg.state.X.abs,arg.state.Y.abs);
 
-    if (mCollisionTools->raycastFromCamera(mWindow, mCamera, mousePos, result, tmpE, distToColl, queryMask))
+    	if (mCollisionTools->raycastFromCamera(mWindow, mCamera, mousePos, result, tmpE, distToColl, queryMask))
 	{
 		Ogre::String name = tmpE->getName();
 		std::vector<Ogre::String, Ogre::STLAllocator<Ogre::String, Ogre::GeneralAllocPolicy> > nameGroups = Ogre::StringUtil::split(name, Ogre::String("-"));
@@ -272,13 +274,13 @@ bool Zproyect::keyPressed( const OIS::KeyEvent &arg )
 	if (arg.key == OIS::KC_ADD)
 	{
 		for(int i=0;i<nGroups;i++) zombieGroups[i]->modifySpeed(1.1);
-		for (int e = 0; e < nEnemies; e++) enemies[e]->modifySpeed(1.01);
+		for (int e = 0; e < nEnemies; e++) enemies[e]->modifySpeed(1.1);
 	}
 
 	if (arg.key == OIS::KC_SUBTRACT)
 	{
 		for(int i=0;i<nGroups;i++) zombieGroups[i]->modifySpeed(0.9);
-		for (int e = 0; e < nEnemies; e++) enemies[e]->modifySpeed(0.99);
+		for (int e = 0; e < nEnemies; e++) enemies[e]->modifySpeed(0.9);
 	}
 	return ret;
 }

@@ -43,6 +43,7 @@ class EnemyAIModelRandom : public EnemyAIModel
 
 	protected:
 		EnemyMovModelRandom *movModel;
+		bool state;
 };
 
 class EnemyAIModelHunt : public EnemyAIModel

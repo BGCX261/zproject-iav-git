@@ -56,9 +56,10 @@ void EnemyAIModelJustTurn::makeDecision(MOC::CollisionTools *mCollisionTools, co
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 
-EnemyAIModelRandom::EnemyAIModelRandom() : EnemyAIModel(1.5)
+EnemyAIModelRandom::EnemyAIModelRandom() : EnemyAIModel(3)
 {
 	movModel = new EnemyMovModelRandom();
+	state = 0;
 }
 
 void EnemyAIModelRandom::start(Enemy* enemy)
@@ -71,10 +72,16 @@ void EnemyAIModelRandom::makeDecision(MOC::CollisionTools *mCollisionTools, cons
 {
 	if (aux >= rate)
 	{
-		double x, z;
-		movModel->calculateMove(enemy, zombies, nZombies, &x, &z);
-		enemy->move(x, z);
-	}
+		if (enemy->seek)
+		{
+			enemy->setPatrol();
+			double x, z;
+			movModel->calculateMove(enemy, zombies, nZombies, &x, &z);
+			enemy->move(x, z);
+		} else {
+			enemy->setSeek();
+		}
+	}	
 
 	enemy->update(mCollisionTools, evt, zombies);
 }
@@ -84,7 +91,7 @@ void EnemyAIModelRandom::makeDecision(MOC::CollisionTools *mCollisionTools, cons
 //-----------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------
 
-EnemyAIModelHunt::EnemyAIModelHunt() : EnemyAIModel(1.5)
+EnemyAIModelHunt::EnemyAIModelHunt() : EnemyAIModel(0.3)
 {
 	movModel = new EnemyMovModelChase();
 }
@@ -101,6 +108,15 @@ void EnemyAIModelHunt::makeDecision(MOC::CollisionTools *mCollisionTools, const 
 	{
 		double x, z;
 		movModel->calculateMove(enemy, zombies, nZombies, &x, &z);
+
+		// Calculamos si está demasiado cerca:
+		Ogre::Vector3 myPos = enemy->node->getPosition();
+		if (myPos.distance(Ogre::Vector3(x, myPos.y, z)) < enemy->range*0.5)
+		{
+			x = 2 * myPos.x - x;
+			z = 2 * myPos.z - z;
+		}
+
 		enemy->move(x, z);
 	}
 

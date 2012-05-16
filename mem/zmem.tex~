@@ -160,8 +160,9 @@
     \p{Additionally to those elements, each unit has different parameters, that would make it stronger o weaker:}
 
       \begin{itemize}
-       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy can deal to the zombies.
+       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy deal to the zombies.
        \item \textbf{Life:} The amount of damage that an enemy can be dealt by zombies before die.
+       \item \textbf{Range:} The maximum distance that a unit cat attack.
        \item \textbf{Speed:} The velocity of the enemy displacements around the map.
       \end{itemize}
 
@@ -323,6 +324,8 @@
 
     \p{As this subject is not focused on videogames programming, this section will cover the basis of the implementation in order to identify and follow the different elements of the game engine. We are going the provide the fewer diagrams and models needed to understand the structure and the function of this application.}
 
+%%
+%%	SI NO SE PONE NADA MAS NEJOR BORRAR DIGO YO.
 
   \subsection{Programing with Ogre3D}
 
