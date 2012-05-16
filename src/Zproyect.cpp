@@ -102,12 +102,11 @@ void Zproyect::createScene(void)
 
 
 	// Enemies:
-	nEnemies = 2;
+	nEnemies = 3;
 	enemies = new Enemy*[nEnemies];
 	enemies[0] = new Enemy(ENEMY_TYPE_TURRET, 0, -20, 10);
-	enemies[1] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
-	//enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
-	//enemies[2] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
+	enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
+	enemies[2] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
 
 	
 	enemyAIJustTurn = new EnemyAIModelJustTurn();
@@ -149,7 +148,12 @@ void Zproyect::setupSound(void){
 	
 	soundMgr = SoundManager::createManager();
 	soundMgr->init();
-	soundMgr->setAudioPath( (char*) "..\\..\\media\\sounds\\" );
+
+	#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+		soundMgr->setAudioPath( (char*) "..\\..\\media\\sounds\\" );
+	#else
+		soundMgr->setAudioPath( (char*) "./media/sounds/" );
+	#endif
 
 	// load audio
 	soundMgr->loadAudio( "file1.wav", &audioClip1, false);

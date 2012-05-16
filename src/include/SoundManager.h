@@ -179,7 +179,7 @@ class SoundManager
       
        SoundManager( void );
        virtual ~SoundManager( void );
-       void SoundManager::selfDestruct( void );
+       void selfDestruct( void );
        static SoundManager* createManager( void );
        static SoundManager* getSingletonPtr( void ) { return mSoundManager; };
 

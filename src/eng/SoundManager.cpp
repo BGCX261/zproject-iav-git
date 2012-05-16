@@ -875,7 +875,7 @@ bool SoundManager::loadDefaultSounds( std::string filename )
     {
       // We have some data, attempt to load it
       strcpy(key,buff);
-      trimTrailingSpace(key);
+      //trimTrailingSpace(key);
       	
       // First, make sure it isn't already loaded
       if ( locateAudioBuffer( key ) < 0 )
@@ -897,7 +897,8 @@ bool SoundManager::loadDefaultSounds( std::string filename )
 
 // Function to trim the trailing crap from a string.
 /****************************************************************************/
-void SoundManager::trimTrailingSpace( char *s )
+
+/*void SoundManager::trimTrailingSpace( char *s )
 {
   char *p;
   p = s;
@@ -911,4 +912,5 @@ void SoundManager::trimTrailingSpace( char *s )
     }
     p++;
   }
-}
+}*/
+
