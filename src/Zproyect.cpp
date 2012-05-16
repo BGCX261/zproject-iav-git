@@ -25,6 +25,10 @@ void Zproyect::createScene(void)
 	// Auxiliar declarations and actions:
 	srand((unsigned int)time(0));
 
+	// -----------------------------------------------
+	// Setup - Sound
+	setupSound();
+
 
 	// -----------------------------------------------
 	// Camera init and management:
@@ -98,11 +102,12 @@ void Zproyect::createScene(void)
 
 
 	// Enemies:
-	nEnemies = 3;
+	nEnemies = 2;
 	enemies = new Enemy*[nEnemies];
 	enemies[0] = new Enemy(ENEMY_TYPE_TURRET, 0, -20, 10);
-	enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
-	enemies[2] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
+	enemies[1] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
+	//enemies[1] = new Enemy(ENEMY_TYPE_FLYER, 1, 30, 10);
+	//enemies[2] = new Enemy(ENEMY_TYPE_ROBOT, 2, 50, 50);
 
 	
 	enemyAIJustTurn = new EnemyAIModelJustTurn();
@@ -136,6 +141,32 @@ void Zproyect::createScene(void)
 	// PRUEBAS:::::
 
 
+}
+
+// -----------------------------------------------------------------------------
+// Set sound
+void Zproyect::setupSound(void){
+	
+	soundMgr = SoundManager::createManager();
+	soundMgr->init();
+	soundMgr->setAudioPath( (char*) "..\\..\\media\\sounds\\" );
+
+	// load audio
+	soundMgr->loadAudio( "file1.wav", &audioClip1, false);
+}
+
+// process sound
+bool Zproyect::processSound(const Ogre::FrameEvent& evt){
+
+	static Ogre::Real mToggle = 0.0; // The time left until next toggle
+	mToggle -= evt.timeSinceLastFrame;
+
+	if ((mToggle < 0.0f ) && mKeyboard->isKeyDown(OIS::KC_L)){
+		mToggle = 0.5;
+		soundMgr->playAudio( audioClip1, false );
+	}
+
+	return true;
 }
 
 //-----------------------------------------------------------------------------------------------
@@ -198,6 +229,11 @@ bool Zproyect::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	enemyAIJustTurn->postProcess();
 	enemyAIRandom->postProcess();
 	enemyAIHunt->postProcess();
+
+
+	// ---------------------------------------------	
+	// --- Sound System -------------
+	if(!processSound(evt)) return false;
 
 	return ret;
 }
