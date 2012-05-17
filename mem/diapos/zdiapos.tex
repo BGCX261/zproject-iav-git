@@ -2,7 +2,7 @@
 	% Tamaño general:
 	
 	\documentclass[10pt]{beamer}
-\setbeamertemplate{footline}[page number]
+
 	\mode<presentation>{
 		\usetheme{Hannover}				% Tema de la presentación.
 		\usecolortheme[rgb={0.1, 0.5, 0.1}]{structure} 	% Color principal.
@@ -12,7 +12,16 @@
 
 	}
 
+\setbeamertemplate{footline}[page number]
 \usepackage{pgf}
+\pgfdeclareimage[height=2.5\baselineskip,width=2.5\baselineskip]{logo}{loguete}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{sidebar left}{
+\vfill
+\insertverticalnavigation{1cm} \vfill
+\pgfuseimage{logo}}
+
+
 	% Mostrar el índice de nuevo al cambiar de sección:
 	
 	\AtBeginSection{
@@ -49,8 +58,6 @@
 \author{Jacinto Arias, Adrián Sánchez}
 \institute{AI in Videogames \and University of Castilla-La Mancha}
 \date{\today}
-
-\logo{\includegraphics{loguete.png}}
 
 \begin{document}
 
