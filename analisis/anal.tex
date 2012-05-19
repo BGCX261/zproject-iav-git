@@ -5,6 +5,8 @@
 
 \usepackage[pdftex]{graphicx}
 \usepackage{epstopdf}
+\usepackage{subfig}
+\usepackage{float}
 
 \usepackage[english]{babel}
 
@@ -74,6 +76,15 @@
     \p{Each race has a different tech tree, including many buildings and units for playing the game. Also, each race has their own capabilities which make a characteristic gameplay. So all your strategy will be conditioned to the race you and your opponents choose in each game.}
 
   
+  \begin{figure}[h]
+  \begin{center}
+  \includegraphics[scale=.3]{diapos1/hydralisk.jpg}
+  \end{center}
+  \caption{Artwork of a zerg hydralisk.}
+  \label{fig:rb1}
+  \end{figure}
+
+
   \subsection{Game basics}
 
     \p{In order to defeat your opponents you will have to gather resources, build bases and armies and use them against your enemies.}
@@ -99,6 +110,15 @@
     \p{In a standard Starcraft game, you will be placed in a map with different terrain configurations, including different heights, water, vast space, lava, jungle and much more. Also you will find necessary resources to gather. Other players will be placed and you will play with or against them in order to achieve the particular goal of the map. For this, you will have access to a particular set of units and building according to your race.}
 
     \p{Next we will introduce the different elements of the game in order to \textbf{establish a base of knowledge}:}
+
+
+  \begin{figure}[hbt]
+  \begin{center}
+  \includegraphics[scale=.8]{diapos1/iso.png}
+  \end{center}
+  \caption{In game capture.}
+  \label{fig:rb1}
+  \end{figure}
 
     \subsubsection{Map, terrain and visibility}
 
@@ -126,6 +146,14 @@
     \subsubsection{Resources}
 
      \p{Units and buildings have a different cost of resources that you will need to you must have and pay in order to afford it. Resource is gathered from the map and instantly added to your actual amount. When you build or train units the cost will be subtracted from your amount. If you can't afford it the unit would not be trained and the game will tell you that you'll need more resource.}
+
+  \begin{figure}[hbt]
+      \centering
+      \subfloat[Mineral deposits]{\label{fig:cima}\includegraphics[scale=.5]{diapos1/min.jpg}} \qquad
+      \subfloat[Vespene Gas deposit]{\label{fig:cimb}\includegraphics[scale=.25]{diapos1/ves.jpg}}
+      \caption{Resources.}
+      \label{fig:res}
+      \end{figure}
 
      \p{The most common resource is the \textit{mineral}, that can be found in different places of the map in form of finite deposits, your workers will gather this until each deposit is finished (they will disappear). Another resource is the \textit{vespene gas}, it quantity is lower than the mineral and it's more complex to gather it, however the cost of the units in gas is usually lower.}
 
@@ -239,21 +267,6 @@
 
     \p{To take advantage of micro controlling on battles, the professional player order their units to focus fire on the strongest units to take them down faster and minimizing the fire that they could inflict to their troops.}
 
-\subsection{Analysis of the different techniques: Identifying problems}
-
-  \subsubsection{Heuristic search}
-
-    \p{Heuristic search search could be applied in two ways:}
-
-    \begin{itemize}
-     \item It's a good approach to found paths for the micro-controlling of the different units. By executing really short searches in the near space the units should be able to navigate the map without colliding each other and smoothing the curves when avoiding obstacles.
-     \item On the other hand, we can find heuristic search useful in order to make plans for the macro-controlling of the AI opponent. For example, we can search thought the space of different construction plans in order to adjust the current to the game status, where we can know about the enemy army or the different topology of the terrain.
-    \end{itemize}
-
-  \p{Heuristic search is not a good approach for direct controlling or more complex decisions because the combinatorial of the states will explode and be computationally unaffordable.}
-
-
-
 
 \newpage
 \section{Artificial intelligence principles II: Representation and algorithms}
@@ -262,8 +275,14 @@
 
     \subsection{AIIDE 2010 StarCraft AI Competition}
 
-      \p{First, we like to introduce this section talking about this event where Starcraft was proposed as a test platform to test the latest AI techniques. In this contest, sponsored by Stanford's University and Blizzard Entertainment, more than 60 groups of students of the most important universities competed developing different AI for Stracraft.}
-
+      \p{First, we want to introduce this section talking about this event where Starcraft was proposed as a test platform to test the latest AI techniques. In this contest, sponsored by Stanford's University and Blizzard Entertainment, more than 60 groups of students of the most important universities competed developing different AI for Stracraft.}
+  \begin{figure}[hbt]
+  \begin{center}
+  \includegraphics[scale=.5]{diapos1/aide.png}
+  \end{center}
+  \caption{AIIDE competition logo.}
+  \label{fig:aiide}
+  \end{figure}
       \p{The most interesting challenge were the matches between AI's, also, the more advanced played against one of the best human Starcraft players. None of them could be able to win, although they put the champion in a trouble.}
 
       \p{The competition included micro management battles, reduced technology battles and full Starcraft games battles. Some of the technologies used were:}
@@ -280,23 +299,96 @@
        \item Genetic programming
       \end{itemize}
 
-      \p{An API for programming AI in Starcraft is public available.}
+      \p{An API for programming AI in Starcraft is public available on http://code.google.com/p/bwapi/.}
 
 \subsection{Heuristic search}
 
-  \p{As said before, we can think about this technique in two ways.}
+	  \subsection{Path finding}
 
-  \subsubsection{Input and output spaces}
+	    \p{As we told before, heuristic search can be applied into the game's engine in order to implement the pathfinding algorithm that the units will use in order to move from a point to the one commanded by the player taking care of the terrain properties and another units.}
 
-    \p{If we are talking about micro management, and we want to make plans to move our units, our input spaces will be the coordinates of the units, and the topology of the map. The output will show the optimal path for the next movement. This search will be executed many times, as the movement of the units appears to be a continuous space.}
+		  \begin{itemize}
+		  \item \textbf{Input space:}
+		    \begin{itemize}
+			\item The map divided in regions and represented as a non directed graph.
+			\item Each node will be either a passable or an impassable region.
+			\item Actual and desired final location.
+		    \end{itemize}
+		  \item \textbf{Output space:} The algorithm will return a valid path of the graph.
+		  \item \textbf{States:} Each node of the graph. Only the nodes that are passable can be considered as valid states. 
+		  \item \textbf{Initial-final state:} The initial location and the desired one.
+		  \item \textbf{Operators:} Ramification through states should be done by moving directly to the neighbours of the current node.
+		  \item \textbf{Function of heuristic evaluation:} The cost of going from the origin to the destination without considering the condition of the regions.
+		  \end{itemize}
 
-    \p{If we are talking about macro management, the input space will be our current army, economical data and other factors achieved during the exploration (terrain features and enemies information). The output space will be a construction plan for the next stage of the game.}
+	    \subsubsection{Construction plan optimization}
+	    
+	      \p{Heuristic search can be applied to implement the macro management strategy for a computer controlled player. It will determine such decisions in matter of building units or buildings.}
+
+		  \begin{itemize}
+		  \item \textbf{Input space:}
+		    \begin{itemize}
+			\item The enemy units that you have been discovered.
+			\item The topology of the map.
+			\item You current construction plan (which is a vector containing elements (units)).
+		    \end{itemize}
+		  \item \textbf{Output space:} A modified construction plan.
+		  \item \textbf{States:} Possible construction plans. 
+		  \item \textbf{Initial-final state:} A factible final state is when you stop the search by depth.
+		  \item \textbf{Operators:} Ramification through states should be adding or deleting elements from the construction plan.
+		  \item \textbf{Function of heuristic evaluation:} A numeric weight for a statistic fight between the two simulated armies. A good variation would be a min-max algorithm.
+		  \end{itemize}
+
+\subsection{Application of RBS}
+
+\subsubsection{Deciding a good construction plan}
+
+  \p{The original AI of this game was implemented by using rules. So this one would be a good approach to implement the AI system of the game.}
+ 
+  \p{In order to determine which is the next unit to build. Using the extracted knowledge there will be so potential rules to be constructed. The prototype is IF you se some type of enemy unit THEN build its counter-unit. For example:}
+
+  \begin{itemize}
+    \item IF you see mutalisk THEN build marines.
+    \item IF you see tanks THEN build guardians.
+    \item IF you see carriers THEN build ghosts and spectres.
+    \item IF you see scouts THEN build goliaths.
+  \end{itemize}
 
 
-  \subsubsection{States}
+\subsection{Application of CBS}
 
-  \subsubsection{Initial state – Final state}
-\subsubsection{Operators}
-\subsubsection{Function of heuristic evaluation}
-\subsubsection{Search Techniques}
+\subsubsection{Deciding strategies}
+  \p{CBS can be applied in a way like RBS but its possibilities are greater. It can be told that the human player gameplay and strategical reasoning is based in case basic reasoning, accordingly applied to the human psychology.}
+
+  \p{By using cases, we can decide not only a construction plan based on our observations but also on the enemy behaviour. You can consult your memory in order to determine if there is a special counter-strategy in order to take your enemy down. Also, if you loose by a new strategy that you've never seen before you can store it and use it in another similar situation.}
+
+  \p{So the cases we will use, would define more complex situations than the rules do; for example: In a rule bases system you can determine that the opponent is making air units so you will make anti-air units. But in CBS you could observe all your opponent reactions and units and you can detect a complex case like ``There are air units and strong defended bases so they are going to attack me on my rearguard, I should protect my bases with anti-air defences and push him on their base protecting my army with anti-air units.}
+
+  \p{Selecting this case will make the player to modify its construction plan and micro management of the army.}
+
+\subsection{ANN and evolutionary computation}
+
+\subsubsection{About learning and evolving}
+
+\p{There would be a nice exercise to confront many AI controlled opponent in millions of simulated matches having set before a ANN or a evolutionary computation learning process in order to see how far they can reach in their gameplay.}
+
+\p{The fact is that, probably they would play the game at a good level, but when they would be faced against human players, the last ones would quickly get used to them and the machines wouldn't adapt so fast to that new situation. And so starcraft is a commercial game designed mostly to play human vs human, sure that this would never be a priority for the enterprise.}
+
+\p{However some researchers around the world have created AIs to play this game, and when they face it against each other, they could pass the Turing test as it can be seen in the previous commented AIIDE competition.}
+
+
+\subsection{Cooperative behaviour}
+
+
+\p{Some cooperative behaviour can be seen between AI opponents in the current game. But the communications are so poor and their coordination is very bad.}
+
+
+\p{They most perform attacks at the same time, but they will not be coordinated nor defend each other or share resources.}
+
+\p{Implementing an agent based communication between two starcraft AI opponents wouldn't be a hard task if they just pass some trivial information, but this information would be useful for the rest of techniques that can be implemented}
+
+
+\begin{center}\vfill
+\includegraphics[scale=0.25]{diapos1/win.jpg}
+\end{center}
 \end{document}          
