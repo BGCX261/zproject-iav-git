@@ -5,6 +5,8 @@
 
 \usepackage[pdftex]{graphicx}
 \usepackage{epstopdf}
+\usepackage{subfig}
+\usepackage{float}
 
 \usepackage[english]{babel}
 
@@ -17,7 +19,7 @@
 \usepackage{datetime}
 
 
-\newcommand{\titulo}[2]{ \begin{titlepage}\begin{center}\vspace*{\fill}\textsc{\Huge #1}\\[5cm]\textsc{\Large \underline{#2}}\\[5cm]\emph{Realizado por:}\\ \textsc{Jacinto Arias Martínez}\\ \textsc{Adrián Sánchez López}\vspace*{\fill}\vfill\monthname[\the\month],\, \the\year\end{center}\end{titlepage}}
+\newcommand{\titulo}[2]{ \begin{titlepage}\begin{center}\vspace*{\fill}\textsc{\Huge #1}\\[3cm]  \includegraphics[scale=0.3]{./zlogo.png} \\[3cm]\emph{Realized by:}\\ \textsc{Jacinto Arias Martínez}\\ \textsc{Adrián Sánchez López}\vspace*{\fill}\vfill\monthname[\the\month],\, \the\year\end{center}\end{titlepage}}
 
 \newcommand{\p}[1]{\paragraph{\indent\textnormal{#1}}}
 
@@ -42,7 +44,7 @@
 
   \subsection{Game definition}
 
-    \p{The game we are proposing is an RTS game in which you will be managing a large horde of units in order to break down a enemy fortress.}
+    \p{The game we are proposing is an \textbf{RTS} game in which you will be managing a large horde of units in order to break down a enemy fortress.}
 
     \p{The main feature of this game is that you won't be able to directly control your units, in case of that, you will give them orders and the units should behave according to them but with a high free will grade.}
 
@@ -68,7 +70,7 @@
      \item \textbf{Skills development:} In this game player will develop spatial abilities and also reasoning ones by controlling the units and thinking fast strategies in order to win the game.
      \item \textbf{Platform:} Originally it is developed for PC, with compatibility with Microsoft Windows and Linux.
      \item \textbf{Technology development:} All the game has been developed using free software: Ogre 3D, Blender, Gimp, OIS and OpenAl.
-     \item \textbf{Development company:} Jacinto y Adrián ó Adrian y Jacinto Developing.
+     \item \textbf{Development company:} Jacinto and Adrián or Adrian and Jacinto Developing.
      \item \textbf{Year of development:} 2012.
     \end{itemize}
 
@@ -84,15 +86,44 @@
     \p{There are four main elements on the game:}
 
     \begin{itemize}
-     \item \textbf{Zombies:} This is the interactive element of the game. You will control a few groups of zombies that will start spread over the map. You can order to each group of zombies move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach the goal (centre of the map) they should attack the enemy, but beware because they can shoot and kill the zombies.
+     \item \textbf{Zombies:} This is the interactive element of the game. You will control a few groups of zombies that will start spread over the map. You can order to each group of zombies move to a point, but if they are hungry they won't obey you and will wander randomly. If they can reach \textit{the goal} (centre of the map) they should attack the enemy, but beware because they can shoot and kill the zombies.
+  
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.8]{zombies.png}
+	    \end{center}
+	    \caption{Zombie models.}
+	    \label{fig:rb1}
+	\end{figure}
+
      \item \textbf{Food:} Spread along the map you can also find food, food is necessary for the zombies to get strong and obey your orders. If a group of zombies find food they will eat it.
+
+      \newpage
      \item \textbf{Enemies:} In the centre of the map, and spread along it, you will find a bunch of enemies. They will be patrolling all the time and trying to kill your zombies if they come close enough. Your goal is to kill every enemy on the map (or reach the goal).
-     \item \textbf{Goal:} The goal of the game is to catch the centre goal, a big Brain. If a zombie touch the Brain, you will win; but is not too easy because all the enemies are patrolling and protecting the goal.
+  
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.8]{enemies.png}
+	    \end{center}
+	    \caption{Enemy models.}
+	    \label{fig:rb2}
+	\end{figure}
+
+     \item \textbf{Goal:} The goal of the game is to catch the centre goal, a \textit{big Brain}. If a zombie touch the Brain, you will win; but is not too easy because all the enemies are patrolling and protecting the goal.
+
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.6]{goal.png}
+	    \end{center}
+	    \caption{Goal model.}
+	    \label{fig:rb3}
+	\end{figure}
+
     \end{itemize}
 
-  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks \dots. That will make your zombies harder to move in a pack.}
+  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks\dots, that will make your zombies harder to move in a pack.}
 
-
+\newpage
   \subsection{Knowledge extraction}
 
     \p{The basic strategy a user has to know about how to play this game is that everything has to be accomplished by using a large number of units. Some enemies would be tougher than others so you should take a look of the map before start to send all your units to an early end.}
@@ -107,7 +138,7 @@
 
   \p{In this section we will identify some of the problems that can be solved using artificial intelligence solutions.}
 
-  \p{The most immediate problem to solve is the behaviour of the units. With most of the techniques we should solve problems like units movement, path finding, collision avoidance or unit tracking.}
+  \p{The most immediate problem to solve is the behaviour of the units. With most of the techniques we should solve problems like \textit{units movemen}t, \textit{path finding}, \textit{collision avoidance} or \textit{unit tracking}.}
 
   \p{Other aspect of the game that can be involved in AI developing can be the opponent strategy. We can implements such methods in order to give the opponent more intelligence making the game most interesting. For example we can apply these techniques for choosing the army or placing in on the map.}
 
@@ -115,11 +146,11 @@
     
     \p{When speaking about movement we have to difference between zombies and enemies, because their movement models are not the same.}
 
-    \p{The zombies model is based in two parameters, firs of all we have the destination point which is the zombies goal to reach, on the other hand we have the hunger of the zombies group. If the zombies are hungry they would tend to wander around while reaching the point, if the hunger level gets low the zombies will appear to come closer to the point obeying the player's order directly.}
+    \p{The zombies model is based in two parameters, firs of all we have the destination point which is the zombies goal to reach, on the other hand we have the hunger of the zombies group. If the zombies \textit{are hungry} they would tend to \textit{wander around} while reaching the point, if the hunger level gets low the zombies will appear to come closer to the point obeying the player's order directly.}
 
-    \p{When programming the zombies movement we should take those parameters in consideration and apply an straight movement and a movement pattern for randomness when wandering. These movement pattern should be applied by using AI techniques, with different techniques we could achieve richer patterns going from a random pattern to behaviours like birds flocks, particle swarm or something different.}
+    \p{When programming the zombies movement we should take those parameters in consideration and apply an straight movement and a movement pattern for randomness when wandering. These movement pattern should be applied by using AI techniques, with different techniques we could achieve richer patterns going from a random pattern to behaviours like \textbf{birds flocks}, \textbf{particle swarm} or something different.}
 
-    \p{A rules based system, a neural network or CBR can be implemented to achieve this.}
+    \p{A \textit{rules based system}, a \textit{neural network} or \textit{CBR} can be implemented to achieve this.}
 
    \subsubsection{Path finding and collision avoidance}
 
@@ -138,8 +169,8 @@
     \p{Independently of the selected system, the problems that should be solved by it are the same:}
 
     \begin{itemize}
-     \item Moving and positioning the units.
-     \item Look for, select and attack enemies.
+     \item \textbf{Moving} and \textbf{positioning} the units.
+     \item \textbf{Look for}, \textbf{select} and \textbf{attack enemies}.
     \end{itemize}
   
     \p{Those problems can be solved using a very simple system or using a high-level complicated strategy.}
@@ -149,8 +180,8 @@
     \begin{itemize}
      \item \textbf{Enemy behaviour:} There are two behaviours in which the enemy can be at a given moment:
 	 \begin{itemize}
-	    \item Patrol: The enemy is moving around the map, moving to a given point that the punctual movement provider tells it.
-	    \item Seek: The enemy is rotating over himself at a constant speed, can be done for searching enemies in range.
+	    \item \textit{Patrol}: The enemy is moving around the map, moving to a given point that the punctual movement provider tells it.
+	    \item \textit{Seek}: The enemy is rotating over himself at a constant speed, can be done for searching enemies in range.
 	  \end{itemize}
 
      \item \textbf{Enemy aggressiveness:} The enemy can be in an aggressive mood or not. If aggressiveness is on, the enemy would shoot at anything that comes into range.
@@ -160,8 +191,9 @@
     \p{Additionally to those elements, each unit has different parameters, that would make it stronger o weaker:}
 
       \begin{itemize}
-       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy can deal to the zombies.
+       \item \textbf{DPS: Damage Per Second:} Is the amount of damage that an enemy deal to the zombies.
        \item \textbf{Life:} The amount of damage that an enemy can be dealt by zombies before die.
+       \item \textbf{Range:} The maximum distance that a unit cat attack.
        \item \textbf{Speed:} The velocity of the enemy displacements around the map.
       \end{itemize}
 
@@ -181,7 +213,7 @@
      \item \textbf{Input space:} As an input the algorithm will receive the game's map divided in regions and represented as a non directed graph where each node will be either a passable or an impassable region, the actual location of the unit to move and the final location where the unit want to reach. The arcs of the graph will be weighted with the distance between regions and only the nodes which represents adjacent region will be connected.
      \item \textbf{Output space:} As an output the algorithm will return a valid path of the graph, directly interpretable by the game engine.
      \item \textbf{States:} An stated will be conformed by a node on the graph. Only the nodes that are passable can be considered as valid states. 
-     \item \textbf{Initial state – Final state:} The initial state corresponds to the node which represents the region of the map where the unit is located.
+     \item \textbf{Initial state – Final state:} The initial state corresponds to the node which represents the region of the map where the unit is located. The final state is the one conformed by the desired location.
      \item \textbf{Operators:} Ramification through states should be done by moving directly to the neighbours of the current node.
      \item \textbf{Function of heuristic evaluation:} The heuristic function will just be the cost of the path of going directly from the origin to the destination without considering the condition of the regions. The distances will be precalculated for the algorithm.
     \end{itemize}
@@ -199,7 +231,7 @@
       \item \textbf{Output space:} As an output space the system returns a destination location where the unit will go as the movement module expect.
       \item \textbf{Input and output representation:} The locations are represented as 2D points in a cartesian system, so we can make some calculations on them.
       \item \textbf{Statements base:} Nearest unit distance.
-      \item \textbf{Set of rules (knowledge injected):} The set of rules consists of three of them, enough to provide an approximation for the birds flock behaviour. The rules are the following, ordered by highest priority:
+      \item \textbf{Set of rules (knowledge injected):} The set of rules consists of three of them, enough to provide an approximation for the \textbf{birds flock behaviour}. The rules are the following, ordered by highest priority:
 	  \begin{itemize}
 	    \item \textit{If you are far away from other birds, head toward the nearest bird.}
 	    \item \textit{If you are about to crash into another bird, turn around.}
@@ -209,6 +241,14 @@
       \item \textbf{Considerations for the inference engine:} As this will be a really short inference cycle, the inference engine will be emulated using sequential conditional and the statement base using numerical variables.
       \item \textbf{¿Learning?:} As this system is based on purely injected knowledge it will be difficult to include any learning. Perhaps the distance parameters of that appears on the rules should be later optimized.
       \end{itemize}
+
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.7]{flocking.jpg}
+	    \end{center}
+	    \caption{Birds flock behaviour.}
+	    \label{fig:rb4}
+	\end{figure}
 
     \subsubsection{AI behaviour: The hunter}
 
@@ -276,11 +316,14 @@
 
       \p{By using the different states of the enemies, and the enviromental information we can design a multi-layer neural network which outputs would be the next behaviour that the enemy should get to practice.}
 
-      \p{The big problem with this kind of model is the need of learning. With the CBR approach we would be able to put it in the game and teach it by playing with human players, but the neural network learning process is more complex and requires more simulation that would be really difficult to make without the intervention of an human player.}
+      \p{The big problem with this kind of model is the need of learning. With the \textbf{CBR approach} we would be able to put it in the game and teach it by playing with human players, but the \textbf{neural network} learning process is \textbf{more complex} and requires more simulation that would be really \textbf{difficult to make} without the intervention of an human player.}
 
   \subsubsection{Evolutionary computation}
-
   
+  \p{We haven't thought about evolutionary computation in order to include it directly in the game's engine or in the opponent's AI. However, techniques as \textit{genetic algorithms} conform a really powerful tool that can be used in order to optimize a collection of parameters}
+
+  \p{In our game, there will be a big number of parameters to be optimized. For example, for balancing purposes, the different units stats should be balanced in order to give us a competitive and amusing game. Also the automatic generation of level could not be left totally to randomness, and we can use evolutionary computation in order to fix those values.}
+
   \subsection{Mathematical approaches and other algorithms}
 
     \p{As this game is a simple one, most of evaluated problems can be and have been solved by using more simple solution than using complex AI techniques.}
@@ -303,13 +346,21 @@
 
       \p{Although we could try to formalize some of this implementations by using some of the previous techniques, most of them are too simple for that. So state machines, search algorithms and other basic programming techniques can be found deeply used in some of the AI modules and can be considered as cornerstones.}
 
+  \subsection{Cooperative behaviour}
+
+      \p{Cooperative behaviour should be a good point to add to this game.}
+      
+      \p{We just have to add the other enemies information to the environmental information they get and use it properly. We have two ways of doing this:}
+
+	\begin{itemize}
+	 \item \textbf{Define a communication protocol:} By establishing a direct communication between the enemies they could use joint strategies in order to win the match to the player. Movement formations or spread themselves along the map to cover more area.
+	 \item \textbf{Define an overlord controller:} This kind of controller could make more meta-game level strategies like a human player. And so the extracted knowledge could be applied here.
+	\end{itemize}
+
+      \p{Despite of the selected technique, cooperative behaviour an agent based approach would enhance the emergent behaviours of the units in the game, giving it a more ``intelligence'' appearance.}
+
 \newpage
 \section{Artificial intelligence principles III: Implementation}
-
-  \subsection{Software engineering and game engine implementation issues}
-
-    \p{As this subject is not focused on videogames programming, this section will cover the basis of the implementation in order to identify and follow the different elements of the game engine. We are going the provide the fewer diagrams and models needed to understand the structure and the function of this application.}
-
 
   \subsection{Programing with Ogre3D}
 
@@ -319,13 +370,29 @@
 
     \p{But on the other hand, once you have come to understand its operation, continue to develop and incorporate new functionality is much more fluid. But how OGRE is only a rendering engine, we need other kind of software to desing our models and animation. We have choose Blender for 3D modeling.}
 
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.4]{ogrelogo.jpg}
+	    \end{center}
+	    \caption{Logo of Ogre 3D.}
+	\end{figure}
+
   \subsection{Artwork in Blender and Gimp}
 
     \p{\textbf{Blender} is a free and open-source 3D computer graphics software product used for creating animated films, visual effects, interactive 3D applications or video games. Blender's features include 3D modeling, UV unwrapping, texturing, rigging and skinning, fluid and smoke simulation, particle simulation, animating, rendering, video editing and compositing. It also features a built-in game engine.}
 
     \p{\textbf{GIMP} (GNU Image Manipulation Program) is a free and open source software image retouching and editing tool. Gimp has tools used for image retouching and editing, free-form drawing, resizing, cropping, photo-montages (combining multiple images), converting between different image formats, and more specialised tasks. }
 
+  \begin{figure}[hbt]
+      \centering
+      \subfloat[Logo of Blender]{\label{fig:cima}\includegraphics[scale=.35]{Blender-Logo.jpg}} \qquad
+      \subfloat[Logo of Gimp]{\label{fig:cimb}\includegraphics[scale=.35]{GIMP-logo.png}}
+      \caption{Blender and Gimp Logos.}
+      \label{fig:res}
+   \end{figure}
+
     \p{As Blender is just a 3D modeling software, our models and animations need to be exported to use it on OGRE aplication. First of all, we desing the 3D geometry of, for example, a zombie in Blender; then, include some textures and details with an external 2D editing software (like GIMP), and finally export our model to a OGRE format.}
+
 
   \subsection{AI techniques integration}
 
@@ -333,37 +400,133 @@
 
   \p{On the one hand and as the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a platform for testing AI techniques we are going to let an empty place in which we can plug in the AI techniques as different modules implementing an specific model; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}
   
-  \subsubsection{Movement module and models}
-    
-    \p{The movement models for the units will affect to their free will movements during the game. Providing richer model will make the make more interesting as our avatar should behave in a more complex way and also resulting on situations of emergency.}
+% NO PUEDO INSERTAR UN EPS (sera porque me faltan esas librerias, nose)
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.2]{modulos.eps}
 
-    \p{The movement module itself should catch some of the parameters from the units and environment and provide a function \textit{calculateMove()} that, for a given avatar, will calculate the next move.}
+	    \end{center}
+	    \caption{Movement and Behaviour modules.}
+	\end{figure}
 
-    \p{The next models have been included in the game and all fully interchangeable without changing anything on the code rather than its name:}
+    \subsubsection{Movement module and models}
+      
+      \p{The movement models for the units will affect to their free will movements during the game. Providing richer model will make the make more interesting as our avatar should behave in a more complex way and also resulting on situations of emergency.}
+
+      \p{The movement module itself should catch some of the parameters from the units and environment and provide a function \textit{calculateMove()} that, for a given avatar, will calculate the next move.}
+
+      \p{There will be a movement module for the zombies, and a movement module for the enemies, with their correspondent  models included.}
+
+      \p{The movement module for zombies defines the movement that the zombies do when they are hungry, otherwise the movement is let to the human player will. The models implemented achieve group movement using each zombie pack:}
 
     \begin{itemize}
-     \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
-     \item \textbf{Bird Flock:} This model is based on a biological approach and has been implemented by using a ruled based system, the specification is shown before in its own section. With this model the whole group will maintain some coherence and will move along together, it neither has any consideration on the environment.
+      \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
+      \item \textbf{Bird Flock:} This model is based on a biological approach and has been implemented by using a ruled based system, the specification is shown before in its own section. With this model the whole group will maintain some coherence and will move along together, it neither has any consideration on the environment.
+    \end{itemize}
+
+    \p{The enemies movement model implements individual movement for each units:}
+
+    \begin{itemize}
+      \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
+
+      \item \textbf{Chase model:} This model uses the positions of the zombies, and gives the enemy the coordinate of the nearest one in order to move to it.
     \end{itemize}
 
 
-  \subsubsection{Behaving and action module and models}
+    \subsubsection{Behaviour module and models}
 
-  \subsubsection{Strategy and meta-game module and models}
+      \p{The behaviour module has been implemented in order to make the enemy behave according to a strategy.}
+
+      \p{To implement this module we can use the aforementioned elements of the control framework for the units: stats, moods (seeking, patrolling), aggressiveness and environmental data.}
+    
+      \p{The models implemented for this module are:}
+
+    \begin{itemize}
+     \item \textbf{JustTurn:} This behaviour is so simple, is the one used for the turrets. This just activates the seek mode and turns on aggressiveness.
+     \item \textbf{Random:} This mode makes the enemy navigate randomly along the map. To do that, they first navigate to a random point by setting up patrolling and using the random movement model, then they seek for enemies activating the correspondent mood.
+     \item \textbf{Hunter:} We have previously talked about this model in the schemes of representation section. This model has been implemented by using the defined ruled bases system. I uses the chase movement model in order to calculate the movements.
+    \end{itemize}
 
 
 \section{Conclusions}
 
   \subsection{AI Results}
-    \p{We have obtained the following results, in terms of artificial intelligence behavior:}
-    TO DO
+    \p{We have obtained very good results, in terms of artificial intelligence behavior.}
+
+    \p{Globally, we have achieved a good stochastic and emergent behaviour of the game. If the human player don't interact with the game, he can observe many of the elements behaving and interacting by themselves using the AI system we implemented.}
+
+    \p{As you can see, the birds flock movement solves the problem of the zombie pack movement, and also the hunter behaviour of the robot enemy gives a competitive opponent to play with.}
 
   \subsection{Development costs}
-    \p{The approximate time invested in the development of the application has been:}
-    TO DO
+    \p{The approximate time invested in the development of the application , according to our experience and using the repository statistics as an approximate measure, we can estimate the cost of the developing in about: \newline}
 
-  \subsection{Showing}
-    \p{A sample screenshots of the application Zproyect:}
-    TO DO
+	    \begin{center}
+	     \begin{tabular}{cc}
 
+		\hline
+		\textbf{Concept}	& \textbf{Hours} \\
+		\hline
+		Ogre formation		& 20 \\
+		System Design		& 12 \\
+		Programming		& 70 \\
+		Artwork			& 12 \\
+		Documentation		& 24 \\
+		\hline
+	  \newline    
+	     \end{tabular}
+	    \end{center}
+	  
+	  \p{To summarize, we have invested in the project a total of \textbf{138 hours}. As a curiosity the code contains about \textbf{4242 lines}.}
+
+
+  \subsection{Demonstration}
+    \p{Some samples screenshots of the application Zproyect:}
+
+	\begin{figure}[hbt]
+
+	\p{ A possible initial situation of enemies, protecting the goal. \newline}
+  
+	    \begin{center}
+			\includegraphics[scale=.5]{captura1.png}
+	    \end{center}
+	    \caption{Gameplay screenshot of enemies and goal.}
+
+	\end{figure}
+
+	\begin{figure}[hbt]	
+	\p{When enemy robot can see zombies in his range, does not doubt, he only attack. \newline}
+    
+	    \begin{center}
+			\includegraphics[scale=.6]{captura2.png}
+	    \end{center}
+	    \caption{Zombies killed by a robot.}
+	\end{figure}
+
+	\begin{figure}[hbt]
+	
+	\p{But if the zombies reach to a enemy, they can kill it too. \newline}    
+	    \begin{center}
+			\includegraphics[scale=.7]{captura3.png}
+	    \end{center}
+	    \caption{Enemy robot killed by zombies.}
+	\end{figure}
+
+
+	\begin{figure}[hbt]	
+	\p{And is easier to kill a turret. \newline}    
+	    \begin{center}
+			\includegraphics[scale=.7]{captura4.png}
+	    \end{center}
+	    \caption{Enemy turret killed by zombies.}
+	\end{figure}
+
+	\begin{figure}[hbt]	
+	\p{The ideal way to play, would be more than \textbf{five hundred} zombies, wandering the world. \newline}
+    
+	    \begin{center}
+			\includegraphics[scale=.6]{captura5.png}
+	    \end{center}
+	    \caption{Gameplay sample of the large number of units supported.}
+	\end{figure}
+	
 \end{document}          

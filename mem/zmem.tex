@@ -30,7 +30,7 @@
  \titulo{ARTIFICIAL INTELLIGENCE IN VIDEOGAMES}{Practice project}
 
     \begin{abstract}
-    
+    We have implemented a video game focusing on the aspects of AI during the design and developing stages. In this document, we present the result of the whole course work. We will introduce the videogame itself and we will analyze in deep the three levels of computation of the AI techniques discussed and applied.
     \end{abstract}
 
   \newpage
@@ -121,7 +121,7 @@
 
     \end{itemize}
 
-  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks \dots. That will make your zombies harder to move in a pack.}
+  \p{You can also find obstacles and other passive elements along the map, such as plants, trees, rocks\dots, that will make your zombies harder to move in a pack.}
 
 \newpage
   \subsection{Knowledge extraction}
@@ -319,8 +319,11 @@
       \p{The big problem with this kind of model is the need of learning. With the \textbf{CBR approach} we would be able to put it in the game and teach it by playing with human players, but the \textbf{neural network} learning process is \textbf{more complex} and requires more simulation that would be really \textbf{difficult to make} without the intervention of an human player.}
 
   \subsubsection{Evolutionary computation}
-
   
+  \p{We haven't thought about evolutionary computation in order to include it directly in the game's engine or in the opponent's AI. However, techniques as \textit{genetic algorithms} conform a really powerful tool that can be used in order to optimize a collection of parameters}
+
+  \p{In our game, there will be a big number of parameters to be optimized. For example, for balancing purposes, the different units stats should be balanced in order to give us a competitive and amusing game. Also the automatic generation of level could not be left totally to randomness, and we can use evolutionary computation in order to fix those values.}
+
   \subsection{Mathematical approaches and other algorithms}
 
     \p{As this game is a simple one, most of evaluated problems can be and have been solved by using more simple solution than using complex AI techniques.}
@@ -358,13 +361,6 @@
 
 \newpage
 \section{Artificial intelligence principles III: Implementation}
-
-  \subsection{Software engineering and game engine implementation issues}
-
-    \p{As this subject is not focused on videogames programming, this section will cover the basis of the implementation in order to identify and follow the different elements of the game engine. We are going the provide the fewer diagrams and models needed to understand the structure and the function of this application.}
-
-%%
-%%	SI NO SE PONE NADA MAS NEJOR BORRAR DIGO YO.
 
   \subsection{Programing with Ogre3D}
 
@@ -404,45 +400,86 @@
 
   \p{On the one hand and as the game engine, we are going to introduce the different elements that we should integrate to provide a videogame interface and its elements. On the other hand as a platform for testing AI techniques we are going to let an empty place in which we can plug in the AI techniques as different modules implementing an specific model; for example, we are going to implement the hordes units movement in the game engine letting a place to plug in a model, which can be a random model or a richer approach like a rule based system or a neural network.}
   
-  \subsubsection{Movement module and models}
-    
-    \p{The movement models for the units will affect to their free will movements during the game. Providing richer model will make the make more interesting as our avatar should behave in a more complex way and also resulting on situations of emergency.}
-
 % NO PUEDO INSERTAR UN EPS (sera porque me faltan esas librerias, nose)
-% 	\begin{figure}[hbt]
-% 	    \begin{center}
-% 		\includegraphics[scale=.4]{modulos.eps}
-% 
-% 	    \end{center}
-% 	    \caption{Movement and Behaviour modules.}
-% 	\end{figure}
+	\begin{figure}[hbt]
+	    \begin{center}
+		\includegraphics[scale=.2]{modulos.eps}
 
-    \p{The movement module itself should catch some of the parameters from the units and environment and provide a function \textit{calculateMove()} that, for a given avatar, will calculate the next move.}
+	    \end{center}
+	    \caption{Movement and Behaviour modules.}
+	\end{figure}
 
-    \p{The next models have been included in the game and all fully interchangeable without changing anything on the code rather than its name:}
+    \subsubsection{Movement module and models}
+      
+      \p{The movement models for the units will affect to their free will movements during the game. Providing richer model will make the make more interesting as our avatar should behave in a more complex way and also resulting on situations of emergency.}
+
+      \p{The movement module itself should catch some of the parameters from the units and environment and provide a function \textit{calculateMove()} that, for a given avatar, will calculate the next move.}
+
+      \p{There will be a movement module for the zombies, and a movement module for the enemies, with their correspondent  models included.}
+
+      \p{The movement module for zombies defines the movement that the zombies do when they are hungry, otherwise the movement is let to the human player will. The models implemented achieve group movement using each zombie pack:}
 
     \begin{itemize}
-     \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
-     \item \textbf{Bird Flock:} This model is based on a biological approach and has been implemented by using a ruled based system, the specification is shown before in its own section. With this model the whole group will maintain some coherence and will move along together, it neither has any consideration on the environment.
+      \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
+      \item \textbf{Bird Flock:} This model is based on a biological approach and has been implemented by using a ruled based system, the specification is shown before in its own section. With this model the whole group will maintain some coherence and will move along together, it neither has any consideration on the environment.
+    \end{itemize}
+
+    \p{The enemies movement model implements individual movement for each units:}
+
+    \begin{itemize}
+      \item \textbf{Random model:} As it name says it model should give a random movement to each unit that ask for it. Normally units following this model would move on any direction without taking care of anything else (environment or other units).
+
+      \item \textbf{Chase model:} This model uses the positions of the zombies, and gives the enemy the coordinate of the nearest one in order to move to it.
     \end{itemize}
 
 
-  \subsubsection{Behaving and action module and models}
+    \subsubsection{Behaviour module and models}
 
-  \subsubsection{Strategy and meta-game module and models}
+      \p{The behaviour module has been implemented in order to make the enemy behave according to a strategy.}
+
+      \p{To implement this module we can use the aforementioned elements of the control framework for the units: stats, moods (seeking, patrolling), aggressiveness and environmental data.}
+    
+      \p{The models implemented for this module are:}
+
+    \begin{itemize}
+     \item \textbf{JustTurn:} This behaviour is so simple, is the one used for the turrets. This just activates the seek mode and turns on aggressiveness.
+     \item \textbf{Random:} This mode makes the enemy navigate randomly along the map. To do that, they first navigate to a random point by setting up patrolling and using the random movement model, then they seek for enemies activating the correspondent mood.
+     \item \textbf{Hunter:} We have previously talked about this model in the schemes of representation section. This model has been implemented by using the defined ruled bases system. I uses the chase movement model in order to calculate the movements.
+    \end{itemize}
 
 
 \section{Conclusions}
 
   \subsection{AI Results}
-    \p{We have obtained the following results, in terms of artificial intelligence behavior:}
-    TO DO
+    \p{We have obtained very good results, in terms of artificial intelligence behavior.}
+
+    \p{Globally, we have achieved a good stochastic and emergent behaviour of the game. If the human player don't interact with the game, he can observe many of the elements behaving and interacting by themselves using the AI system we implemented.}
+
+    \p{As you can see, the birds flock movement solves the problem of the zombie pack movement, and also the hunter behaviour of the robot enemy gives a competitive opponent to play with.}
 
   \subsection{Development costs}
-    \p{The approximate time invested in the development of the application has been:}
-    TO DO
+    \p{The approximate time invested in the development of the application , according to our experience and using the repository statistics as an approximate measure, we can estimate the cost of the developing in about: \newline}
 
-  \subsection{Showing}
+	    \begin{center}
+	     \begin{tabular}{cc}
+
+		\hline
+		\textbf{Concept}	& \textbf{Hours} \\
+		\hline
+		Ogre formation		& 20 \\
+		System Design		& 12 \\
+		Programming		& 70 \\
+		Artwork			& 12 \\
+		Documentation		& 24 \\
+		\hline
+	  \newline    
+	     \end{tabular}
+	    \end{center}
+	  
+	  \p{To summarize, we have invested in the project a total of \textbf{138 hours}. As a curiosity the code contains about \textbf{4242 lines}.}
+
+
+  \subsection{Demonstration}
     \p{Some samples screenshots of the application Zproyect:}
 
 	\begin{figure}[hbt]
